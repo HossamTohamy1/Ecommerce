@@ -1,0 +1,229 @@
+@page
+@model ECommerce.API.Pages.Discounts.CreateModel
+@using ECommerce.Domain.Entities
+@{
+    ViewData["Title"] = Localizer["Discount.Create"].Value;
+}
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+<div class="page-header mb-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <h1>@Localizer["Discount.Create"]</h1>
+    <a class="btn btn-outline-secondary" asp-page="/Discounts/Index">
+        <i class="bi bi-arrow-left me-1"></i>@Localizer["Common.Back"]
+    </a>
+</div>
+
+<form method="post" id="discountCreateForm" novalidate>
+    <div id="selectedProductsHiddenContainer">
+        @foreach (var id in Model.SelectedProductIds)
+        {
+            <input type="hidden" name="SelectedProductIds" value="@id" id="hidden_@id" />
+        }
+    </div>
+
+    <!-- Section 1: Basic Information -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header fs-5 fw-bold d-flex align-items-center">
+            <i class="bi bi-tag me-2 text-primary"></i>@Localizer["Discount.BasicInformation"]
+        </div>
+        <div class="card-body p-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Input.Name" class="form-label">@Localizer["Common.Name"] <span class="text-danger">*</span></label>
+                    <input asp-for="Input.Name" class="form-control" />
+                    <span asp-validation-for="Input.Name" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.Code" class="form-label">@Localizer["Discount.Code"] (@Localizer["Common.Optional"])</label>
+                    <input asp-for="Input.Code" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.DiscountType" class="form-label">@Localizer["Discount.Type"] <span class="text-danger">*</span></label>
+                    <select asp-for="Input.DiscountType" class="form-select">
+                        <option value="@DiscountType.Percentage">@Localizer["Discount.TypePercentage"]</option>
+                        <option value="@DiscountType.FixedAmount">@Localizer["Discount.TypeFixed"]</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.Value" class="form-label">@Localizer["Discount.Value"] <span class="text-danger">*</span></label>
+                    <input asp-for="Input.Value" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Input.Value" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.MinimumOrderAmount" class="form-label">@Localizer["Discount.MinimumOrderAmount"] (@Localizer["Common.Optional"])</label>
+                    <input asp-for="Input.MinimumOrderAmount" class="form-control" type="number" step="0.01" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.StartDate" class="form-label">@Localizer["Discount.StartDate"] <span class="text-danger">*</span></label>
+                    <input asp-for="Input.StartDate" class="form-control" type="date" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.EndDate" class="form-label">@Localizer["Discount.EndDate"] <span class="text-danger">*</span></label>
+                    <input asp-for="Input.EndDate" class="form-control" type="date" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.UsageLimit" class="form-label">@Localizer["Discount.UsageLimit"] (@Localizer["Common.Optional"])</label>
+                    <input asp-for="Input.UsageLimit" class="form-control" type="number" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: Assigned Products (Searchable Dropdown Component) -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header fs-5 fw-bold d-flex align-items-center">
+            <i class="bi bi-box-seam me-2 text-primary"></i>@Localizer["Discount.AssignedProducts"]
+        </div>
+        <div class="card-body p-4">
+            <div id="emptyAssignedMsg" class="empty-state-box mb-3">
+                <i class="bi bi-info-circle"></i>
+                <span>@Localizer["Common.NoDataFound"]</span>
+            </div>
+
+            <div class="table-responsive mb-3" id="assignedProductsTableWrapper" style="display: none;">
+                <table class="table align-middle table-row-dashed fs-6 gy-3 mb-0" id="assignedProductsTable">
+                    <thead>
+                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                            <th>@Localizer["Common.Name"]</th>
+                            <th>@Localizer["Product.Category"]</th>
+                            <th>@Localizer["Common.Price"]</th>
+                            <th class="text-end">@Localizer["Common.Actions"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-3 bg-light-subtle rounded border">
+                <label class="form-label fw-bold mb-2">@Localizer["Discount.AssignProduct"]</label>
+                <div class="row g-2 align-items-center">
+                    <div class="col-12 col-md-9">
+                        <select id="productSelect" class="form-select" data-placeholder="@Localizer["Product.SelectProduct"]">
+                            <option value=""></option>
+                            @foreach (var p in Model.AllProducts)
+                            {
+                                <option value="@p.Id" data-name="@p.Name" data-category="@p.CategoryName" data-price="@p.Price.ToString("0.00")">
+                                    @p.Name (@p.CategoryName - @p.Price.ToString("0.00"))
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <button type="button" id="btnAssignProduct" class="btn btn-primary w-100">
+                            <i class="bi bi-plus-lg me-1"></i>@Localizer["Discount.AssignProduct"]
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="bi bi-check2 me-1"></i>@Localizer["Common.Save"]
+        </button>
+        <a asp-page="/Discounts/Index" class="btn btn-outline-secondary px-4">@Localizer["Common.Cancel"]</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const $productSelect = $('#productSelect');
+            const $tbody = $('#assignedProductsTable tbody');
+            const $tableWrapper = $('#assignedProductsTableWrapper');
+            const $emptyMsg = $('#emptyAssignedMsg');
+            const $hiddenContainer = $('#selectedProductsHiddenContainer');
+
+            const assignedMap = new Map();
+
+            $productSelect.select2({
+                placeholder: '@Localizer["Product.SelectProduct"]',
+                allowClear: true,
+                width: '100%',
+                dir: $('html').attr('dir') === 'rtl' ? 'rtl' : 'ltr'
+            });
+
+            function updateUIState() {
+                if (assignedMap.size > 0) {
+                    $tableWrapper.show();
+                    $emptyMsg.hide();
+                } else {
+                    $tableWrapper.hide();
+                    $emptyMsg.show();
+                }
+            }
+
+            function assignSelectedProduct() {
+                const selectedVal = $productSelect.val();
+                if (!selectedVal) return;
+
+                const $selectedOpt = $productSelect.find(`option[value="${selectedVal}"]`);
+                if ($selectedOpt.length === 0) return;
+
+                const name = $selectedOpt.data('name') || $selectedOpt.text();
+                const category = $selectedOpt.data('category') || '';
+                const price = $selectedOpt.data('price') || '';
+
+                assignedMap.set(selectedVal, {
+                    name: name,
+                    category: category,
+                    price: price,
+                    optionHtml: $selectedOpt[0].outerHTML
+                });
+
+                const trHtml = `
+                    <tr id="row_${selectedVal}">
+                        <td class="fw-semibold">${name}</td>
+                        <td>${category || '—'}</td>
+                        <td>${price}</td>
+                        <td class="text-end">
+                            <button type="button" class="btn btn-sm btn-icon btn-light text-danger btn-remove" data-id="${selectedVal}">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                $tbody.append(trHtml);
+
+                $hiddenContainer.append(`<input type="hidden" name="SelectedProductIds" value="${selectedVal}" id="hidden_${selectedVal}" />`);
+
+                $selectedOpt.remove();
+                $productSelect.val(null).trigger('change');
+
+                updateUIState();
+            }
+
+            $('#btnAssignProduct').on('click', assignSelectedProduct);
+
+            $productSelect.on('select2:select', function () {
+                assignSelectedProduct();
+            });
+
+            $tbody.on('click', '.btn-remove', function () {
+                const id = $(this).data('id');
+                if (!id) return;
+
+                const item = assignedMap.get(id);
+                if (item) {
+                    $productSelect.append(item.optionHtml);
+                    assignedMap.delete(id);
+                }
+
+                $(`#row_${id}`).remove();
+                $(`#hidden_${id}`).remove();
+
+                $productSelect.trigger('change');
+                updateUIState();
+            });
+
+            updateUIState();
+        });
+    </script>
+}

@@ -1,0 +1,12 @@
+@page
+@model ECommerce.API.Pages.Account.AccessDeniedModel
+@{
+    ViewData["Title"] = "403";
+    Layout = "_AuthLayout";
+}
+
+<div class="text-center">
+    <i class="bi bi-shield-lock display-1 text-danger"></i>
+    <h2 class="fw-bold mt-3">@Localizer["Common.Forbidden"]</h2>
+    <a asp-page="/Index" class="btn btn-primary mt-3">@Localizer["Nav.Dashboard"]</a>
+</div>

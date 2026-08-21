@@ -1,0 +1,159 @@
+@using System.Globalization
+@{
+    var currentCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    var isRtl = currentCulture == "ar";
+    var dir = isRtl ? "rtl" : "ltr";
+    var cssHref = isRtl ? "~/assets/css/style.bundle.rtl.css" : "~/assets/css/style.bundle.css";
+}
+<!DOCTYPE html>
+<html lang="@currentCulture" dir="@dir">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Lumaire</title>
+    <link rel="icon" type="image/png" href="~/assets/media/logos/lumaire-logo.png" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" />
+    <link id="ktThemeStylesheet" rel="stylesheet" type="text/css" href="@cssHref" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script>
+        (function () {
+            var saved = localStorage.getItem('ecommerce-theme');
+            if (saved === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body id="kt_body" class="auth-page">
+    <div class="auth-shell">
+        <div class="auth-showcase d-none d-lg-flex">
+            <div class="auth-showcase__glow"></div>
+            <div class="auth-showcase__content">
+                <a asp-page="/Index" class="d-inline-flex align-items-center gap-2 mb-10 text-decoration-none">
+                    <img alt="Lumaire" src="~/assets/media/logos/lumaire-logo.png" class="navbar-brand-logo h-45px" height="45" width="45" />
+                    <span class="fs-3 fw-bold text-white">Lumaire</span>
+                </a>
+
+                <h1 class="text-white fw-bold display-6 mb-4">@Localizer["Auth.Showcase.Title"]</h1>
+                <p class="text-white opacity-75 fs-5 mb-10">@Localizer["Auth.Showcase.Subtitle"]</p>
+
+                <div class="d-flex flex-column gap-5">
+                    <div class="d-flex align-items-start gap-4">
+                        <span class="auth-showcase__icon"><i class="bi bi-shield-check"></i></span>
+                        <div>
+                            <div class="text-white fw-semibold fs-6">@Localizer["Auth.Showcase.Point1.Title"]</div>
+                            <div class="text-white opacity-75">@Localizer["Auth.Showcase.Point1.Body"]</div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-4">
+                        <span class="auth-showcase__icon"><i class="bi bi-lightning-charge"></i></span>
+                        <div>
+                            <div class="text-white fw-semibold fs-6">@Localizer["Auth.Showcase.Point2.Title"]</div>
+                            <div class="text-white opacity-75">@Localizer["Auth.Showcase.Point2.Body"]</div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-4">
+                        <span class="auth-showcase__icon"><i class="bi bi-headset"></i></span>
+                        <div>
+                            <div class="text-white fw-semibold fs-6">@Localizer["Auth.Showcase.Point3.Title"]</div>
+                            <div class="text-white opacity-75">@Localizer["Auth.Showcase.Point3.Body"]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-panel">
+            <div class="auth-panel__topbar">
+                <a asp-page="/Index" class="d-flex d-lg-none align-items-center gap-2 text-decoration-none">
+                    <img alt="Lumaire" src="~/assets/media/logos/lumaire-logo.png" class="navbar-brand-logo h-35px" height="35" width="35" />
+                    <span class="fs-4 fw-bold text-gray-800">Lumaire</span>
+                </a>
+                <div class="d-flex align-items-center gap-2 ms-auto">
+                    <div class="btn btn-sm btn-icon btn-light" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                        <i class="bi bi-translate"></i>
+                    </div>
+                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg fw-semibold py-4 fs-6 w-200px" data-kt-menu="true">
+                        <div class="menu-item px-3"><a class="menu-link px-3 @(currentCulture == "en" ? "active" : "")" href="#" data-set-culture="en">@Localizer["Language.English"]</a></div>
+                        <div class="menu-item px-3"><a class="menu-link px-3 @(currentCulture == "ar" ? "active" : "")" href="#" data-set-culture="ar">@Localizer["Language.Arabic"]</a></div>
+                    </div>
+                    <button class="btn btn-sm btn-icon btn-light" id="themeToggle" type="button" aria-label="Toggle theme">
+                        <i class="bi bi-moon-stars theme-icon-dark"></i>
+                        <i class="bi bi-sun theme-icon-light"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="auth-panel__body">
+                <div class="auth-card">
+                    @RenderBody()
+                </div>
+            </div>
+
+            <div class="auth-panel__footer text-muted small">
+                &copy; @DateTime.UtcNow.Year Lumaire. @Localizer["Auth.Footer.Rights"]
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script>
+        // Global vendor polyfills & stubs to ensure theme scripts never throw Uncaught ReferenceErrors
+        var SmoothScroll = window.SmoothScroll = window.SmoothScroll || function(selector, options) { return { destroy: function() {}, init: function() {} }; };
+        var smoothScroll = window.smoothScroll = window.smoothScroll || window.SmoothScroll;
+        var countUp = window.countUp = window.countUp || { CountUp: function() { return { start: function() {} }; } };
+        var autosize = window.autosize = window.autosize || function() {};
+        var tns = window.tns = window.tns || function() {};
+        var noUiSlider = window.noUiSlider = window.noUiSlider || { create: function() {} };
+        var wNumb = window.wNumb = window.wNumb || function() {};
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="~/assets/js/scripts.bundle.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'error',
+                    text: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["ErrorMessage"])),
+                    confirmButtonText: '@Localizer["Common.OkGotIt"]',
+                    confirmButtonColor: '#50cd89'
+                });
+            });
+        </script>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    text: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["SuccessMessage"])),
+                    confirmButtonText: '@Localizer["Common.OkGotIt"]',
+                    confirmButtonColor: '#50cd89'
+                });
+            });
+        </script>
+    }
+    @if (TempData["InfoMessage"] != null)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'info',
+                    text: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["InfoMessage"])),
+                    confirmButtonText: '@Localizer["Common.OkGotIt"]',
+                    confirmButtonColor: '#3699ff'
+                });
+            });
+        </script>
+    }
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,40 @@
+@page
+@model ECommerce.API.Pages.Brands.Admin.CreateModel
+@{
+    ViewData["Title"] = Localizer["Brand.Create"].Value;
+}
+
+<div class="page-header">
+    <h1>@Localizer["Brand.Create"]</h1>
+    <a class="btn btn-outline-secondary" asp-page="/Brands/Index"><i class="bi bi-arrow-left me-1"></i>@Localizer["Common.Back"]</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header fs-5 fw-bold">
+        <i class="bi bi-award me-2 text-primary"></i>@Localizer["Brand.Create"]
+    </div>
+    <div class="card-body p-4">
+        <form method="post" enctype="multipart/form-data" novalidate>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Input.Name" class="form-label">@Localizer["Common.Name"]</label>
+                    <input asp-for="Input.Name" class="form-control" />
+                    <span asp-validation-for="Input.Name" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.Logo" class="form-label">@Localizer["Brand.Logo"] (@Localizer["Common.Optional"])</label>
+                    <input asp-for="Input.Logo" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary px-4">@Localizer["Common.Save"]</button>
+                <a asp-page="/Brands/Index" class="btn btn-outline-secondary px-4">@Localizer["Common.Cancel"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

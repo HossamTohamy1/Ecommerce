@@ -1,0 +1,87 @@
+@page
+@model ECommerce.API.Pages.Orders.CheckoutModel
+@using ECommerce.Domain.Entities
+@{
+    ViewData["Title"] = Localizer["Order.PlaceOrder"].Value;
+}
+
+<div class="page-header">
+    <h1>@Localizer["Order.PlaceOrder"]</h1>
+    <a class="btn btn-outline-secondary" asp-page="/Cart/Index"><i class="bi bi-arrow-left me-1"></i>@Localizer["Common.Back"]</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-header">@Localizer["Order.ShippingAddress"]</div>
+            <div class="card-body">
+                @if (Model.Addresses.Count == 0)
+                {
+                    <p class="text-muted">@Localizer["Order.NoAddressYet"]</p>
+                    <a asp-page="/Addresses/Create" class="btn btn-primary">@Localizer["Address.Create"]</a>
+                }
+                else
+                {
+                    <form method="post">
+                        <div class="mb-4">
+                            @foreach (var a in Model.Addresses)
+                            {
+                                var isChecked = Model.Input.ShippingAddressId == a.Id || (Model.Input.ShippingAddressId == Guid.Empty && a.IsDefault);
+                                <label class="checkout-address-card d-flex align-items-start gap-3 p-3 border rounded mb-2 cursor-pointer position-relative @(isChecked ? "border-primary bg-light-primary" : "")" for="addr_@a.Id">
+                                    <input class="form-check-input m-0 mt-1 flex-shrink-0" type="radio" name="Input.ShippingAddressId" value="@a.Id" id="addr_@a.Id"
+                                           checked="@isChecked" />
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <span class="fw-bold text-gray-800">@a.FullName</span>
+                                            @if (a.IsDefault)
+                                            {
+                                                <span class="badge badge-light-primary fs-8">@Localizer["Address.Default"]</span>
+                                            }
+                                        </div>
+                                        <div class="text-muted small mt-1">
+                                            <span><i class="bi bi-telephone me-1"></i>@a.Phone</span>
+                                            <span class="mx-2">•</span>
+                                            <span>@a.Street, @a.City, @a.Governorate</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            }
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">@Localizer["Order.PaymentMethod"]</label>
+                            <select asp-for="Input.PaymentMethod" class="form-select">
+                                <option value="@PaymentMethod.Cash">@Localizer["Order.PaymentMethod.Cash"]</option>
+                                <option value="@PaymentMethod.BankTransfer">@Localizer["Order.PaymentMethod.BankTransfer"]</option>
+                                <option value="@PaymentMethod.Other">@Localizer["Order.PaymentMethod.Other"]</option>
+                            </select>
+                        </div>
+
+                        <partial name="_WhatsAppContact" />
+
+                        <button type="submit" class="btn btn-primary w-100 py-3 fw-bold fs-6">@Localizer["Order.PlaceOrder"]</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-header">@Localizer["Cart.OrderSummary"]</div>
+            <div class="card-body">
+                @foreach (var item in Model.Cart.Items)
+                {
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>@item.ProductName × @item.Quantity</span>
+                        <span>@item.LineTotal.ToString("0.00")</span>
+                    </div>
+                }
+                <hr />
+                <div class="d-flex justify-content-between fw-bold fs-5">
+                    <span>@Localizer["Common.Total"]</span>
+                    <span>@Model.Cart.Total.ToString("0.00")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+@page
+@model ECommerce.API.Pages.Account.ExternalLoginCallbackModel
+@{
+    Layout = "_AuthLayout";
+}
+
+<div class="text-center py-10">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted mt-4 mb-0">@Localizer["Auth.ExternalLogin.Processing"]</p>
+</div>

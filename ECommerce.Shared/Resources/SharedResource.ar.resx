@@ -1,0 +1,1314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <data name="Auth.Register.EmailExists" xml:space="preserve">
+    <value>البريد الإلكتروني ده مسجل بالفعل</value>
+  </data>
+  <data name="Auth.Login.InvalidCredentials" xml:space="preserve">
+    <value>البريد الإلكتروني أو كلمة المرور غير صحيحة</value>
+  </data>
+  <data name="Auth.Login.LockedOut" xml:space="preserve">
+    <value>الحساب متقفل مؤقتًا بسبب محاولات دخول خاطئة كتير. حاول تاني بعد {0} دقيقة</value>
+  </data>
+  <data name="Auth.Login.AccountDisabled" xml:space="preserve">
+    <value>الحساب ده معطل، تواصل مع الدعم الفني</value>
+  </data>
+  <data name="Auth.ForgotPassword.GenericMessage" xml:space="preserve">
+    <value>لو البريد الإلكتروني ده مسجل عندنا، هيوصلك رابط إعادة تعيين كلمة المرور</value>
+  </data>
+  <data name="Auth.ResetPassword.InvalidToken" xml:space="preserve">
+    <value>رابط إعادة التعيين غير صالح أو منتهي الصلاحية</value>
+  </data>
+  <data name="Auth.ResetPassword.Success" xml:space="preserve">
+    <value>تم تغيير كلمة المرور بنجاح</value>
+  </data>
+  <data name="Auth.User.NotFound" xml:space="preserve">
+    <value>المستخدم غير موجود</value>
+  </data>
+
+  <data name="Common.NotFound" xml:space="preserve">
+    <value>{0} غير موجود</value>
+  </data>
+  <data name="Common.DuplicateName" xml:space="preserve">
+    <value>فيه {0} تاني بنفس الاسم</value>
+  </data>
+  <data name="Common.ValidationError" xml:space="preserve">
+    <value>راجع البيانات اللي دخلتها وحاول تاني</value>
+  </data>
+  <data name="Common.Unauthorized" xml:space="preserve">
+    <value>لازم تسجل الدخول عشان تعمل كده</value>
+  </data>
+  <data name="Common.Forbidden" xml:space="preserve">
+    <value>معندكش صلاحية تعمل كده</value>
+  </data>
+  <data name="Common.UnexpectedError" xml:space="preserve">
+    <value>حصل خطأ غير متوقع، حاول تاني بعد شوية</value>
+  </data>
+  <data name="Common.TooManyRequests" xml:space="preserve">
+    <value>عدد الطلبات كبير أوي، استنى شوية وحاول تاني</value>
+  </data>
+
+  <data name="Catalog.Category.NotFound" xml:space="preserve">
+    <value>الفئة غير موجودة</value>
+  </data>
+  <data name="Catalog.Category.DuplicateSlug" xml:space="preserve">
+    <value>فيه فئة تانية بنفس الـ Slug</value>
+  </data>
+  <data name="Catalog.Category.HasProducts" xml:space="preserve">
+    <value>متقدرش تمسح فئة فيها منتجات</value>
+  </data>
+  <data name="Catalog.Product.NotFound" xml:space="preserve">
+    <value>المنتج غير موجود</value>
+  </data>
+  <data name="Catalog.Product.DuplicateSku" xml:space="preserve">
+    <value>فيه منتج تاني بنفس الـ SKU</value>
+  </data>
+
+  <data name="Files.NoFileProvided" xml:space="preserve">
+    <value>لازم ترفع ملف صورة</value>
+  </data>
+  <data name="Files.TooLarge" xml:space="preserve">
+    <value>حجم الصورة أكبر من الحد المسموح (5 ميجابايت)</value>
+  </data>
+  <data name="Files.InvalidExtension" xml:space="preserve">
+    <value>امتداد الملف غير مسموح. المسموح بس: jpg, jpeg, png, webp</value>
+  </data>
+  <data name="Files.InvalidContentType" xml:space="preserve">
+    <value>نوع الملف غير مسموح</value>
+  </data>
+
+  <data name="Cart.Empty" xml:space="preserve">
+    <value>عربية التسوق فاضية</value>
+  </data>
+  <data name="Order.NotFound" xml:space="preserve">
+    <value>الطلب غير موجود</value>
+  </data>
+  <data name="Order.InsufficientStock" xml:space="preserve">
+    <value>الكمية المتاحة من "{0}" مش كفاية (متبقي {1} بس)</value>
+  </data>
+  <data name="Nav.Dashboard" xml:space="preserve">
+    <value>الرئيسية</value>
+  </data>
+  <data name="Nav.Categories" xml:space="preserve">
+    <value>الفئات</value>
+  </data>
+  <data name="Nav.Brands" xml:space="preserve">
+    <value>البراندات</value>
+  </data>
+  <data name="Nav.Products" xml:space="preserve">
+    <value>المنتجات</value>
+  </data>
+  <data name="Nav.Discounts" xml:space="preserve">
+    <value>الخصومات</value>
+  </data>
+  <data name="Nav.Cart" xml:space="preserve">
+    <value>عربية التسوق</value>
+  </data>
+  <data name="Nav.Orders" xml:space="preserve">
+    <value>الطلبات</value>
+  </data>
+  <data name="Nav.MyOrders" xml:space="preserve">
+    <value>طلباتي</value>
+  </data>
+  <data name="Nav.AllOrders" xml:space="preserve">
+    <value>كل الطلبات</value>
+  </data>
+  <data name="Nav.Addresses" xml:space="preserve">
+    <value>العناوين</value>
+  </data>
+  <data name="Nav.Reviews" xml:space="preserve">
+    <value>التقييمات</value>
+  </data>
+  <data name="Nav.Wishlist" xml:space="preserve">
+    <value>المفضلة</value>
+  </data>
+  <data name="Nav.Login" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="Nav.Register" xml:space="preserve">
+    <value>إنشاء حساب</value>
+  </data>
+  <data name="Nav.Logout" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
+  <data name="Nav.MyAccount" xml:space="preserve">
+    <value>حسابي</value>
+  </data>
+  <data name="Nav.Catalog" xml:space="preserve">
+    <value>الكتالوج</value>
+  </data>
+  <data name="Nav.Shopping" xml:space="preserve">
+    <value>التسوق</value>
+  </data>
+  <data name="Nav.Administration" xml:space="preserve">
+    <value>الإدارة</value>
+  </data>
+  <data name="Common.Save" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="Common.Cancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="Common.Edit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="Common.Delete" xml:space="preserve">
+    <value>مسح</value>
+  </data>
+  <data name="Common.Create" xml:space="preserve">
+    <value>إضافة</value>
+  </data>
+  <data name="Common.Add" xml:space="preserve">
+    <value>إضافة</value>
+  </data>
+  <data name="Common.Actions" xml:space="preserve">
+    <value>الإجراءات</value>
+  </data>
+  <data name="Common.Name" xml:space="preserve">
+    <value>الاسم</value>
+  </data>
+  <data name="Common.Search" xml:space="preserve">
+    <value>بحث</value>
+  </data>
+  <data name="Common.Back" xml:space="preserve">
+    <value>رجوع</value>
+  </data>
+  <data name="Common.Confirm" xml:space="preserve">
+    <value>تأكيد</value>
+  </data>
+  <data name="Common.Yes" xml:space="preserve">
+    <value>أيوه</value>
+  </data>
+  <data name="Common.No" xml:space="preserve">
+    <value>لأ</value>
+  </data>
+  <data name="Common.Loading" xml:space="preserve">
+    <value>جاري التحميل...</value>
+  </data>
+  <data name="Common.NoDataFound" xml:space="preserve">
+    <value>مفيش بيانات</value>
+  </data>
+  <data name="Common.Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="Common.Active" xml:space="preserve">
+    <value>مفعّل</value>
+  </data>
+  <data name="Common.Inactive" xml:space="preserve">
+    <value>غير مفعّل</value>
+  </data>
+  <data name="Common.Price" xml:space="preserve">
+    <value>السعر</value>
+  </data>
+  <data name="Common.Total" xml:space="preserve">
+    <value>الإجمالي</value>
+  </data>
+  <data name="Common.Quantity" xml:space="preserve">
+    <value>الكمية</value>
+  </data>
+  <data name="Common.Image" xml:space="preserve">
+    <value>الصورة</value>
+  </data>
+  <data name="Common.AreYouSure" xml:space="preserve">
+    <value>متأكد؟</value>
+  </data>
+  <data name="Common.ThisActionCannotBeUndone" xml:space="preserve">
+    <value>الخطوة دي مش هترجع</value>
+  </data>
+  <data name="Common.SuccessTitle" xml:space="preserve">
+    <value>تم بنجاح</value>
+  </data>
+  <data name="Common.ErrorTitle" xml:space="preserve">
+    <value>حصل خطأ</value>
+  </data>
+  <data name="Common.OperationSuccessful" xml:space="preserve">
+    <value>تمت العملية بنجاح</value>
+  </data>
+  <data name="Common.Close" xml:space="preserve">
+    <value>إغلاق</value>
+  </data>
+  <data name="Common.ViewDetails" xml:space="preserve">
+    <value>التفاصيل</value>
+  </data>
+  <data name="Common.Date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="Common.Description" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="Common.Optional" xml:space="preserve">
+    <value>اختياري</value>
+  </data>
+  <data name="Common.WelcomeBack" xml:space="preserve">
+    <value>أهلاً بيك تاني</value>
+  </data>
+  <data name="Auth.Login.Title" xml:space="preserve">
+    <value>سجّل دخولك</value>
+  </data>
+  <data name="Auth.Login.Subtitle" xml:space="preserve">
+    <value>دخّل بياناتك عشان تكمل</value>
+  </data>
+  <data name="Auth.Login.Email" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="Auth.Login.Password" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="Auth.Login.SubmitButton" xml:space="preserve">
+    <value>دخول</value>
+  </data>
+  <data name="Auth.Login.NoAccount" xml:space="preserve">
+    <value>معندكش حساب؟</value>
+  </data>
+  <data name="Auth.Login.ForgotPasswordLink" xml:space="preserve">
+    <value>نسيت كلمة المرور؟</value>
+  </data>
+  <data name="Auth.Register.Title" xml:space="preserve">
+    <value>اعمل حساب جديد</value>
+  </data>
+  <data name="Auth.Register.FullName" xml:space="preserve">
+    <value>الاسم بالكامل</value>
+  </data>
+  <data name="Auth.Register.ConfirmPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور</value>
+  </data>
+  <data name="Auth.Register.SubmitButton" xml:space="preserve">
+    <value>إنشاء الحساب</value>
+  </data>
+  <data name="Auth.Register.HaveAccount" xml:space="preserve">
+    <value>عندك حساب بالفعل؟</value>
+  </data>
+  <data name="Auth.ForgotPassword.Title" xml:space="preserve">
+    <value>نسيت كلمة المرور؟</value>
+  </data>
+  <data name="Auth.ForgotPassword.Subtitle" xml:space="preserve">
+    <value>دخّل بريدك الإلكتروني وهنبعتلك رابط إعادة التعيين</value>
+  </data>
+  <data name="Auth.ForgotPassword.SubmitButton" xml:space="preserve">
+    <value>ابعت رابط إعادة التعيين</value>
+  </data>
+  <data name="Auth.ResetPassword.Title" xml:space="preserve">
+    <value>إعادة تعيين كلمة المرور</value>
+  </data>
+  <data name="Auth.ResetPassword.NewPassword" xml:space="preserve">
+    <value>كلمة المرور الجديدة</value>
+  </data>
+  <data name="Auth.ResetPassword.ConfirmNewPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور الجديدة</value>
+  </data>
+  <data name="Auth.ResetPassword.SubmitButton" xml:space="preserve">
+    <value>تغيير كلمة المرور</value>
+  </data>
+  <data name="Auth.ResetPassword.Token" xml:space="preserve">
+    <value>كود إعادة التعيين</value>
+  </data>
+  <data name="Category.Title" xml:space="preserve">
+    <value>الفئات</value>
+  </data>
+  <data name="Category.Create" xml:space="preserve">
+    <value>فئة جديدة</value>
+  </data>
+  <data name="Category.Edit" xml:space="preserve">
+    <value>تعديل الفئة</value>
+  </data>
+  <data name="Category.Slug" xml:space="preserve">
+    <value>الرابط المختصر</value>
+  </data>
+  <data name="Category.ParentCategory" xml:space="preserve">
+    <value>الفئة الأب</value>
+  </data>
+  <data name="Category.ProductCount" xml:space="preserve">
+    <value>عدد المنتجات</value>
+  </data>
+  <data name="Category.None" xml:space="preserve">
+    <value>مفيش (فئة رئيسية)</value>
+  </data>
+  <data name="Brand.Title" xml:space="preserve">
+    <value>البراندات</value>
+  </data>
+  <data name="Brand.Create" xml:space="preserve">
+    <value>براند جديد</value>
+  </data>
+  <data name="Brand.Edit" xml:space="preserve">
+    <value>تعديل البراند</value>
+  </data>
+  <data name="Brand.Logo" xml:space="preserve">
+    <value>الشعار</value>
+  </data>
+  <data name="Product.Title" xml:space="preserve">
+    <value>المنتجات</value>
+  </data>
+  <data name="Product.Create" xml:space="preserve">
+    <value>منتج جديد</value>
+  </data>
+  <data name="Product.Edit" xml:space="preserve">
+    <value>تعديل المنتج</value>
+  </data>
+  <data name="Product.SKU" xml:space="preserve">
+    <value>SKU</value>
+  </data>
+  <data name="Product.StockQuantity" xml:space="preserve">
+    <value>الكمية المتاحة</value>
+  </data>
+  <data name="Product.CompareAtPrice" xml:space="preserve">
+    <value>السعر قبل الخصم</value>
+  </data>
+  <data name="Product.Category" xml:space="preserve">
+    <value>الفئة</value>
+  </data>
+  <data name="Product.Brand" xml:space="preserve">
+    <value>البراند</value>
+  </data>
+  <data name="Product.Images" xml:space="preserve">
+    <value>الصور</value>
+  </data>
+  <data name="Product.UploadImages" xml:space="preserve">
+    <value>رفع صور</value>
+  </data>
+  <data name="Product.UploadImage" xml:space="preserve">
+    <value>رفع صورة</value>
+  </data>
+  <data name="Product.CompareAtPriceMustBeGreater" xml:space="preserve">
+    <value>السعر قبل الخصم يجب أن يكون أكبر من سعر البيع.</value>
+  </data>
+  <data name="Product.BasicInformation" xml:space="preserve">
+    <value>المعلومات العامة</value>
+  </data>
+  <data name="Product.MediaGallery" xml:space="preserve">
+    <value>صور المنتج</value>
+  </data>
+  <data name="Product.VariantManagement" xml:space="preserve">
+    <value>متغيرات المنتج</value>
+  </data>
+  <data name="Product.BaseStockQuantity" xml:space="preserve">
+    <value>المخزون الأساسي (بدون متغيرات)</value>
+  </data>
+  <data name="Product.TotalVariantStock" xml:space="preserve">
+    <value>إجمالي المخزون عبر المتغيرات</value>
+  </data>
+  <data name="Product.VariantsExistNote" xml:space="preserve">
+    <value>إجمالي مخزون المتغيرات: {0} وحدة عبر {1} متغيرات</value>
+  </data>
+  <data name="Product.ChooseFiles" xml:space="preserve">
+    <value>اختر الملفات</value>
+  </data>
+  <data name="Product.Variants" xml:space="preserve">
+    <value>المتغيرات</value>
+  </data>
+  <data name="Product.AddVariant" xml:space="preserve">
+    <value>إضافة متغير</value>
+  </data>
+  <data name="Product.Size" xml:space="preserve">
+    <value>المقاس</value>
+  </data>
+  <data name="Product.Color" xml:space="preserve">
+    <value>اللون</value>
+  </data>
+  <data name="Product.SetAsMain" xml:space="preserve">
+    <value>خليها الصورة الرئيسية</value>
+  </data>
+  <data name="Product.MainImage" xml:space="preserve">
+    <value>رئيسية</value>
+  </data>
+  <data name="Product.OutOfStock" xml:space="preserve">
+    <value>خلصت من المخزن</value>
+  </data>
+  <data name="Product.InStock" xml:space="preserve">
+    <value>متوفر</value>
+  </data>
+  <data name="Product.AddToCart" xml:space="preserve">
+    <value>أضف للعربية</value>
+  </data>
+  <data name="Product.AddToWishlist" xml:space="preserve">
+    <value>أضف للمفضلة</value>
+  </data>
+  <data name="Product.NoImage" xml:space="preserve">
+    <value>من غير صورة</value>
+  </data>
+  <data name="Discount.Title" xml:space="preserve">
+    <value>الخصومات</value>
+  </data>
+  <data name="Discount.Create" xml:space="preserve">
+    <value>خصم جديد</value>
+  </data>
+  <data name="Discount.Edit" xml:space="preserve">
+    <value>تعديل الخصم</value>
+  </data>
+  <data name="Discount.Code" xml:space="preserve">
+    <value>الكود</value>
+  </data>
+  <data name="Discount.Type" xml:space="preserve">
+    <value>النوع</value>
+  </data>
+  <data name="Discount.TypePercentage" xml:space="preserve">
+    <value>نسبة مئوية</value>
+  </data>
+  <data name="Discount.TypeFixed" xml:space="preserve">
+    <value>قيمة ثابتة</value>
+  </data>
+  <data name="Discount.Value" xml:space="preserve">
+    <value>القيمة</value>
+  </data>
+  <data name="Discount.StartDate" xml:space="preserve">
+    <value>تاريخ البداية</value>
+  </data>
+  <data name="Discount.EndDate" xml:space="preserve">
+    <value>تاريخ النهاية</value>
+  </data>
+  <data name="Discount.UsageLimit" xml:space="preserve">
+    <value>حد الاستخدام</value>
+  </data>
+  <data name="Discount.UsageCount" xml:space="preserve">
+    <value>عدد مرات الاستخدام</value>
+  </data>
+  <data name="Discount.MinimumOrderAmount" xml:space="preserve">
+    <value>أقل قيمة للطلب</value>
+  </data>
+  <data name="Discount.AssignedProducts" xml:space="preserve">
+    <value>المنتجات المرتبطة</value>
+  </data>
+  <data name="Discount.AssignProduct" xml:space="preserve">
+    <value>ربط منتج</value>
+  </data>
+  <data name="Discount.BasicInformation" xml:space="preserve">
+    <value>تفاصيل الخصم</value>
+  </data>
+  <data name="Discount.SelectProductsHint" xml:space="preserve">
+    <value>اختر المنتجات التي ينطبق عليها هذا الخصم:</value>
+  </data>
+  <data name="Product.SelectProduct" xml:space="preserve">
+    <value>اختر منتج</value>
+  </data>
+  <data name="Discount.SelectProduct" xml:space="preserve">
+    <value>اختر منتج</value>
+  </data>
+  <data name="SelectProduct" xml:space="preserve">
+    <value>اختر منتج</value>
+  </data>
+  <data name="Common.PageSize" xml:space="preserve">
+    <value>عدد العناصر</value>
+  </data>
+  <data name="Cart.Title" xml:space="preserve">
+    <value>عربية التسوق</value>
+  </data>
+  <data name="Cart.AddToCart" xml:space="preserve">
+    <value>أضف للعربية</value>
+  </data>
+  <data name="Cart.Checkout" xml:space="preserve">
+    <value>إتمام الطلب</value>
+  </data>
+  <data name="Cart.Remove" xml:space="preserve">
+    <value>إزالة</value>
+  </data>
+  <data name="Cart.ContinueShopping" xml:space="preserve">
+    <value>كمّل تسوق</value>
+  </data>
+  <data name="Cart.OrderSummary" xml:space="preserve">
+    <value>ملخص الطلب</value>
+  </data>
+  <data name="Order.Title" xml:space="preserve">
+    <value>الطلبات</value>
+  </data>
+  <data name="Order.MyOrders" xml:space="preserve">
+    <value>طلباتي</value>
+  </data>
+  <data name="Order.OrderNumber" xml:space="preserve">
+    <value>رقم الطلب</value>
+  </data>
+  <data name="Order.Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="Order.PaymentMethod" xml:space="preserve">
+    <value>طريقة الدفع</value>
+  </data>
+  <data name="Order.PaymentStatus" xml:space="preserve">
+    <value>حالة الدفع</value>
+  </data>
+  <data name="Order.Items" xml:space="preserve">
+    <value>العناصر</value>
+  </data>
+  <data name="Order.ShippingAddress" xml:space="preserve">
+    <value>عنوان الشحن</value>
+  </data>
+  <data name="Order.PlaceOrder" xml:space="preserve">
+    <value>تأكيد الطلب</value>
+  </data>
+  <data name="Order.UpdateStatus" xml:space="preserve">
+    <value>تحديث الحالة</value>
+  </data>
+  <data name="Order.SubTotal" xml:space="preserve">
+    <value>المجموع الفرعي</value>
+  </data>
+  <data name="Order.ShippingFee" xml:space="preserve">
+    <value>رسوم الشحن</value>
+  </data>
+  <data name="Order.DiscountAmount" xml:space="preserve">
+    <value>الخصم</value>
+  </data>
+  <data name="Order.TotalAmount" xml:space="preserve">
+    <value>الإجمالي</value>
+  </data>
+  <data name="Order.SelectAddress" xml:space="preserve">
+    <value>اختار عنوان الشحن</value>
+  </data>
+  <data name="Order.NoAddressYet" xml:space="preserve">
+    <value>لسه معندكش عناوين محفوظة</value>
+  </data>
+  <data name="Order.StatusHistory" xml:space="preserve">
+    <value>سجل الحالة</value>
+  </data>
+  <data name="Order.EmptyList" xml:space="preserve">
+    <value>لسه معملتش أي طلبات</value>
+  </data>
+  <data name="Address.Title" xml:space="preserve">
+    <value>العناوين</value>
+  </data>
+  <data name="Address.Create" xml:space="preserve">
+    <value>عنوان جديد</value>
+  </data>
+  <data name="Address.Edit" xml:space="preserve">
+    <value>تعديل العنوان</value>
+  </data>
+  <data name="Address.FullName" xml:space="preserve">
+    <value>الاسم بالكامل</value>
+  </data>
+  <data name="Address.Phone" xml:space="preserve">
+    <value>رقم التليفون</value>
+  </data>
+  <data name="Address.Street" xml:space="preserve">
+    <value>الشارع</value>
+  </data>
+  <data name="Address.City" xml:space="preserve">
+    <value>المدينة</value>
+  </data>
+  <data name="Address.Governorate" xml:space="preserve">
+    <value>المحافظة</value>
+  </data>
+  <data name="Address.PostalCode" xml:space="preserve">
+    <value>الرمز البريدي</value>
+  </data>
+  <data name="Address.SetDefault" xml:space="preserve">
+    <value>خليه العنوان الأساسي</value>
+  </data>
+  <data name="Address.Default" xml:space="preserve">
+    <value>أساسي</value>
+  </data>
+  <data name="Address.EmptyList" xml:space="preserve">
+    <value>لسه معندكش عناوين محفوظة</value>
+  </data>
+  <data name="Review.Title" xml:space="preserve">
+    <value>التقييمات</value>
+  </data>
+  <data name="Review.Rating" xml:space="preserve">
+    <value>التقييم</value>
+  </data>
+  <data name="Review.Comment" xml:space="preserve">
+    <value>التعليق</value>
+  </data>
+  <data name="Review.Approve" xml:space="preserve">
+    <value>قبول</value>
+  </data>
+  <data name="Review.PendingApproval" xml:space="preserve">
+    <value>في انتظار الموافقة</value>
+  </data>
+  <data name="Review.Approved" xml:space="preserve">
+    <value>متقبل</value>
+  </data>
+  <data name="Review.WriteReview" xml:space="preserve">
+    <value>اكتب تقييماً</value>
+  </data>
+  <data name="Review.SignInToReview" xml:space="preserve">
+    <value>يرجى تسجيل الدخول لكتابة تقييم</value>
+  </data>
+  <data name="Review.SignInPromptSubtitle" xml:space="preserve">
+    <value>شارك تجربتك حول هذا المنتج مع المتسوقين الآخرين</value>
+  </data>
+  <data name="Review.EmptyList" xml:space="preserve">
+    <value>لسه مفيش تقييمات</value>
+  </data>
+  <data name="Review.ModerationTitle" xml:space="preserve">
+    <value>إدارة التقييمات</value>
+  </data>
+  <data name="Wishlist.Title" xml:space="preserve">
+    <value>قائمة المفضلة</value>
+  </data>
+  <data name="Wishlist.AddToWishlist" xml:space="preserve">
+    <value>أضف للمفضلة</value>
+  </data>
+  <data name="Wishlist.Remove" xml:space="preserve">
+    <value>إزالة</value>
+  </data>
+  <data name="Wishlist.EmptyList" xml:space="preserve">
+    <value>قائمة المفضلة فاضية</value>
+  </data>
+  <data name="Theme.Light" xml:space="preserve">
+    <value>فاتح</value>
+  </data>
+  <data name="Theme.Dark" xml:space="preserve">
+    <value>غامق</value>
+  </data>
+  <data name="Language.English" xml:space="preserve">
+    <value>الإنجليزية</value>
+  </data>
+  <data name="Language.Arabic" xml:space="preserve">
+    <value>العربية</value>
+  </data>
+  <data name="Dashboard.Welcome" xml:space="preserve">
+    <value>أهلاً بيك في لوحة التحكم</value>
+  </data>
+  <data name="Dashboard.QuickLinks" xml:space="preserve">
+    <value>روابط سريعة</value>
+  </data>
+  <data name="Order.Status.Pending" xml:space="preserve">
+    <value>قيد الانتظار</value>
+  </data>
+  <data name="Order.Status.Confirmed" xml:space="preserve">
+    <value>متأكد</value>
+  </data>
+  <data name="Order.Status.Processing" xml:space="preserve">
+    <value>جاري التجهيز</value>
+  </data>
+  <data name="Order.Status.Shipped" xml:space="preserve">
+    <value>تم الشحن</value>
+  </data>
+  <data name="Order.Status.Delivered" xml:space="preserve">
+    <value>تم التسليم</value>
+  </data>
+  <data name="Order.Status.Cancelled" xml:space="preserve">
+    <value>ملغي</value>
+  </data>
+  <data name="Order.PaymentMethod.Cash" xml:space="preserve">
+    <value>كاش</value>
+  </data>
+  <data name="Order.PaymentMethod.BankTransfer" xml:space="preserve">
+    <value>تحويل بنكي</value>
+  </data>
+  <data name="Order.PaymentMethod.Other" xml:space="preserve">
+    <value>طريقة تانية</value>
+  </data>
+  <data name="Order.PaymentStatus.Unpaid" xml:space="preserve">
+    <value>لسه متدفعش</value>
+  </data>
+  <data name="Order.PaymentStatus.Paid" xml:space="preserve">
+    <value>مدفوع</value>
+  </data>
+  <data name="Order.PaymentStatus.PartiallyPaid" xml:space="preserve">
+    <value>مدفوع جزئيًا</value>
+  </data>
+  <data name="The {0} field is required." xml:space="preserve">
+    <value>الحقل {0} مطلوب</value>
+  </data>
+  <data name="The {0} field is not a valid e-mail address." xml:space="preserve">
+    <value>الحقل {0} لازم يكون بريد إلكتروني صحيح</value>
+  </data>
+  <data name="The {0} field is not a valid phone number." xml:space="preserve">
+    <value>الحقل {0} لازم يكون رقم تليفون صحيح</value>
+  </data>
+  <data name="'{0}' and '{1}' do not match." xml:space="preserve">
+    <value>الحقلين '{0}' و '{1}' مش متطابقين</value>
+  </data>
+  <data name="The field {0} must be a string with a minimum length of {2} and a maximum length of {1}." xml:space="preserve">
+    <value>الحقل {0} لازم يكون من {2} لـ {1} حرف</value>
+  </data>
+  <data name="The field {0} must be a string with a maximum length of {1}." xml:space="preserve">
+    <value>الحقل {0} أقصى طول ليه {1} حرف</value>
+  </data>
+  <data name="The field {0} must be between {1} and {2}." xml:space="preserve">
+    <value>الحقل {0} لازم يكون بين {1} و {2}</value>
+  </data>
+  <data name="The field {0} must match the regular expression '{1}'." xml:space="preserve">
+    <value>الحقل {0} مش بالصيغة الصحيحة</value>
+  </data>
+  <data name="Catalog.Brand.NotFound" xml:space="preserve">
+    <value>البراند غير موجود</value>
+  </data>
+  <data name="Catalog.Brand.DuplicateName" xml:space="preserve">
+    <value>فيه براند تاني بنفس الاسم</value>
+  </data>
+  <data name="Catalog.Brand.HasProducts" xml:space="preserve">
+    <value>متقدرش تمسح براند ليه منتجات مرتبطة بيه</value>
+  </data>
+  <data name="Address.NotFound" xml:space="preserve">
+    <value>العنوان غير موجود</value>
+  </data>
+  <data name="Wishlist.Empty" xml:space="preserve">
+    <value>قائمة المفضلة فاضية</value>
+  </data>
+  <data name="Catalog.Variant.NotFound" xml:space="preserve">
+    <value>الـ Variant غير موجود</value>
+  </data>
+  <data name="Catalog.Variant.DuplicateSku" xml:space="preserve">
+    <value>فيه Variant تاني بنفس الـ SKU</value>
+  </data>
+  <data name="Cart.ItemNotFound" xml:space="preserve">
+    <value>العنصر غير موجود في عربيتك</value>
+  </data>
+  <data name="Order.CannotChangeFinalStatus" xml:space="preserve">
+    <value>متقدرش تغير حالة طلب اتسلم أو اتلغى بالفعل</value>
+  </data>
+  <data name="Files.AtLeastOneRequired" xml:space="preserve">
+    <value>لازم ترفع صورة واحدة على الأقل</value>
+  </data>
+  <data name="Catalog.ProductImage.NotFound" xml:space="preserve">
+    <value>الصورة غير موجودة</value>
+  </data>
+  <data name="Discount.NotFound" xml:space="preserve">
+    <value>الخصم غير موجود</value>
+  </data>
+  <data name="Discount.DuplicateCode" xml:space="preserve">
+    <value>فيه كود خصم تاني بنفس الاسم ده</value>
+  </data>
+  <data name="Discount.ProductAlreadyAssigned" xml:space="preserve">
+    <value>المنتج ده مرتبط بالخصم ده بالفعل</value>
+  </data>
+  <data name="Discount.ProductNotAssigned" xml:space="preserve">
+    <value>المنتج مش مرتبط بالخصم ده</value>
+  </data>
+  <data name="Review.AlreadyReviewed" xml:space="preserve">
+    <value>انت قيمت المنتج ده قبل كده</value>
+  </data>
+  <data name="Review.NotFound" xml:space="preserve">
+    <value>التقييم غير موجود</value>
+  </data>
+  <data name="Catalog.Category.ParentNotFound" xml:space="preserve">
+    <value>الفئة الأب غير موجودة</value>
+  </data>
+  <data name="Catalog.Category.CannotBeSelfParent" xml:space="preserve">
+    <value>الفئة متقدرش تكون أب لنفسها</value>
+  </data>
+  <data name="Discount.EndDateAfterStartDate" xml:space="preserve">
+    <value>تاريخ النهاية لازم يكون بعد تاريخ البداية</value>
+  </data>
+  <data name="Discount.PercentageRange" xml:space="preserve">
+    <value>نسبة الخصم لازم تكون بين 1 و 100</value>
+  </data>
+  <data name="Discount.ValueMustBePositive" xml:space="preserve">
+    <value>قيمة الخصم لازم تكون أكبر من صفر</value>
+  </data>
+  <data name="Jwt.MalformedToken" xml:space="preserve">
+    <value>التوكن غير صحيح الصيغة</value>
+  </data>
+  <data name="Jwt.InvalidSignature" xml:space="preserve">
+    <value>توقيع التوكن غير صحيح</value>
+  </data>
+  <data name="Jwt.UnreadablePayload" xml:space="preserve">
+    <value>تعذر قراءة بيانات التوكن</value>
+  </data>
+  <data name="Jwt.Expired" xml:space="preserve">
+    <value>التوكن منتهي الصلاحية</value>
+  </data>
+  <data name="Jwt.Invalid" xml:space="preserve">
+    <value>التوكن غير صحيح</value>
+  </data>
+  <data name="Jwt.InvalidIssuer" xml:space="preserve">
+    <value>مُصدر التوكن غير صحيح</value>
+  </data>
+  <data name="Jwt.InvalidAudience" xml:space="preserve">
+    <value>الجمهور المستهدف للتوكن غير صحيح</value>
+  </data>
+  <data name="Jwt.NoToken" xml:space="preserve">
+    <value>لا يوجد توكن</value>
+  </data>
+  <data name="Email.PasswordReset.Subject" xml:space="preserve">
+    <value>إعادة تعيين كلمة المرور - Lumaire</value>
+  </data>
+  <data name="Email.PasswordReset.Body" xml:space="preserve">
+    <value>أهلاً {0}،
+
+وصلنا طلب لإعادة تعيين كلمة المرور بتاعتك.
+اضغط على الرابط ده خلال 15 دقيقة لإعادة تعيين كلمة المرور:
+
+{1}
+
+لو مطلبتش إعادة تعيين كلمة المرور، تجاهل الإيميل ده ببساطة.</value>
+  </data>
+  <data name="Email.SmtpNotConfigured" xml:space="preserve">
+    <value>SMTP غير مهيأ. رابط إعادة تعيين كلمة المرور لـ {0}: {1}</value>
+  </data>
+  <data name="Order.CreatedNote" xml:space="preserve">
+    <value>تم إنشاء الطلب</value>
+  </data>
+  <data name="Catalog.Product.CreatedButImageUploadFailed" xml:space="preserve">
+    <value>المنتج اتعمل، لكن حصل خطأ في رفع الصور: {0}</value>
+  </data>
+  <data name="Common.OkGotIt" xml:space="preserve">
+    <value>تمام, فهمت!</value>
+  </data>
+  <data name="Validation.Required" xml:space="preserve">
+    <value>{PropertyName} مطلوب</value>
+  </data>
+  <data name="Validation.Email" xml:space="preserve">
+    <value>{PropertyName} لازم يكون بريد إلكتروني صحيح</value>
+  </data>
+  <data name="Validation.MinLength" xml:space="preserve">
+    <value>{PropertyName} لازم يكون {MinLength} حرف على الأقل</value>
+  </data>
+  <data name="Validation.MaxLength" xml:space="preserve">
+    <value>{PropertyName} أقصى طول {MaxLength} حرف</value>
+  </data>
+  <data name="Validation.Length" xml:space="preserve">
+    <value>{PropertyName} لازم يكون من {MinLength} لـ {MaxLength} حرف</value>
+  </data>
+  <data name="Validation.PasswordMismatch" xml:space="preserve">
+    <value>كلمتا المرور مش متطابقتين</value>
+  </data>
+  <data name="Validation.GreaterThanZero" xml:space="preserve">
+    <value>{PropertyName} لازم يكون أكبر من صفر</value>
+  </data>
+  <data name="Validation.GreaterThanOrEqualToZero" xml:space="preserve">
+    <value>{PropertyName} مينفعش يكون بالسالب</value>
+  </data>
+  <data name="Validation.InvalidSlug" xml:space="preserve">
+    <value>الـ Slug يسمح بحروف صغيرة وأرقام وشرطة بس</value>
+  </data>
+  <data name="Validation.InvalidPhone" xml:space="preserve">
+    <value>{PropertyName} لازم يكون رقم تليفون صحيح</value>
+  </data>
+  <data name="Nav.Notifications" xml:space="preserve">
+    <value>الإشعارات</value>
+  </data>
+  <data name="Nav.Chat" xml:space="preserve">
+    <value>الدردشة مع الدعم</value>
+  </data>
+  <data name="Nav.AuditLog" xml:space="preserve">
+    <value>سجل العمليات</value>
+  </data>
+  <data name="Notification.NotFound" xml:space="preserve">
+    <value>الإشعار مش موجود</value>
+  </data>
+  <data name="Notification.Title" xml:space="preserve">
+    <value>الإشعارات</value>
+  </data>
+  <data name="Notification.Empty" xml:space="preserve">
+    <value>مفيش إشعارات لسه</value>
+  </data>
+  <data name="Notification.MarkAllRead" xml:space="preserve">
+    <value>تحديد الكل كمقروء</value>
+  </data>
+  <data name="Notification.NewOrder.Title" xml:space="preserve">
+    <value>طلب جديد وصل</value>
+  </data>
+  <data name="Notification.NewOrder.Message" xml:space="preserve">
+    <value>في طلب جديد {0}</value>
+  </data>
+  <data name="Notification.OrderStatusChanged.Title" xml:space="preserve">
+    <value>حالة طلبك اتغيرت</value>
+  </data>
+  <data name="Notification.OrderStatusChanged.Message" xml:space="preserve">
+    <value>الطلب {0} بقت حالته {1}</value>
+  </data>
+  <data name="Chat.ConversationNotFound" xml:space="preserve">
+    <value>المحادثة مش موجودة</value>
+  </data>
+  <data name="Chat.NewMessageNotificationTitle" xml:space="preserve">
+    <value>رسالة جديدة</value>
+  </data>
+  <data name="Chat.NewMessageNotificationBody" xml:space="preserve">
+    <value>{0} بعتلك رسالة جديدة</value>
+  </data>
+  <data name="Chat.Title" xml:space="preserve">
+    <value>الدردشة مع الدعم</value>
+  </data>
+  <data name="Chat.AdminTitle" xml:space="preserve">
+    <value>محادثات العملاء</value>
+  </data>
+  <data name="Chat.TypeMessage" xml:space="preserve">
+    <value>اكتب رسالتك...</value>
+  </data>
+  <data name="Chat.Send" xml:space="preserve">
+    <value>إرسال</value>
+  </data>
+  <data name="Chat.NoConversations" xml:space="preserve">
+    <value>مفيش محادثات لسه</value>
+  </data>
+  <data name="Chat.SelectConversation" xml:space="preserve">
+    <value>اختار محادثة عشان تبدأ الدردشة</value>
+  </data>
+  <data name="Chat.Empty" xml:space="preserve">
+    <value>مفيش رسايل لسه، ابعت أول رسالة</value>
+  </data>
+  <data name="AuditLog.Title" xml:space="preserve">
+    <value>سجل العمليات</value>
+  </data>
+  <data name="AuditLog.Filter.Entity" xml:space="preserve">
+    <value>الكيان</value>
+  </data>
+  <data name="AuditLog.Filter.Action" xml:space="preserve">
+    <value>العملية</value>
+  </data>
+  <data name="AuditLog.Filter.User" xml:space="preserve">
+    <value>رقم المستخدم</value>
+  </data>
+  <data name="AuditLog.Filter.From" xml:space="preserve">
+    <value>من تاريخ</value>
+  </data>
+  <data name="AuditLog.Filter.To" xml:space="preserve">
+    <value>لغاية تاريخ</value>
+  </data>
+  <data name="AuditLog.Filter.Apply" xml:space="preserve">
+    <value>تطبيق الفلتر</value>
+  </data>
+  <data name="AuditLog.Column.Timestamp" xml:space="preserve">
+    <value>الوقت</value>
+  </data>
+  <data name="AuditLog.Column.User" xml:space="preserve">
+    <value>المستخدم</value>
+  </data>
+  <data name="AuditLog.Column.Action" xml:space="preserve">
+    <value>العملية</value>
+  </data>
+  <data name="AuditLog.Column.Entity" xml:space="preserve">
+    <value>الكيان</value>
+  </data>
+  <data name="AuditLog.Column.Changes" xml:space="preserve">
+    <value>التغييرات</value>
+  </data>
+  <data name="AuditLog.Action.Create" xml:space="preserve">
+    <value>إنشاء</value>
+  </data>
+  <data name="AuditLog.Action.Update" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="AuditLog.Action.Delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="AuditLog.System" xml:space="preserve">
+    <value>النظام</value>
+  </data>
+  <data name="AuditLog.ViewChanges" xml:space="preserve">
+    <value>عرض التغييرات</value>
+  </data>
+  <data name="Notification.NewReview.Title" xml:space="preserve">
+    <value>تقييم جديد</value>
+  </data>
+  <data name="Notification.NewReview.Message" xml:space="preserve">
+    <value>في تقييم جديد على {0}</value>
+  </data>
+  <data name="Nav.Support" xml:space="preserve">
+    <value>الدعم</value>
+  </data>
+  <data name="Auth.RefreshToken.Invalid" xml:space="preserve">
+    <value>انتهت صلاحية الجلسة أو أنها غير صالحة، يرجى تسجيل الدخول مرة أخرى</value>
+  </data>
+  <data name="Auth.Logout.InvalidToken" xml:space="preserve">
+    <value>رمز الجلسة غير صالح أو تم تسجيل الخروج منه بالفعل</value>
+  </data>
+  <data name="Auth.ConfirmEmail.Invalid" xml:space="preserve">
+    <value>رابط التأكيد غير صالح أو منتهي الصلاحية</value>
+  </data>
+  <data name="Auth.ConfirmEmail.AlreadyConfirmed" xml:space="preserve">
+    <value>تم تأكيد هذا البريد الإلكتروني بالفعل</value>
+  </data>
+  <data name="Auth.ConfirmEmail.Success" xml:space="preserve">
+    <value>تم تأكيد بريدك الإلكتروني بنجاح</value>
+  </data>
+  <data name="Auth.TwoFactor.CodeSent" xml:space="preserve">
+    <value>أرسلنا لك رمز تحقق عبر البريد الإلكتروني، من فضلك أدخله بالأسفل</value>
+  </data>
+  <data name="Auth.TwoFactor.CodeLabel" xml:space="preserve">
+    <value>رمز التحقق</value>
+  </data>
+  <data name="Auth.TwoFactor.VerifyButton" xml:space="preserve">
+    <value>تحقق وسجّل الدخول</value>
+  </data>
+  <data name="Auth.TwoFactor.BackToLogin" xml:space="preserve">
+    <value>الرجوع لتسجيل الدخول</value>
+  </data>
+  <data name="Auth.ExternalLogin.NotConfigured" xml:space="preserve">
+    <value>طريقة تسجيل الدخول دي لسه مش مفعّلة، من فضلك استخدم البريد الإلكتروني وكلمة المرور</value>
+  </data>
+  <data name="Auth.ExternalLogin.ProviderError" xml:space="preserve">
+    <value>تم إلغاء تسجيل الدخول أو حدث خطأ: {0}</value>
+  </data>
+  <data name="Auth.ExternalLogin.Failed" xml:space="preserve">
+    <value>لم نتمكن من إتمام تسجيل الدخول بهذه الطريقة، برجاء المحاولة مرة أخرى</value>
+  </data>
+  <data name="Auth.ExternalLogin.NoEmail" xml:space="preserve">
+    <value>هذا الحساب ليس له بريد إلكتروني يمكننا استخدامه، برجاء تجربة طريقة تسجيل دخول أخرى</value>
+  </data>
+  <data name="Auth.ExternalLogin.OrDivider" xml:space="preserve">
+    <value>أو تابع باستخدام</value>
+  </data>
+  <data name="Auth.ExternalLogin.Google" xml:space="preserve">
+    <value>Google</value>
+  </data>
+  <data name="Auth.ExternalLogin.Facebook" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="Auth.Showcase.Title" xml:space="preserve">
+    <value>كل اللي بتحبه في مكان واحد</value>
+  </data>
+  <data name="Auth.Showcase.Subtitle" xml:space="preserve">
+    <value>سجّل الدخول عشان تتابع طلباتك، وتحفظ منتجاتك المفضلة، وتشتري بسرعة أكبر.</value>
+  </data>
+  <data name="Auth.Showcase.Point1.Title" xml:space="preserve">
+    <value>أمان بشكل افتراضي</value>
+  </data>
+  <data name="Auth.Showcase.Point1.Body" xml:space="preserve">
+    <value>بياناتك محمية بجلسات مشفّرة وخاصية تحقق بخطوتين اختيارية.</value>
+  </data>
+  <data name="Auth.Showcase.Point2.Title" xml:space="preserve">
+    <value>دفع أسرع</value>
+  </data>
+  <data name="Auth.Showcase.Point2.Body" xml:space="preserve">
+    <value>عناوينك المحفوظة وسلة التسوق الدائمة يعني نقرات أقل في كل مرة تتسوّق فيها.</value>
+  </data>
+  <data name="Auth.Showcase.Point3.Title" xml:space="preserve">
+    <value>دعم وقت ما تحتاجه</value>
+  </data>
+  <data name="Auth.Showcase.Point3.Body" xml:space="preserve">
+    <value>فريقنا جاهز لمساعدتك في الطلبات والاسترجاع وأي حاجة تانية.</value>
+  </data>
+  <data name="Auth.Footer.Rights" xml:space="preserve">
+    <value>جميع الحقوق محفوظة.</value>
+  </data>
+  <data name="Auth.ExternalLogin.Processing" xml:space="preserve">
+    <value>جاري تسجيل دخولك…</value>
+  </data>
+  <data name="Auth.TwoFactor.ChallengeNotFound" xml:space="preserve">
+    <value>طلب التحقق غير صالح أو منتهي الصلاحية، يرجى تسجيل الدخول مرة أخرى</value>
+  </data>
+  <data name="Auth.TwoFactor.InvalidCode" xml:space="preserve">
+    <value>رمز التحقق غير صحيح أو منتهي الصلاحية</value>
+  </data>
+  <data name="Auth.TwoFactor.TooManyAttempts" xml:space="preserve">
+    <value>عدد كبير جدًا من المحاولات الخاطئة، يرجى تسجيل الدخول مرة أخرى للحصول على رمز جديد</value>
+  </data>
+  <data name="Auth.TwoFactor.WrongPassword" xml:space="preserve">
+    <value>كلمة المرور الحالية غير صحيحة</value>
+  </data>
+  <data name="Auth.TwoFactor.AlreadyEnabled" xml:space="preserve">
+    <value>التحقق بخطوتين مفعّل بالفعل على هذا الحساب</value>
+  </data>
+  <data name="Auth.TwoFactor.AlreadyDisabled" xml:space="preserve">
+    <value>التحقق بخطوتين معطّل بالفعل على هذا الحساب</value>
+  </data>
+  <data name="Email.Confirmation.Subject" xml:space="preserve">
+    <value>تأكيد بريدك الإلكتروني</value>
+  </data>
+  <data name="Email.Confirmation.Body" xml:space="preserve">
+    <value>مرحبًا {0}، يرجى تأكيد بريدك الإلكتروني عبر فتح هذا الرابط: {1}</value>
+  </data>
+  <data name="Email.TwoFactor.Subject" xml:space="preserve">
+    <value>رمز التحقق الخاص بك</value>
+  </data>
+  <data name="Order.ShippingFree" xml:space="preserve">
+    <value>مجاني</value>
+  </data>
+  <data name="Product.AllCategories" xml:space="preserve">
+    <value>جميع الفئات</value>
+  </data>
+  <data name="Product.AllBrands" xml:space="preserve">
+    <value>جميع العلامات التجارية</value>
+  </data>
+  <data name="Product.Singular" xml:space="preserve">
+    <value>منتج</value>
+  </data>
+  <data name="Product.Plural" xml:space="preserve">
+    <value>منتجات</value>
+  </data>
+  <data name="Product.SelectCategory" xml:space="preserve">
+    <value>اختر فئة</value>
+  </data>
+  <data name="Product.SelectBrand" xml:space="preserve">
+    <value>اختر علامة تجارية</value>
+  </data>
+  <data name="Language.Title" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="Theme.Title" xml:space="preserve">
+    <value>المظهر</value>
+  </data>
+  <data name="Order.WhatsAppContactLabel" xml:space="preserve">
+    <value>للدفع أو الاستفسار (InstaPay / فودافون كاش)</value>
+  </data>
+  <data name="The field {0} is required." xml:space="preserve">
+    <value>الحقل {0} مطلوب</value>
+  </data>
+  <data name="{0} is required" xml:space="preserve">
+    <value>{0} مطلوب</value>
+  </data>
+  <data name="The field {0} must be a number." xml:space="preserve">
+    <value>الحقل {0} لازم يكون رقم</value>
+  </data>
+  <data name="The {0} field must be a number." xml:space="preserve">
+    <value>الحقل {0} لازم يكون رقم</value>
+  </data>
+  <data name="The {0} field must be a string with a minimum length of {2} and a maximum length of {1}." xml:space="preserve">
+    <value>الحقل {0} لازم يكون من {2} لـ {1} حرف</value>
+  </data>
+  <data name="The {0} field must be a string with a maximum length of {1}." xml:space="preserve">
+    <value>الحقل {0} أقصى طول ليه {1} حرف</value>
+  </data>
+  <data name="The field {0} must be a string with a minimum length of {1}." xml:space="preserve">
+    <value>الحقل {0} لازم يكون على الأقل {1} حرف</value>
+  </data>
+  <data name="The {0} field must be a string with a minimum length of {1}." xml:space="preserve">
+    <value>الحقل {0} لازم يكون على الأقل {1} حرف</value>
+  </data>
+  <data name="The {0} field must be between {1} and {2}." xml:space="preserve">
+    <value>الحقل {0} لازم يكون بين {1} و {2}</value>
+  </data>
+  <data name="The field {0} must be a valid email address." xml:space="preserve">
+    <value>الحقل {0} لازم يكون بريد إلكتروني صحيح</value>
+  </data>
+  <data name="The field {0} must be a valid phone number." xml:space="preserve">
+    <value>الحقل {0} لازم يكون رقم تليفون صحيح</value>
+  </data>
+  <data name="&quot;{0}&quot; and &quot;{1}&quot; do not match." xml:space="preserve">
+    <value>الحقلين '{0}' و '{1}' مش متطابقين</value>
+  </data>
+  <data name="The {0} field must match the regular expression '{1}'." xml:space="preserve">
+    <value>الحقل {0} مش بالصيغة الصحيحة</value>
+  </data>
+  <data name="Validation.ModelBinding.AttemptedValueIsInvalid" xml:space="preserve">
+    <value>القيمة '{0}' غير صالحة للحقل {1}.</value>
+  </data>
+  <data name="Validation.ModelBinding.MissingBindRequiredValue" xml:space="preserve">
+    <value>لم يتم إدخال قيمة للحقل '{0}'.</value>
+  </data>
+  <data name="Validation.ModelBinding.MissingKeyOrValue" xml:space="preserve">
+    <value>القيمة مطلوبة.</value>
+  </data>
+  <data name="Validation.ModelBinding.MissingRequestBodyRequiredValue" xml:space="preserve">
+    <value>مطلوب إرسال بيانات الطلب.</value>
+  </data>
+  <data name="Validation.ModelBinding.NonPropertyAttemptedValueIsInvalid" xml:space="preserve">
+    <value>القيمة '{0}' غير صالحة.</value>
+  </data>
+  <data name="Validation.ModelBinding.NonPropertyUnknownValueIsInvalid" xml:space="preserve">
+    <value>القيمة المدخلة غير صالحة.</value>
+  </data>
+  <data name="Validation.ModelBinding.NonPropertyValueMustBeANumber" xml:space="preserve">
+    <value>الحقل يجب أن يكون رقمًا.</value>
+  </data>
+  <data name="Validation.ModelBinding.UnknownValueIsInvalid" xml:space="preserve">
+    <value>القيمة المدخلة غير صالحة للحقل {0}.</value>
+  </data>
+  <data name="Validation.ModelBinding.ValueIsInvalid" xml:space="preserve">
+    <value>القيمة '{0}' غير صالحة.</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>الاسم</value>
+  </data>
+  <data name="SKU" xml:space="preserve">
+    <value>رمز المنتج (SKU)</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>السعر</value>
+  </data>
+  <data name="CompareAtPrice" xml:space="preserve">
+    <value>السعر قبل الخصم</value>
+  </data>
+  <data name="StockQuantity" xml:space="preserve">
+    <value>الكمية بالمخزون</value>
+  </data>
+  <data name="CategoryId" xml:space="preserve">
+    <value>القسم</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>القسم</value>
+  </data>
+  <data name="BrandId" xml:space="preserve">
+    <value>البراند</value>
+  </data>
+  <data name="Brand" xml:space="preserve">
+    <value>البراند</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>كلمة المرور الحالية</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>كلمة المرور الجديدة</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>كود الخصم</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>القيمة</value>
+  </data>
+  <data name="DiscountType" xml:space="preserve">
+    <value>نوع الخصم</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>تاريخ البدء</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>تاريخ الانتهاء</value>
+  </data>
+  <data name="MinimumOrderAmount" xml:space="preserve">
+    <value>الحد الأدنى للطلب</value>
+  </data>
+  <data name="UsageLimit" xml:space="preserve">
+    <value>حد الاستخدام</value>
+  </data>
+  <data name="Slug" xml:space="preserve">
+    <value>الرابط المختصر (Slug)</value>
+  </data>
+  <data name="ParentCategoryId" xml:space="preserve">
+    <value>القسم الرئيسي</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>التقييم</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>التعليق</value>
+  </data>
+  <data name="ReviewText" xml:space="preserve">
+    <value>نص التقييم</value>
+  </data>
+  <data name="AddressLine1" xml:space="preserve">
+    <value>العنوان (السطر الأول)</value>
+  </data>
+  <data name="AddressLine2" xml:space="preserve">
+    <value>العنوان (السطر الثاني)</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>المدينة</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>المحافظة / المنطقة</value>
+  </data>
+  <data name="PostalCode" xml:space="preserve">
+    <value>الرمز البريدي</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>الدولة</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>رقم الهاتف</value>
+  </data>
+  <data name="RecipientName" xml:space="preserve">
+    <value>اسم المستلم</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>نشط</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>تذكرني</value>
+  </data>
+</root>

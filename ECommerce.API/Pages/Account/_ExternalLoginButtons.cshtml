@@ -1,0 +1,34 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    bool HasValue(string key) => !string.IsNullOrWhiteSpace(Configuration[key]);
+    var googleEnabled = HasValue("Authentication:Google:ClientId") && HasValue("Authentication:Google:ClientSecret");
+    var facebookEnabled = HasValue("Authentication:Facebook:AppId") && HasValue("Authentication:Facebook:AppSecret");
+}
+
+@if (googleEnabled || facebookEnabled)
+{
+    <div class="auth-divider">@Localizer["Auth.ExternalLogin.OrDivider"]</div>
+
+    <div class="d-flex flex-column gap-3">
+        @if (googleEnabled)
+        {
+            <form method="post" asp-page="/Account/Login" asp-page-handler="Google">
+                <input type="hidden" name="returnUrl" value="@(ViewData["ReturnUrl"] as string)" />
+                <button type="submit" class="btn-social btn-social--google">
+                    <i class="bi bi-google"></i>
+                    @Localizer["Auth.ExternalLogin.Google"]
+                </button>
+            </form>
+        }
+        @if (facebookEnabled)
+        {
+            <form method="post" asp-page="/Account/Login" asp-page-handler="Facebook">
+                <input type="hidden" name="returnUrl" value="@(ViewData["ReturnUrl"] as string)" />
+                <button type="submit" class="btn-social btn-social--facebook">
+                    <i class="bi bi-facebook"></i>
+                    @Localizer["Auth.ExternalLogin.Facebook"]
+                </button>
+            </form>
+        }
+    </div>
+}

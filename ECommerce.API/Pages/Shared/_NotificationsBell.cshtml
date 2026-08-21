@@ -1,0 +1,16 @@
+<div class="d-flex align-items-center ms-1 ms-lg-3">
+    <div class="btn btn-icon btn-active-light-primary position-relative" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" id="notificationsBellTrigger">
+        <i class="bi bi-bell fs-3"></i>
+        <span id="notificationsUnreadBadge" class="badge badge-circle badge-danger position-absolute top-0 start-100 translate-middle d-none" style="font-size: 0.65rem;">0</span>
+    </div>
+    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg fw-semibold py-4 fs-6 w-300px" data-kt-menu="true">
+        <div class="menu-item px-3 d-flex justify-content-between align-items-center">
+            <h6 class="menu-title px-3 mb-0">@Localizer["Notification.Title"]</h6>
+            <a asp-page="/Notifications/Index" class="fs-8 px-3">@Localizer["Common.ViewDetails"]</a>
+        </div>
+        <div class="separator my-2"></div>
+        <div id="notificationsDropdownList" style="max-height: 320px; overflow-y: auto;">
+            <div class="menu-item px-3 text-muted text-center py-3">@Localizer["Notification.Empty"]</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+@page
+@model ECommerce.API.Pages.Orders.IndexModel
+@{
+    ViewData["Title"] = Localizer["Order.MyOrders"].Value;
+}
+
+<div class="page-header">
+    <h1>@Localizer["Order.MyOrders"]</h1>
+</div>
+
+@if (Model.Result.Items.Count == 0)
+{
+    <div class="card">
+        <div class="card-body text-center py-5 text-muted">@Localizer["Order.EmptyList"]</div>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>@Localizer["Order.OrderNumber"]</th>
+                        <th>@Localizer["Common.Date"]</th>
+                        <th>@Localizer["Order.Status"]</th>
+                        <th>@Localizer["Order.TotalAmount"]</th>
+                        <th class="text-end">@Localizer["Common.Actions"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Result.Items)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@order.OrderNumber</td>
+                            <td>@order.CreatedAt.ToString("yyyy-MM-dd")</td>
+                            <td><partial name="_OrderStatusBadge" model="order.Status" /></td>
+                            <td>@order.TotalAmount.ToString("0.00")</td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-secondary" asp-page="/Orders/Details" asp-route-id="@order.Id">
+                                    @Localizer["Common.ViewDetails"]
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<partial name="_Pagination" model="@(new ECommerce.API.Pages.Shared.PaginationViewModel
+{
+    CurrentPage = Model.Result.Page,
+    TotalPages = Model.Result.TotalPages,
+    PageName = "/Orders/Index"
+})" />

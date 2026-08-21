@@ -1,0 +1,65 @@
+@page
+@model ECommerce.API.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = Localizer["Auth.Login.Title"].Value;
+    ViewData["ReturnUrl"] = Model.ReturnUrl;
+    Layout = "_AuthLayout";
+}
+
+<h2 class="fw-bold mb-1">@Localizer["Auth.Login.Title"]</h2>
+<p class="text-muted mb-4">@Localizer["Auth.Login.Subtitle"]</p>
+
+@if (Model.AwaitingTwoFactorCode)
+{
+    <form method="post" novalidate>
+        <input type="hidden" asp-for="ReturnUrl" />
+        <input type="hidden" asp-for="Input.TwoFactorChallengeId" />
+
+        <div class="mb-3">
+            <label asp-for="Input.Code" class="form-label">@Localizer["Auth.TwoFactor.CodeLabel"]</label>
+            <input asp-for="Input.Code" class="form-control form-control-lg form-control-solid" autocomplete="one-time-code" maxlength="6" />
+            <span asp-validation-for="Input.Code" class="text-danger small"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">@Localizer["Auth.TwoFactor.VerifyButton"]</button>
+
+        <p class="text-center text-muted mt-4 mb-0">
+            <a asp-page="/Account/Login">@Localizer["Auth.TwoFactor.BackToLogin"]</a>
+        </p>
+    </form>
+}
+else
+{
+    <form method="post" novalidate>
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Email" class="form-label">@Localizer["Auth.Login.Email"]</label>
+            <input asp-for="Input.Email" class="form-control form-control-lg form-control-solid" autocomplete="email" />
+            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <div class="d-flex justify-content-between">
+                <label asp-for="Input.Password" class="form-label">@Localizer["Auth.Login.Password"]</label>
+                <a asp-page="/Account/ForgotPassword" class="small">@Localizer["Auth.Login.ForgotPasswordLink"]</a>
+            </div>
+            <input asp-for="Input.Password" class="form-control form-control-lg form-control-solid" autocomplete="current-password" />
+            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">@Localizer["Auth.Login.SubmitButton"]</button>
+
+        <p class="text-center text-muted mt-4 mb-0">
+            @Localizer["Auth.Login.NoAccount"]
+            <a asp-page="/Account/Register">@Localizer["Nav.Register"]</a>
+        </p>
+    </form>
+
+    <partial name="_ExternalLoginButtons" />
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,379 @@
+@using System.Globalization
+@using ECommerce.Shared.Constants
+@{
+    var currentCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    var isRtl = currentCulture == "ar";
+    var dir = isRtl ? "rtl" : "ltr";
+    var cssHref = isRtl ? "~/assets/css/style.bundle.rtl.css" : "~/assets/css/style.bundle.css";
+}
+<!DOCTYPE html>
+<html lang="@currentCulture" dir="@dir">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Lumaire</title>
+    <link rel="icon" type="image/png" href="~/assets/media/logos/lumaire-logo.png" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" />
+    <link id="ktThemeStylesheet" rel="stylesheet" type="text/css" href="@cssHref" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script>
+            (function() {
+                var saved = localStorage.getItem('ecommerce-theme');
+                if (saved === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+            })();
+    </script>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed">
+    <div class="d-flex flex-column flex-root">
+        <div class="page d-flex flex-row flex-column-fluid">
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <div id="kt_header" class="header">
+                    <div class="container-fluid px-3 px-md-4 px-xxl-6 d-flex flex-grow-1 flex-stack">
+                        <div class="d-flex align-items-center me-2 me-lg-3 me-xxl-5">
+                            <button class="d-lg-none btn btn-icon btn-active-color-primary w-40px h-40px ms-n2 me-2" id="sidebarToggle" type="button" aria-label="Toggle navigation">
+                                <i class="bi bi-list fs-1"></i>
+                            </button>
+                            <a asp-page="/Index" class="d-flex align-items-center gap-2 text-decoration-none">
+                                <img alt="Lumaire" src="~/assets/media/logos/lumaire-logo.png" class="navbar-brand-logo h-35px h-lg-40px" height="40" width="40" />
+                                <span class="fs-4 fs-lg-4 fs-xxl-3 fw-bold text-gray-800">Lumaire</span>
+                            </a>
+                        </div>
+
+                        <!-- Desktop Top Navigation Menu -->
+                        <div class="d-none d-lg-flex align-items-center justify-content-between flex-lg-grow-1" id="kt_header_nav">
+                            <div class="header-menu align-items-center" id="kt_header_menu">
+                                <div class="menu menu-lg-rounded menu-lg-row menu-active-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400" id="kt_header_menu_items" data-kt-menu="true">
+                                    <div class="menu-item">
+                                        <a class="menu-link" asp-page="/Index">
+                                            <span class="menu-title">@Localizer["Nav.Dashboard"]</span>
+                                        </a>
+                                    </div>
+                                    <div class="menu-item">
+                                        <a class="menu-link" asp-page="/Products/Index">
+                                            <span class="menu-title">@Localizer["Nav.Products"]</span>
+                                        </a>
+                                    </div>
+                                    @if (User.IsInRole(AppConstants.Roles.Admin))
+                                    {
+                                        <div class="menu-item menu-lg-down-accordion" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
+                                            <span class="menu-link">
+                                                <span class="menu-title">@Localizer["Nav.Catalog"]</span>
+                                                <span class="menu-arrow"></span>
+                                            </span>
+                                            <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded menu-gray-800 menu-state-bg fw-semibold py-3 fs-6 w-lg-225px">
+                                                <div class="menu-item">
+                                                    <a class="menu-link" asp-page="/Categories/Index">
+                                                        <span class="menu-title">@Localizer["Nav.Categories"]</span>
+                                                    </a>
+                                                </div>
+                                                <div class="menu-item">
+                                                    <a class="menu-link" asp-page="/Brands/Index">
+                                                        <span class="menu-title">@Localizer["Nav.Brands"]</span>
+                                                    </a>
+                                                </div>
+                                                <div class="menu-item">
+                                                    <a class="menu-link" asp-page="/Discounts/Index">
+                                                        <span class="menu-title">@Localizer["Nav.Discounts"]</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="menu-item menu-lg-down-accordion" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
+                                            <span class="menu-link">
+                                                <span class="menu-title">@Localizer["Nav.Orders"]</span>
+                                                <span class="menu-arrow"></span>
+                                            </span>
+                                            <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded menu-gray-800 menu-state-bg fw-semibold py-3 fs-6 w-lg-200px">
+                                                <div class="menu-item">
+                                                    <a class="menu-link" asp-page="/Orders/Admin/AllOrders">
+                                                        <span class="menu-title">@Localizer["Nav.AllOrders"]</span>
+                                                    </a>
+                                                </div>
+                                                <div class="menu-item">
+                                                    <a class="menu-link" asp-page="/Orders/Index">
+                                                        <span class="menu-title">@Localizer["Nav.MyOrders"]</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="menu-item menu-lg-down-accordion" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
+                                            <span class="menu-link">
+                                                <span class="menu-title">@Localizer["Nav.Administration"]</span>
+                                                <span class="menu-arrow"></span>
+                                            </span>
+                                            <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded menu-gray-800 menu-state-bg fw-semibold py-3 fs-6 w-lg-200px">
+                                                <div class="menu-item">
+                                                    <a class="menu-link" asp-page="/Reviews/Moderation">
+                                                        <span class="menu-title">@Localizer["Review.ModerationTitle"]</span>
+                                                    </a>
+                                                </div>
+                                                <div class="menu-item">
+                                                    <a class="menu-link" asp-page="/AuditLogs/Admin/Index">
+                                                        <span class="menu-title">@Localizer["Nav.AuditLog"]</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="menu-item">
+                                            <a class="menu-link" asp-page="/Chat/Admin/Index">
+                                                <span class="menu-title"><i class="bi bi-headset me-1 text-primary"></i>@Localizer["Nav.Support"]</span>
+                                            </a>
+                                        </div>
+                                    }
+                                    @if (User.Identity is { IsAuthenticated: true } && !User.IsInRole(AppConstants.Roles.Admin))
+                                    {
+                                        <div class="menu-item">
+                                            <a class="menu-link" asp-page="/Orders/Index">
+                                                <span class="menu-title">@Localizer["Nav.MyOrders"]</span>
+                                            </a>
+                                        </div>
+                                        <div class="menu-item">
+                                            <a class="menu-link" asp-page="/Chat/Index">
+                                                <span class="menu-title"><i class="bi bi-headset me-1 text-primary"></i>@Localizer["Nav.Support"]</span>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Right Toolbar Cluster -->
+                        <div class="d-flex align-items-center flex-shrink-0 header-toolbar-cluster">
+                            <div class="d-none d-sm-flex align-items-center">
+                                <div class="btn btn-icon btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                                    <i class="bi bi-translate fs-3"></i>
+                                </div>
+                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg fw-semibold py-4 fs-6 w-200px" data-kt-menu="true">
+                                    <div class="menu-item px-3">
+                                        <a href="#" class="menu-link px-3 @(currentCulture == "en" ? "active" : "")" data-set-culture="en">@Localizer["Language.English"]</a>
+                                    </div>
+                                    <div class="menu-item px-3">
+                                        <a href="#" class="menu-link px-3 @(currentCulture == "ar" ? "active" : "")" data-set-culture="ar">@Localizer["Language.Arabic"]</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-none d-sm-flex align-items-center">
+                                <button class="btn btn-icon btn-active-light-primary" id="themeToggle" type="button" aria-label="Toggle theme">
+                                    <i class="bi bi-moon-stars fs-3 theme-icon-dark"></i>
+                                    <i class="bi bi-sun fs-3 theme-icon-light"></i>
+                                </button>
+                            </div>
+
+                            @if (User.Identity is { IsAuthenticated: true })
+                            {
+                                <partial name="_NotificationsBell" />
+                                <div class="d-flex align-items-center">
+                                    <a asp-page="/Cart/Index" class="btn btn-icon btn-active-light-primary position-relative" aria-label="Cart">
+                                        <i class="bi bi-cart3 fs-3"></i>
+                                    </a>
+                                </div>
+                                <div class="d-none d-sm-flex align-items-center">
+                                    <a asp-page="/Wishlist/Index" class="btn btn-icon btn-active-light-primary" aria-label="Wishlist">
+                                        <i class="bi bi-heart fs-3"></i>
+                                    </a>
+                                </div>
+                                <div class="d-flex align-items-center ms-1">
+                                    <div class="user-menu-btn" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                                        <span class="symbol symbol-30px symbol-circle">
+                                            <span class="symbol-label bg-light-primary text-primary fw-bold">
+                                                @(User.Identity.Name is { Length: > 0 } n ? n.Substring(0, 1).ToUpper() : "U")
+                                            </span>
+                                        </span>
+                                        <span class="d-none d-xl-inline fw-semibold ms-2 header-username-label" title="@User.Identity.Name">@User.Identity.Name</span>
+                                    </div>
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg fw-semibold py-4 fs-6 w-225px w-md-250px" data-kt-menu="true">
+                                        <div class="menu-item px-3">
+                                            <h6 class="menu-title px-3 mb-0">@Localizer["Nav.MyAccount"]</h6>
+                                        </div>
+                                        <div class="separator my-2"></div>
+                                        <div class="menu-item px-3">
+                                            <a class="menu-link px-3" asp-page="/Orders/Index"><i class="bi bi-receipt me-2"></i>@Localizer["Nav.MyOrders"]</a>
+                                        </div>
+                                        <div class="menu-item px-3">
+                                            <a class="menu-link px-3" asp-page="/Addresses/Index"><i class="bi bi-geo-alt me-2"></i>@Localizer["Nav.Addresses"]</a>
+                                        </div>
+                                        <div class="separator my-2"></div>
+                                        <div class="menu-item px-3">
+                                            <form method="post" asp-page="/Account/Logout">
+                                                <button type="submit" class="menu-link px-3 btn btn-link text-start w-100 border-0"><i class="bi bi-box-arrow-right me-2"></i>@Localizer["Nav.Logout"]</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center ms-1 ms-lg-3">
+                                    <a class="btn btn-sm btn-light-primary me-2" asp-page="/Account/Login">@Localizer["Nav.Login"]</a>
+                                    <a class="btn btn-sm btn-primary d-none d-sm-inline-block" asp-page="/Account/Register">@Localizer["Nav.Register"]</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide-Out Mobile Navigation Drawer -->
+                <div id="mobileDrawerBackdrop" class="mobile-drawer-backdrop d-lg-none"></div>
+                <div id="mobileDrawer" class="mobile-drawer d-lg-none">
+                    <div class="mobile-drawer-header d-flex align-items-center justify-content-between p-4 border-bottom">
+                        <div class="d-flex align-items-center gap-2">
+                            <img alt="Lumaire" src="~/assets/media/logos/lumaire-logo.png" class="navbar-brand-logo h-35px" height="35" width="35" />
+                            <span class="fs-4 fw-bold text-gray-800">Lumaire</span>
+                        </div>
+                        <button id="mobileDrawerClose" class="btn btn-icon btn-sm btn-light" type="button" aria-label="Close menu">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <div class="mobile-drawer-body p-4 flex-grow-1 overflow-auto">
+                        <nav class="mobile-nav d-flex flex-column gap-1">
+                            <a class="mobile-nav-link" asp-page="/Index">
+                                <i class="bi bi-speedometer2 me-2 text-primary"></i>@Localizer["Nav.Dashboard"]
+                            </a>
+                            <a class="mobile-nav-link" asp-page="/Products/Index">
+                                <i class="bi bi-box-seam me-2 text-primary"></i>@Localizer["Nav.Products"]
+                            </a>
+                            @if (User.IsInRole(AppConstants.Roles.Admin))
+                            {
+                                <div class="mobile-nav-group">
+                                    <button type="button" class="mobile-nav-accordion-btn d-flex align-items-center justify-content-between w-100">
+                                        <span><i class="bi bi-collection me-2 text-primary"></i>@Localizer["Nav.Catalog"]</span>
+                                        <i class="bi bi-chevron-down accordion-arrow"></i>
+                                    </button>
+                                    <div class="mobile-nav-sub">
+                                        <a class="mobile-nav-sublink" asp-page="/Categories/Index">@Localizer["Nav.Categories"]</a>
+                                        <a class="mobile-nav-sublink" asp-page="/Brands/Index">@Localizer["Nav.Brands"]</a>
+                                        <a class="mobile-nav-sublink" asp-page="/Discounts/Index">@Localizer["Nav.Discounts"]</a>
+                                    </div>
+                                </div>
+                                <div class="mobile-nav-group">
+                                    <button type="button" class="mobile-nav-accordion-btn d-flex align-items-center justify-content-between w-100">
+                                        <span><i class="bi bi-cart-check me-2 text-primary"></i>@Localizer["Nav.Orders"]</span>
+                                        <i class="bi bi-chevron-down accordion-arrow"></i>
+                                    </button>
+                                    <div class="mobile-nav-sub">
+                                        <a class="mobile-nav-sublink" asp-page="/Orders/Admin/AllOrders">@Localizer["Nav.AllOrders"]</a>
+                                        <a class="mobile-nav-sublink" asp-page="/Orders/Index">@Localizer["Nav.MyOrders"]</a>
+                                    </div>
+                                </div>
+                                <div class="mobile-nav-group">
+                                    <button type="button" class="mobile-nav-accordion-btn d-flex align-items-center justify-content-between w-100">
+                                        <span><i class="bi bi-shield-lock me-2 text-primary"></i>@Localizer["Nav.Administration"]</span>
+                                        <i class="bi bi-chevron-down accordion-arrow"></i>
+                                    </button>
+                                    <div class="mobile-nav-sub">
+                                        <a class="mobile-nav-sublink" asp-page="/Reviews/Moderation">@Localizer["Review.ModerationTitle"]</a>
+                                        <a class="mobile-nav-sublink" asp-page="/AuditLogs/Admin/Index">@Localizer["Nav.AuditLog"]</a>
+                                    </div>
+                                </div>
+                                <a class="mobile-nav-link" asp-page="/Chat/Admin/Index">
+                                    <i class="bi bi-headset me-2 text-primary"></i>@Localizer["Nav.Support"]
+                                </a>
+                            }
+                            @if (User.Identity is { IsAuthenticated: true } && !User.IsInRole(AppConstants.Roles.Admin))
+                            {
+                                <a class="mobile-nav-link" asp-page="/Orders/Index">
+                                    <i class="bi bi-receipt me-2 text-primary"></i>@Localizer["Nav.MyOrders"]
+                                </a>
+                                <a class="mobile-nav-link" asp-page="/Chat/Index">
+                                    <i class="bi bi-headset me-2 text-primary"></i>@Localizer["Nav.Support"]
+                                </a>
+                            }
+                            @if (User.Identity is { IsAuthenticated: true })
+                            {
+                                <a class="mobile-nav-link" asp-page="/Addresses/Index">
+                                    <i class="bi bi-geo-alt me-2 text-primary"></i>@Localizer["Nav.Addresses"]
+                                </a>
+                            }
+                            <a class="mobile-nav-link" asp-page="/Wishlist/Index">
+                                <i class="bi bi-heart me-2 text-primary"></i>@Localizer["Nav.Wishlist"]
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="mobile-drawer-footer p-4 border-top d-flex flex-column gap-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-semibold text-muted small">@Localizer["Language.Title"]</span>
+                            <div class="btn-group btn-group-sm">
+                                <button type="button" class="btn @(currentCulture == "en" ? "btn-primary" : "btn-light")" data-set-culture="en">English</button>
+                                <button type="button" class="btn @(currentCulture == "ar" ? "btn-primary" : "btn-light")" data-set-culture="ar">العربية</button>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-semibold text-muted small">@Localizer["Theme.Title"]</span>
+                            <button class="btn btn-sm btn-light d-flex align-items-center gap-2" id="mobileThemeToggle" type="button">
+                                <i class="bi bi-moon-stars theme-icon-dark"></i>
+                                <i class="bi bi-sun theme-icon-light"></i>
+                                <span class="theme-label-dark">@Localizer["Theme.Dark"]</span>
+                                <span class="theme-label-light">@Localizer["Theme.Light"]</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="post d-flex flex-column-fluid" id="kt_post">
+                        <div class="container-xxl">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script>
+        // Global vendor polyfills & stubs to ensure theme scripts never throw Uncaught ReferenceErrors
+        var SmoothScroll = window.SmoothScroll = window.SmoothScroll || function(selector, options) { return { destroy: function() {}, init: function() {} }; };
+        var smoothScroll = window.smoothScroll = window.smoothScroll || window.SmoothScroll;
+        var countUp = window.countUp = window.countUp || { CountUp: function() { return { start: function() {} }; } };
+        var autosize = window.autosize = window.autosize || function() {};
+        var tns = window.tns = window.tns || function() {};
+        var noUiSlider = window.noUiSlider = window.noUiSlider || { create: function() {} };
+        var wNumb = window.wNumb = window.wNumb || function() {};
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="~/assets/js/scripts.bundle.js" asp-append-version="true"></script>
+    <script src="~/lib/signalr/signalr.min.js" asp-append-version="true" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @if (User.Identity is { IsAuthenticated: true })
+    {
+        <script src="~/js/notifications.js" asp-append-version="true" defer></script>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'success',
+                        text: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["SuccessMessage"])),
+                        confirmButtonText: '@Localizer["Common.OkGotIt"]',
+                        confirmButtonColor: '#50cd89'
+                    });
+                });
+        </script>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'error',
+                        text: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["ErrorMessage"])),
+                        confirmButtonText: '@Localizer["Common.OkGotIt"]',
+                        confirmButtonColor: '#50cd89'
+                    });
+                });
+        </script>
+    }
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

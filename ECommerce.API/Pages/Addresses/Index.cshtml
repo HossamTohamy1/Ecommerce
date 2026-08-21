@@ -1,0 +1,57 @@
+@page
+@model ECommerce.API.Pages.Addresses.IndexModel
+@{
+    ViewData["Title"] = Localizer["Address.Title"].Value;
+}
+
+<div class="page-header">
+    <h1>@Localizer["Address.Title"]</h1>
+    <a class="btn btn-primary" asp-page="/Addresses/Create"><i class="bi bi-plus-lg me-1"></i>@Localizer["Address.Create"]</a>
+</div>
+
+@if (Model.Addresses.Count == 0)
+{
+    <div class="card">
+        <div class="card-body text-center py-5 text-muted">@Localizer["Address.EmptyList"]</div>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var a in Model.Addresses)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        @if (a.IsDefault)
+                        {
+                            <span class="badge badge-light-success mb-2">@Localizer["Address.Default"]</span>
+                        }
+                        <h6 class="fw-bold">@a.FullName</h6>
+                        <p class="mb-1 text-muted">@a.Phone</p>
+                        <p class="mb-0">@a.Street, @a.City, @a.Governorate</p>
+                        @if (a.PostalCode is not null)
+                        {
+                            <p class="text-muted small">@a.PostalCode</p>
+                        }
+                    </div>
+                    <div class="card-footer d-flex justify-content-end gap-1">
+                        <a class="btn btn-sm btn-icon" asp-page="/Addresses/Edit" asp-route-id="@a.Id" title="@Localizer["Common.Edit"]">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@a.Id" class="d-inline"
+                              data-confirm-delete
+                              data-confirm-title="@Localizer["Common.AreYouSure"]"
+                              data-confirm-text="@Localizer["Common.ThisActionCannotBeUndone"]"
+                              data-confirm-button="@Localizer["Common.Delete"]"
+                              data-cancel-button="@Localizer["Common.Cancel"]">
+                            <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

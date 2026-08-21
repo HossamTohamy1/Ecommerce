@@ -1,0 +1,162 @@
+@page "{id:guid}"
+@model ECommerce.API.Pages.Products.DetailsModel
+@{
+    ViewData["Title"] = Model.Product?.Name ?? Localizer["Product.Title"].Value;
+    var mainImage = Model.Product?.Images.FirstOrDefault(i => i.IsMain) ?? Model.Product?.Images.FirstOrDefault();
+}
+
+<div class="page-header">
+    <h1>@Model.Product?.Name</h1>
+    <a class="btn btn-outline-secondary" asp-page="/Products/Index"><i class="bi bi-arrow-left me-1"></i>@Localizer["Common.Back"]</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-5">
+        <div class="card">
+            @if (mainImage is not null)
+            {
+                <img src="@mainImage.ImageUrl" class="product-card-img" style="border-radius:0.85rem" alt="@Model.Product!.Name" />
+            }
+            else
+            {
+                <div class="product-card-img d-flex align-items-center justify-content-center" style="border-radius:0.85rem">
+                    <i class="bi bi-image fs-1 text-muted"></i>
+                </div>
+            }
+            @if (Model.Product?.Images.Count > 1)
+            {
+                <div class="d-flex gap-2 p-3 flex-wrap">
+                    @foreach (var img in Model.Product.Images)
+                    {
+                        <img src="@img.ImageUrl" class="product-thumb" alt="" />
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <p class="text-muted mb-2">@Model.Product?.CategoryName @(Model.Product?.BrandName is not null ? "· " + Model.Product.BrandName : "")</p>
+                <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+                    @if (Model.Product?.HasActiveDiscount == true)
+                    {
+                        <span class="fs-3 fw-bold text-danger">@Model.Product.DiscountedPrice!.Value.ToString("0.00")</span>
+                        <span class="fs-5 text-muted text-decoration-line-through">@Model.Product.Price.ToString("0.00")</span>
+                        <span class="badge bg-danger fs-6 py-1 px-2">
+                            @(Model.Product.DiscountType == ECommerce.Domain.Entities.DiscountType.Percentage ? $"{Model.Product.DiscountValue:0}% OFF" : $"-{Model.Product.DiscountValue:0.00}")
+                        </span>
+                        @if (!string.IsNullOrEmpty(Model.Product.DiscountName))
+                        {
+                            <span class="badge bg-danger-subtle text-danger fs-7 py-1 px-2">@Model.Product.DiscountName</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="fs-3 fw-bold text-brand">@Model.Product?.Price.ToString("0.00")</span>
+                        @if (Model.Product?.CompareAtPrice is not null)
+                        {
+                            <span class="text-muted text-decoration-line-through">@Model.Product.CompareAtPrice.Value.ToString("0.00")</span>
+                        }
+                    }
+                </div>
+
+                @if (Model.Product?.StockQuantity <= 0)
+                {
+                    <span class="badge badge-light-danger mb-3">@Localizer["Product.OutOfStock"]</span>
+                }
+                else
+                {
+                    <span class="badge badge-light-success mb-3">@Localizer["Product.InStock"] (@Model.Product?.StockQuantity)</span>
+                }
+
+                <p>@Model.Product?.Description</p>
+
+                <form method="post" asp-page-handler="AddToCart" class="d-flex gap-2 align-items-end mb-2">
+                    @if (Model.Product?.Variants.Count > 0)
+                    {
+                        <div>
+                            <label class="form-label small">@Localizer["Product.Variants"]</label>
+                            <select name="variantId" class="form-select">
+                                @foreach (var v in Model.Product.Variants)
+                                {
+                                    <option value="@v.Id">@v.Size @v.Color (@(v.Price?.ToString("0.00") ?? Model.Product.Price.ToString("0.00")))</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                    <div style="width:100px">
+                        <label class="form-label small">@Localizer["Common.Quantity"]</label>
+                        <input type="number" name="quantity" value="1" min="1" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i>@Localizer["Product.AddToCart"]</button>
+                </form>
+
+                <form method="post" asp-page-handler="AddToWishlist">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="bi bi-heart me-1"></i>@Localizer["Product.AddToWishlist"]</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">@Localizer["Review.Title"]</div>
+    <div class="card-body">
+        @if (User.Identity is { IsAuthenticated: true })
+        {
+            <form method="post" asp-page-handler="SubmitReview" class="mb-4 border-bottom pb-4">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">@Localizer["Review.Rating"]</label>
+                        <select asp-for="ReviewInput.Rating" class="form-select">
+                            <option value="5">5 ★</option>
+                            <option value="4">4 ★</option>
+                            <option value="3">3 ★</option>
+                            <option value="2">2 ★</option>
+                            <option value="1">1 ★</option>
+                        </select>
+                    </div>
+                    <div class="col-md-7">
+                        <label class="form-label">@Localizer["Review.Comment"]</label>
+                        <input asp-for="ReviewInput.Comment" class="form-control" placeholder="@Localizer["Review.WriteReview"]..." />
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">@Localizer["Review.WriteReview"]</button>
+                    </div>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-light-primary d-flex align-items-center justify-content-between p-4 mb-4 border border-primary border-dashed rounded">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="bi bi-chat-heart fs-2 text-primary"></i>
+                    <div>
+                        <div class="fw-bold text-gray-800">@Localizer["Review.SignInToReview"]</div>
+                        <div class="text-muted small">@Localizer["Review.SignInPromptSubtitle"]</div>
+                    </div>
+                </div>
+                <a asp-page="/Account/Login" asp-route-returnUrl="/Products/Details/@Model.Id" class="btn btn-sm btn-primary text-nowrap">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>@Localizer["Nav.Login"]
+                </a>
+            </div>
+        }
+
+        @if (Model.Reviews.Count == 0)
+        {
+            <p class="text-muted mb-0">@Localizer["Review.EmptyList"]</p>
+        }
+        @foreach (var review in Model.Reviews)
+        {
+            <div class="mb-3 pb-3 border-bottom">
+                <div class="d-flex justify-content-between">
+                    <strong>@review.UserFullName</strong>
+                    <span class="text-warning">@string.Concat(Enumerable.Repeat("★", review.Rating))</span>
+                </div>
+                <p class="mb-0 text-muted">@review.Comment</p>
+            </div>
+        }
+    </div>
+</div>

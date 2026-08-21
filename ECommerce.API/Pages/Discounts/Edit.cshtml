@@ -1,0 +1,166 @@
+@page "{id:guid}"
+@model ECommerce.API.Pages.Discounts.EditModel
+@using ECommerce.Domain.Entities
+@{
+    ViewData["Title"] = Localizer["Discount.Edit"].Value;
+}
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+<div class="page-header mb-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <h1>@Localizer["Discount.Edit"]</h1>
+    <a class="btn btn-outline-secondary" asp-page="/Discounts/Index">
+        <i class="bi bi-arrow-left me-1"></i>@Localizer["Common.Back"]
+    </a>
+</div>
+
+<!-- Section 1: Discount Information -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-header fs-5 fw-bold d-flex align-items-center">
+        <i class="bi bi-tag me-2 text-primary"></i>@Localizer["Discount.BasicInformation"]
+    </div>
+    <div class="card-body p-4">
+        <form method="post" asp-page-handler="Update" novalidate>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Input.Name" class="form-label">@Localizer["Common.Name"] <span class="text-danger">*</span></label>
+                    <input asp-for="Input.Name" class="form-control" />
+                    <span asp-validation-for="Input.Name" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.Code" class="form-label">@Localizer["Discount.Code"] (@Localizer["Common.Optional"])</label>
+                    <input asp-for="Input.Code" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.DiscountType" class="form-label">@Localizer["Discount.Type"] <span class="text-danger">*</span></label>
+                    <select asp-for="Input.DiscountType" class="form-select">
+                        <option value="@DiscountType.Percentage">@Localizer["Discount.TypePercentage"]</option>
+                        <option value="@DiscountType.FixedAmount">@Localizer["Discount.TypeFixed"]</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.Value" class="form-label">@Localizer["Discount.Value"] <span class="text-danger">*</span></label>
+                    <input asp-for="Input.Value" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Input.Value" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.MinimumOrderAmount" class="form-label">@Localizer["Discount.MinimumOrderAmount"] (@Localizer["Common.Optional"])</label>
+                    <input asp-for="Input.MinimumOrderAmount" class="form-control" type="number" step="0.01" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.StartDate" class="form-label">@Localizer["Discount.StartDate"] <span class="text-danger">*</span></label>
+                    <input asp-for="Input.StartDate" class="form-control" type="date" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.EndDate" class="form-label">@Localizer["Discount.EndDate"] <span class="text-danger">*</span></label>
+                    <input asp-for="Input.EndDate" class="form-control" type="date" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.UsageLimit" class="form-label">@Localizer["Discount.UsageLimit"] (@Localizer["Common.Optional"])</label>
+                    <input asp-for="Input.UsageLimit" class="form-control" type="number" />
+                </div>
+                <div class="col-12">
+                    <div class="form-check form-switch py-2">
+                        <input asp-for="Input.IsActive" class="form-check-input" role="switch" />
+                        <label asp-for="Input.IsActive" class="form-check-label ms-2">@Localizer["Common.Active"]</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="bi bi-check2 me-1"></i>@Localizer["Common.Save"]
+                </button>
+                <a asp-page="/Discounts/Index" class="btn btn-outline-secondary px-4">@Localizer["Common.Cancel"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Section 2: Assigned Products (Searchable Dropdown Component) -->
+<div class="card shadow-sm">
+    <div class="card-header fs-5 fw-bold d-flex align-items-center">
+        <i class="bi bi-box-seam me-2 text-primary"></i>@Localizer["Discount.AssignedProducts"]
+    </div>
+    <div class="card-body p-4">
+        @if (Model.AssignedProducts.Count == 0)
+        {
+            <div class="empty-state-box mb-3">
+                <i class="bi bi-info-circle"></i>
+                <span>@Localizer["Common.NoDataFound"]</span>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive mb-3">
+                <table class="table align-middle table-row-dashed fs-6 gy-3 mb-0">
+                    <thead>
+                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                            <th>@Localizer["Common.Name"]</th>
+                            <th>@Localizer["Product.Category"]</th>
+                            <th>@Localizer["Common.Price"]</th>
+                            <th class="text-end">@Localizer["Common.Actions"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.AssignedProducts)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@p.Name</td>
+                                <td>@(string.IsNullOrEmpty(p.CategoryName) ? "—" : p.CategoryName)</td>
+                                <td>@p.Price.ToString("0.00")</td>
+                                <td class="text-end">
+                                    <form method="post" asp-page-handler="RemoveProduct" asp-route-productId="@p.Id" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-icon btn-light text-danger" title="@Localizer["Common.Delete"]">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        <div class="p-3 bg-light-subtle rounded border">
+            <label class="form-label fw-bold mb-2">@Localizer["Discount.AssignProduct"]</label>
+            <form method="post" asp-page-handler="AssignProduct" id="assignProductForm">
+                <div class="row g-2 align-items-center">
+                    <div class="col-12 col-md-9">
+                        <select asp-for="AssignProductId" id="productSelect" class="form-select" data-placeholder="@Localizer["Product.SelectProduct"]" required>
+                            <option value=""></option>
+                            @foreach (var p in Model.AvailableProducts)
+                            {
+                                <option value="@p.Id" data-name="@p.Name">
+                                    @p.Name (@p.CategoryName - @p.Price.ToString("0.00"))
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-plus-lg me-1"></i>@Localizer["Discount.AssignProduct"]
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#productSelect').select2({
+                placeholder: '@Localizer["Product.SelectProduct"]',
+                allowClear: true,
+                width: '100%',
+                dir: $('html').attr('dir') === 'rtl' ? 'rtl' : 'ltr'
+            });
+        });
+    </script>
+}

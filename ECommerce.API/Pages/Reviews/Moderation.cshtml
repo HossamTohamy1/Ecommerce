@@ -1,0 +1,71 @@
+@page
+@model ECommerce.API.Pages.Reviews.ModerationModel
+@{
+    ViewData["Title"] = Localizer["Review.ModerationTitle"].Value;
+}
+
+<div class="page-header">
+    <h1>@Localizer["Review.ModerationTitle"]</h1>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>@Localizer["Common.Name"]</th>
+                    <th>@Localizer["Review.Rating"]</th>
+                    <th>@Localizer["Review.Comment"]</th>
+                    <th>@Localizer["Common.Status"]</th>
+                    <th class="text-end">@Localizer["Common.Actions"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Result.Items.Count == 0)
+                {
+                    <tr><td colspan="5" class="text-center text-muted py-4">@Localizer["Review.EmptyList"]</td></tr>
+                }
+                @foreach (var review in Model.Result.Items)
+                {
+                    <tr>
+                        <td>@review.UserFullName</td>
+                        <td class="text-warning">@string.Concat(Enumerable.Repeat("★", review.Rating))</td>
+                        <td>@review.Comment</td>
+                        <td>
+                            @if (review.IsApproved)
+                            {
+                                <span class="badge badge-light-success">@Localizer["Review.Approved"]</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-light-warning">@Localizer["Review.PendingApproval"]</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            @if (!review.IsApproved)
+                            {
+                                <form method="post" asp-page-handler="Approve" asp-route-id="@review.Id" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-icon text-success"><i class="bi bi-check-lg"></i></button>
+                                </form>
+                            }
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@review.Id" class="d-inline"
+                                  data-confirm-delete
+                                  data-confirm-title="@Localizer["Common.AreYouSure"]"
+                                  data-confirm-button="@Localizer["Common.Delete"]"
+                                  data-cancel-button="@Localizer["Common.Cancel"]">
+                                <button type="submit" class="btn btn-sm btn-icon text-danger"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_Pagination" model="@(new ECommerce.API.Pages.Shared.PaginationViewModel
+{
+    CurrentPage = Model.Result.Page,
+    TotalPages = Model.Result.TotalPages,
+    PageName = "/Reviews/Moderation"
+})" />

@@ -1,0 +1,124 @@
+@page "{id:guid?}"
+@model ECommerce.API.Pages.Orders.DetailsModel
+@using ECommerce.Shared.Constants
+@using ECommerce.Domain.Entities
+@{
+    ViewData["Title"] = Model.Order?.OrderNumber ?? Localizer["Order.Title"].Value;
+}
+
+@if (Model.Order is null)
+{
+    <div class="alert alert-danger d-flex align-items-center mb-4">
+        <i class="bi bi-exclamation-triangle-fill fs-2 me-3 text-danger"></i>
+        <div>@Localizer["Order.NotFound"]</div>
+    </div>
+    <a class="btn btn-outline-secondary" asp-page="/Orders/Index"><i class="bi bi-arrow-left me-1"></i>@Localizer["Common.Back"]</a>
+}
+else
+{
+    <div class="page-header">
+        <h1>@Localizer["Order.OrderNumber"] @Model.Order.OrderNumber</h1>
+        <a class="btn btn-outline-secondary" asp-page="/Orders/Index"><i class="bi bi-arrow-left me-1"></i>@Localizer["Common.Back"]</a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>@Localizer["Order.Items"]</span>
+                    <partial name="_OrderStatusBadge" model="Model.Order.Status" />
+                </div>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>@Localizer["Product.Title"]</th>
+                            <th>@Localizer["Common.Quantity"]</th>
+                            <th>@Localizer["Common.Price"]</th>
+                            <th>@Localizer["Common.Total"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Order!.Items)
+                        {
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.UnitPrice.ToString("0.00")</td>
+                                <td>@item.LineTotal.ToString("0.00")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">@Localizer["Order.StatusHistory"]</div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    @foreach (var h in Model.Order!.StatusHistory)
+                    {
+                        <li class="mb-2">
+                            <partial name="_OrderStatusBadge" model="h.Status" />
+                            <span class="text-muted small">@h.CreatedAt.ToString("yyyy-MM-dd HH:mm")</span>
+                            @if (h.Note is not null)
+                            {
+                                <div class="text-muted small">@h.Note</div>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">@Localizer["Cart.OrderSummary"]</div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2"><span>@Localizer["Order.SubTotal"]</span><span>@Model.Order!.SubTotal.ToString("0.00")</span></div>
+                <div class="d-flex justify-content-between mb-2"><span>@Localizer["Order.DiscountAmount"]</span><span>-@Model.Order.DiscountAmount.ToString("0.00")</span></div>
+                <div class="d-flex justify-content-between mb-2"><span>@Localizer["Order.ShippingFee"]</span><span>@Model.Order.ShippingFee.ToString("0.00")</span></div>
+                <hr />
+                <div class="d-flex justify-content-between fw-bold fs-5"><span>@Localizer["Order.TotalAmount"]</span><span>@Model.Order.TotalAmount.ToString("0.00")</span></div>
+                <hr />
+                <p class="mb-1"><strong>@Localizer["Order.PaymentMethod"]:</strong> @Localizer["Order.PaymentMethod." + Model.Order.PaymentMethod]</p>
+                <p class="mb-0"><strong>@Localizer["Order.PaymentStatus"]:</strong> @Localizer["Order.PaymentStatus." + Model.Order.PaymentStatus]</p>
+            </div>
+        </div>
+
+        <partial name="_WhatsAppContact" />
+
+        <div class="card mb-4">
+            <div class="card-header">@Localizer["Order.ShippingAddress"]</div>
+            <div class="card-body">
+                <p class="mb-0">@Model.Order.ShippingAddressSummary</p>
+            </div>
+        </div>
+
+        @if (User.IsInRole(AppConstants.Roles.Admin))
+        {
+            <div class="card">
+                <div class="card-header">@Localizer["Order.UpdateStatus"]</div>
+                <div class="card-body">
+                    <form method="post" asp-page-handler="UpdateStatus">
+                        <div class="mb-3">
+                            <select asp-for="NewStatus" class="form-select">
+                                @foreach (OrderStatus s in Enum.GetValues<OrderStatus>())
+                                {
+                                    <option value="@s">@Localizer["Order.Status." + s]</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <input asp-for="StatusNote" class="form-control" placeholder="@Localizer["Common.Optional"]" />
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">@Localizer["Order.UpdateStatus"]</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+}

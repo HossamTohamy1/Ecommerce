@@ -1,0 +1,188 @@
+@page
+@model ECommerce.API.Pages.AuditLogs.Admin.IndexModel
+@{
+    ViewData["Title"] = Localizer["AuditLog.Title"].Value;
+}
+
+<div class="page-header mb-4">
+    <h1>@Localizer["AuditLog.Title"]</h1>
+</div>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end" autocomplete="off">
+            <div class="col-md-2">
+                <label class="form-label">@Localizer["AuditLog.Filter.Entity"]</label>
+                <select name="EntityName" class="form-select">
+                    <option value="">--</option>
+                    @foreach (var entity in Model.EntityNames)
+                    {
+                        <option value="@entity" selected="@(Model.EntityName == entity)">@entity</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">@Localizer["AuditLog.Filter.Action"]</label>
+                <select name="Action" class="form-select">
+                    <option value="">--</option>
+                    @foreach (var action in Enum.GetValues<ECommerce.Domain.Entities.AuditAction>())
+                    {
+                        <option value="@action" selected="@(Model.Action == action)">@Localizer["AuditLog.Action." + action]</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">@Localizer["AuditLog.Filter.User"]</label>
+                <input type="text" name="UserId" class="form-control" value="@Model.UserId" autocomplete="off" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">@Localizer["AuditLog.Filter.From"]</label>
+                <input type="datetime-local" name="FromUtc" class="form-control" value="@(Model.FromUtc?.ToString("yyyy-MM-ddTHH:mm"))" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">@Localizer["AuditLog.Filter.To"]</label>
+                <input type="datetime-local" name="ToUtc" class="form-control" value="@(Model.ToUtc?.ToString("yyyy-MM-ddTHH:mm"))" />
+            </div>
+            <div class="col-md-1">
+                <label class="form-label">@Localizer["Common.PageSize"]</label>
+                <select name="PageSize" class="form-select">
+                    <option value="10" selected="@(Model.PageSize == 10)">10</option>
+                    <option value="25" selected="@(Model.PageSize == 25)">25</option>
+                    <option value="50" selected="@(Model.PageSize == 50)">50</option>
+                    <option value="100" selected="@(Model.PageSize == 100)">100</option>
+                </select>
+            </div>
+            <div class="col-md-1 d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100" title="@Localizer["AuditLog.Filter.Apply"]">
+                    <i class="bi bi-search"></i>
+                </button>
+                <a asp-page="/AuditLogs/Admin/Index" class="btn btn-outline-secondary" title="@Localizer["Common.Cancel"]">
+                    <i class="bi bi-x-lg"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table align-middle table-row-dashed fs-6 gy-3 mb-0">
+            <thead>
+                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                    <th>@Localizer["AuditLog.Column.Timestamp"]</th>
+                    <th>@Localizer["AuditLog.Column.User"]</th>
+                    <th>@Localizer["AuditLog.Column.Action"]</th>
+                    <th>@Localizer["AuditLog.Column.Entity"]</th>
+                    <th>@Localizer["AuditLog.Column.Changes"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Result.Items.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-5">
+                            <i class="bi bi-inbox fs-2 d-block mb-2 text-gray-400"></i>
+                            @Localizer["Common.NoDataFound"]
+                        </td>
+                    </tr>
+                }
+                @foreach (var log in Model.Result.Items)
+                {
+                    var badgeClass = log.Action switch
+                    {
+                        ECommerce.Domain.Entities.AuditAction.Create => "badge-light-success text-success",
+                        ECommerce.Domain.Entities.AuditAction.Update => "badge-light-warning text-warning",
+                        ECommerce.Domain.Entities.AuditAction.Delete => "badge-light-danger text-danger",
+                        _ => "badge-light-secondary text-secondary"
+                    };
+                    var resolvedUserName = log.UserName;
+                    if (string.IsNullOrEmpty(resolvedUserName) && !string.IsNullOrEmpty(log.UserId) && Model.EntityLookup.TryGetValue(log.UserId, out var lookupUserName))
+                    {
+                        resolvedUserName = lookupUserName;
+                    }
+                    var entityIdSnippet = string.IsNullOrEmpty(log.EntityId) 
+                        ? "" 
+                        : (log.EntityId.Length > 8 ? log.EntityId[..8] : log.EntityId);
+                    var resolvedEntityName = Model.EntityLookup.TryGetValue(log.EntityId ?? "", out var lookupEntityName) ? lookupEntityName : null;
+                    <tr>
+                        <td class="text-muted">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td class="fw-semibold">@(resolvedUserName ?? log.UserId ?? Localizer["AuditLog.System"].Value)</td>
+                        <td>
+                            <span class="badge @badgeClass fw-bold px-3 py-2" style="user-select: none; pointer-events: none;">
+                                @Localizer["AuditLog.Action." + log.Action]
+                            </span>
+                        </td>
+                        <td>
+                            <div class="fw-semibold">@log.EntityName</div>
+                            @if (!string.IsNullOrEmpty(resolvedEntityName))
+                            {
+                                <div class="text-muted fs-8">@resolvedEntityName <span class="fs-9 text-gray-500 font-monospace">#@entityIdSnippet</span></div>
+                            }
+                            else if (!string.IsNullOrEmpty(entityIdSnippet))
+                            {
+                                <span class="text-muted fs-8">#@entityIdSnippet</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(log.Changes))
+                            {
+                                var parsedChanges = ECommerce.API.Pages.AuditLogs.Admin.IndexModel.ParseChanges(log.Changes, Model.EntityLookup);
+                                <details>
+                                    <summary class="text-primary fw-semibold fs-8" style="cursor: pointer; user-select: none;">
+                                        @Localizer["AuditLog.ViewChanges"] (@parsedChanges.Count)
+                                    </summary>
+                                    <div class="audit-changes-panel p-3 mt-2 rounded border" style="max-width: 440px;">
+                                        @foreach (var c in parsedChanges)
+                                        {
+                                            <div class="audit-change-row d-flex flex-wrap align-items-center gap-1 mb-1 fs-8">
+                                                <span class="audit-change-label fw-semibold text-muted">@c.Label:</span>
+                                                @if (c.IsDiff)
+                                                {
+                                                    <span class="badge badge-light-danger text-decoration-line-through py-1 px-2">@c.OldValue</span>
+                                                    <i class="bi bi-arrow-right fs-9 text-muted mx-1"></i>
+                                                    <span class="badge badge-light-success py-1 px-2 fw-semibold">@c.NewValue</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="fw-semibold audit-change-val text-gray-800">@c.Value</span>
+                                                    @if (!string.IsNullOrEmpty(c.SecondaryValue))
+                                                    {
+                                                        <span class="text-muted fs-9 font-monospace" title="@c.SecondaryValue">(@c.SecondaryValue)</span>
+                                                    }
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </details>
+                            }
+                            else if (!string.IsNullOrEmpty(log.Description))
+                            {
+                                <span class="text-muted fs-8">@log.Description</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted fs-8">—</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_Pagination" model="@(new ECommerce.API.Pages.Shared.PaginationViewModel
+{
+    CurrentPage = Model.Result.Page,
+    TotalPages = Model.Result.TotalPages,
+    PageName = "/AuditLogs/Admin/Index",
+    RouteValues = new Dictionary<string, string?>
+    {
+        ["EntityName"] = Model.EntityName,
+        ["UserId"] = Model.UserId,
+        ["Action"] = Model.Action?.ToString(),
+        ["FromUtc"] = Model.FromUtc?.ToString("yyyy-MM-ddTHH:mm:ss"),
+        ["ToUtc"] = Model.ToUtc?.ToString("yyyy-MM-ddTHH:mm:ss"),
+        ["PageSize"] = Model.PageSize.ToString()
+    }
+})" />

@@ -1,0 +1,86 @@
+@model ECommerce.API.Pages.Shared.PaginationViewModel
+@if (Model.TotalPages > 1)
+{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    var prevIcon = isRtl ? "bi-chevron-right" : "bi-chevron-left";
+    var nextIcon = isRtl ? "bi-chevron-left" : "bi-chevron-right";
+
+    int current = Model.CurrentPage;
+    int total = Model.TotalPages;
+
+    int startPage;
+    int endPage;
+
+    if (total <= 7)
+    {
+        startPage = 1;
+        endPage = total;
+    }
+    else
+    {
+        if (current <= 4)
+        {
+            startPage = 1;
+            endPage = 5;
+        }
+        else if (current >= total - 3)
+        {
+            startPage = total - 4;
+            endPage = total;
+        }
+        else
+        {
+            startPage = current - 2;
+            endPage = current + 2;
+        }
+    }
+
+    <nav class="d-flex justify-content-center mt-4 overflow-auto">
+        <ul class="pagination flex-nowrap align-items-center mb-0">
+            <li class="page-item @(current <= 1 ? "disabled" : "")">
+                <a class="page-link" href="@(current <= 1 ? "#" : Model.GetUrl(current - 1))" aria-label="Previous">
+                    <i class="bi @prevIcon"></i>
+                </a>
+            </li>
+
+            @if (startPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Model.GetUrl(1)">1</a>
+                </li>
+                @if (startPage > 2)
+                {
+                    <li class="page-item disabled" aria-hidden="true">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+            }
+
+            @for (var p = startPage; p <= endPage; p++)
+            {
+                <li class="page-item @(p == current ? "active" : "")">
+                    <a class="page-link" href="@Model.GetUrl(p)">@p</a>
+                </li>
+            }
+
+            @if (endPage < total)
+            {
+                @if (endPage < total - 1)
+                {
+                    <li class="page-item disabled" aria-hidden="true">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+                <li class="page-item">
+                    <a class="page-link" href="@Model.GetUrl(total)">@total</a>
+                </li>
+            }
+
+            <li class="page-item @(current >= total ? "disabled" : "")">
+                <a class="page-link" href="@(current >= total ? "#" : Model.GetUrl(current + 1))" aria-label="Next">
+                    <i class="bi @nextIcon"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+}

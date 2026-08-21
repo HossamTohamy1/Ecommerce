@@ -1,0 +1,67 @@
+@page
+@model ECommerce.API.Pages.Brands.IndexModel
+@using ECommerce.Shared.Constants
+@{
+    ViewData["Title"] = Localizer["Brand.Title"].Value;
+}
+
+<div class="page-header">
+    <h1>@Localizer["Brand.Title"]</h1>
+    @if (User.IsInRole(AppConstants.Roles.Admin))
+    {
+        <a class="btn btn-primary" asp-page="/Brands/Admin/Create"><i class="bi bi-plus-lg me-1"></i>@Localizer["Brand.Create"]</a>
+    }
+</div>
+
+<div class="row g-4">
+    @if (Model.Result.Items.Count == 0)
+    {
+        <div class="col-12 text-center text-muted py-5">@Localizer["Common.NoDataFound"]</div>
+    }
+    @foreach (var brand in Model.Result.Items)
+    {
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <div class="brand-card-body text-center">
+                    @if (!string.IsNullOrEmpty(brand.LogoUrl))
+                    {
+                        <img src="@brand.LogoUrl" class="brand-logo-img mb-3" alt="@brand.Name" />
+                    }
+                    else
+                    {
+                        <div class="mb-3 d-flex align-items-center justify-content-center" style="height:64px">
+                            <i class="bi bi-award fs-1 text-muted"></i>
+                        </div>
+                    }
+                    <h6 class="fw-bold mb-2">@brand.Name</h6>
+                    <span class="badge badge-light-primary">@brand.ProductCount @(brand.ProductCount == 1 ? Localizer["Product.Singular"] : Localizer["Product.Plural"])</span>
+                </div>
+                @if (User.IsInRole(AppConstants.Roles.Admin))
+                {
+                    <div class="brand-card-footer d-flex justify-content-end gap-1">
+                        <a class="btn btn-sm btn-icon" asp-page="/Brands/Admin/Edit" asp-route-id="@brand.Id" title="@Localizer["Common.Edit"]">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@brand.Id" class="d-inline"
+                              data-confirm-delete
+                              data-confirm-title="@Localizer["Common.AreYouSure"]"
+                              data-confirm-text="@Localizer["Common.ThisActionCannotBeUndone"]"
+                              data-confirm-button="@Localizer["Common.Delete"]"
+                              data-cancel-button="@Localizer["Common.Cancel"]">
+                            <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<partial name="_Pagination" model="@(new ECommerce.API.Pages.Shared.PaginationViewModel
+{
+    CurrentPage = Model.Result.Page,
+    TotalPages = Model.Result.TotalPages,
+    PageName = "/Brands/Index"
+})" />

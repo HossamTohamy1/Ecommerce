@@ -1,0 +1,139 @@
+@page
+@model ECommerce.API.Pages.Products.IndexModel
+@using ECommerce.Shared.Constants
+@{
+    ViewData["Title"] = Localizer["Product.Title"].Value;
+}
+
+<div class="page-header">
+    <h1>@Localizer["Product.Title"]</h1>
+    @if (User.IsInRole(AppConstants.Roles.Admin))
+    {
+        <a class="btn btn-primary" asp-page="/Products/Admin/Create"><i class="bi bi-plus-lg me-1"></i>@Localizer["Product.Create"]</a>
+    }
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-12 col-md-4">
+                <label class="form-label">@Localizer["Common.Search"]</label>
+                <input type="text" name="Search" value="@Model.Search" class="form-control" placeholder="@Localizer["Common.Search"]..." />
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <label class="form-label">@Localizer["Product.Category"]</label>
+                <select name="CategoryId" class="form-select">
+                    <option value="">@Localizer["Product.AllCategories"]</option>
+                    @foreach (var c in Model.Categories)
+                    {
+                        <option value="@c.Id" selected="@(Model.CategoryId == c.Id)">@c.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <label class="form-label">@Localizer["Product.Brand"]</label>
+                <select name="BrandId" class="form-select">
+                    <option value="">@Localizer["Product.AllBrands"]</option>
+                    @foreach (var b in Model.Brands)
+                    {
+                        <option value="@b.Id" selected="@(Model.BrandId == b.Id)">@b.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-12 col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-funnel me-1"></i>@Localizer["Common.Search"]</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row g-3 g-md-4">
+    @if (Model.Result.Items.Count == 0)
+    {
+        <div class="col-12 text-center text-muted py-5">@Localizer["Common.NoDataFound"]</div>
+    }
+    @foreach (var product in Model.Result.Items)
+    {
+        var mainImage = product.Images.FirstOrDefault(i => i.IsMain) ?? product.Images.FirstOrDefault();
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100">
+                <a asp-page="/Products/Details" asp-route-id="@product.Id">
+                    @if (mainImage is not null)
+                    {
+                        <img src="@mainImage.ImageUrl" class="product-card-img" alt="@product.Name" />
+                    }
+                    else
+                    {
+                        <div class="product-card-img d-flex align-items-center justify-content-center">
+                            <i class="bi bi-image fs-1 text-muted"></i>
+                        </div>
+                    }
+                </a>
+                <div class="card-body">
+                    <h6 class="fw-bold mb-1">
+                        <a asp-page="/Products/Details" asp-route-id="@product.Id" class="text-reset text-decoration-none">@product.Name</a>
+                    </h6>
+                    <p class="text-muted small mb-2">@product.CategoryName</p>
+                    <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+                        @if (product.HasActiveDiscount)
+                        {
+                            <span class="fw-bold text-danger">@product.DiscountedPrice!.Value.ToString("0.00")</span>
+                            <span class="text-muted text-decoration-line-through small">@product.Price.ToString("0.00")</span>
+                            <span class="badge bg-danger-subtle text-danger small py-1 px-2">
+                                @(product.DiscountType == ECommerce.Domain.Entities.DiscountType.Percentage ? $"{product.DiscountValue:0}% OFF" : $"-{product.DiscountValue:0.00}")
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="fw-bold text-brand">@product.Price.ToString("0.00")</span>
+                            @if (product.CompareAtPrice.HasValue)
+                            {
+                                <span class="text-muted text-decoration-line-through small">@product.CompareAtPrice.Value.ToString("0.00")</span>
+                            }
+                        }
+                    </div>
+                    @if (product.StockQuantity <= 0)
+                    {
+                        <span class="badge badge-light-danger mt-2">@Localizer["Product.OutOfStock"]</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-light-success mt-2">@Localizer["Product.InStock"]</span>
+                    }
+                </div>
+                @if (User.IsInRole(AppConstants.Roles.Admin))
+                {
+                    <div class="card-footer d-flex justify-content-end gap-1">
+                        <a class="btn btn-sm btn-icon" asp-page="/Products/Admin/Edit" asp-route-id="@product.Id" title="@Localizer["Common.Edit"]">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@product.Id" class="d-inline"
+                              data-confirm-delete
+                              data-confirm-title="@Localizer["Common.AreYouSure"]"
+                              data-confirm-text="@Localizer["Common.ThisActionCannotBeUndone"]"
+                              data-confirm-button="@Localizer["Common.Delete"]"
+                              data-cancel-button="@Localizer["Common.Cancel"]">
+                            <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<partial name="_Pagination" model="@(new ECommerce.API.Pages.Shared.PaginationViewModel
+{
+    CurrentPage = Model.Result.Page,
+    TotalPages = Model.Result.TotalPages,
+    PageName = "/Products/Index",
+    RouteValues = new()
+    {
+        ["Search"] = Model.Search,
+        ["CategoryId"] = Model.CategoryId?.ToString(),
+        ["BrandId"] = Model.BrandId?.ToString(),
+        ["PageSize"] = Model.PageSize.ToString()
+    }
+})" />

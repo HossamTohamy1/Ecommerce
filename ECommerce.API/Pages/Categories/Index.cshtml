@@ -1,0 +1,73 @@
+@page
+@model ECommerce.API.Pages.Categories.IndexModel
+@using ECommerce.Shared.Constants
+@{
+    ViewData["Title"] = Localizer["Category.Title"].Value;
+}
+
+<div class="page-header">
+    <h1>@Localizer["Category.Title"]</h1>
+    @if (User.IsInRole(AppConstants.Roles.Admin))
+    {
+        <a class="btn btn-primary" asp-page="/Categories/Admin/Create"><i class="bi bi-plus-lg me-1"></i>@Localizer["Category.Create"]</a>
+    }
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>@Localizer["Common.Name"]</th>
+                    <th>@Localizer["Category.Slug"]</th>
+                    <th>@Localizer["Category.ParentCategory"]</th>
+                    <th>@Localizer["Category.ProductCount"]</th>
+                    @if (User.IsInRole(AppConstants.Roles.Admin))
+                    {
+                        <th class="text-end">@Localizer["Common.Actions"]</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Result.Items.Count == 0)
+                {
+                    <tr><td colspan="5" class="text-center text-muted py-4">@Localizer["Common.NoDataFound"]</td></tr>
+                }
+                @foreach (var category in Model.Result.Items)
+                {
+                    <tr>
+                        <td class="fw-semibold">@category.Name</td>
+                        <td><code>@category.Slug</code></td>
+                        <td>@(category.ParentCategoryName ?? "—")</td>
+                        <td><span class="badge badge-light-info">@category.ProductCount</span></td>
+                        @if (User.IsInRole(AppConstants.Roles.Admin))
+                        {
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-icon" asp-page="/Categories/Admin/Edit" asp-route-id="@category.Id" title="@Localizer["Common.Edit"]">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@category.Id" class="d-inline"
+                                      data-confirm-delete
+                                      data-confirm-title="@Localizer["Common.AreYouSure"]"
+                                      data-confirm-text="@Localizer["Common.ThisActionCannotBeUndone"]"
+                                      data-confirm-button="@Localizer["Common.Delete"]"
+                                      data-cancel-button="@Localizer["Common.Cancel"]">
+                                    <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_Pagination" model="@(new ECommerce.API.Pages.Shared.PaginationViewModel
+{
+    CurrentPage = Model.Result.Page,
+    TotalPages = Model.Result.TotalPages,
+    PageName = "/Categories/Index"
+})" />

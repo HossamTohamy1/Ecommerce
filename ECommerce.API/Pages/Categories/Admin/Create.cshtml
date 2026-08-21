@@ -1,0 +1,51 @@
+@page
+@model ECommerce.API.Pages.Categories.Admin.CreateModel
+@{
+    ViewData["Title"] = Localizer["Category.Create"].Value;
+}
+
+<div class="page-header">
+    <h1>@Localizer["Category.Create"]</h1>
+    <a class="btn btn-outline-secondary" asp-page="/Categories/Index"><i class="bi bi-arrow-left me-1"></i>@Localizer["Common.Back"]</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header fs-5 fw-bold">
+        <i class="bi bi-diagram-3 me-2 text-primary"></i>@Localizer["Category.Create"]
+    </div>
+    <div class="card-body p-4">
+        <form method="post" novalidate>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Input.Name" class="form-label">@Localizer["Common.Name"]</label>
+                    <input asp-for="Input.Name" class="form-control" />
+                    <span asp-validation-for="Input.Name" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.Slug" class="form-label">@Localizer["Category.Slug"]</label>
+                    <input asp-for="Input.Slug" class="form-control" placeholder="e.g. phones" />
+                    <span asp-validation-for="Input.Slug" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.ParentCategoryId" class="form-label">@Localizer["Category.ParentCategory"]</label>
+                    <select asp-for="Input.ParentCategoryId" class="form-select">
+                        <option value="">@Localizer["Category.None"]</option>
+                        @foreach (var c in Model.ParentOptions)
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary px-4">@Localizer["Common.Save"]</button>
+                <a asp-page="/Categories/Index" class="btn btn-outline-secondary px-4">@Localizer["Common.Cancel"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

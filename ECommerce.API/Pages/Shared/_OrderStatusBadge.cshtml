@@ -1,0 +1,14 @@
+@model ECommerce.Domain.Entities.OrderStatus
+@{
+    var cssClass = Model switch
+    {
+        ECommerce.Domain.Entities.OrderStatus.Pending => "badge-light-warning",
+        ECommerce.Domain.Entities.OrderStatus.Confirmed => "badge-light-info",
+        ECommerce.Domain.Entities.OrderStatus.Processing => "badge-light-info",
+        ECommerce.Domain.Entities.OrderStatus.Shipped => "badge-light-info",
+        ECommerce.Domain.Entities.OrderStatus.Delivered => "badge-light-success",
+        ECommerce.Domain.Entities.OrderStatus.Cancelled => "badge-light-danger",
+        _ => "badge-light-secondary"
+    };
+}
+<span class="badge @cssClass">@Localizer["Order.Status." + Model]</span>

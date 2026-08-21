@@ -1,0 +1,1314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <data name="Auth.Register.EmailExists" xml:space="preserve">
+    <value>This email is already registered</value>
+  </data>
+  <data name="Auth.Login.InvalidCredentials" xml:space="preserve">
+    <value>Invalid email or password</value>
+  </data>
+  <data name="Auth.Login.LockedOut" xml:space="preserve">
+    <value>Account temporarily locked due to too many failed attempts. Try again in {0} minute(s)</value>
+  </data>
+  <data name="Auth.Login.AccountDisabled" xml:space="preserve">
+    <value>This account has been disabled, please contact support</value>
+  </data>
+  <data name="Auth.ForgotPassword.GenericMessage" xml:space="preserve">
+    <value>If that email is registered with us, a password reset link has been sent</value>
+  </data>
+  <data name="Auth.ResetPassword.InvalidToken" xml:space="preserve">
+    <value>This reset link is invalid or has expired</value>
+  </data>
+  <data name="Auth.ResetPassword.Success" xml:space="preserve">
+    <value>Your password has been reset successfully</value>
+  </data>
+  <data name="Auth.User.NotFound" xml:space="preserve">
+    <value>User not found</value>
+  </data>
+
+  <data name="Common.NotFound" xml:space="preserve">
+    <value>{0} not found</value>
+  </data>
+  <data name="Common.DuplicateName" xml:space="preserve">
+    <value>Another {0} with the same name already exists</value>
+  </data>
+  <data name="Common.ValidationError" xml:space="preserve">
+    <value>Please check your input and try again</value>
+  </data>
+  <data name="Common.Unauthorized" xml:space="preserve">
+    <value>You need to sign in to do this</value>
+  </data>
+  <data name="Common.Forbidden" xml:space="preserve">
+    <value>You don't have permission to do this</value>
+  </data>
+  <data name="Common.UnexpectedError" xml:space="preserve">
+    <value>Something unexpected happened, please try again later</value>
+  </data>
+  <data name="Common.TooManyRequests" xml:space="preserve">
+    <value>Too many requests, please slow down and try again shortly</value>
+  </data>
+
+  <data name="Catalog.Category.NotFound" xml:space="preserve">
+    <value>Category not found</value>
+  </data>
+  <data name="Catalog.Category.DuplicateSlug" xml:space="preserve">
+    <value>Another category already uses this slug</value>
+  </data>
+  <data name="Catalog.Category.HasProducts" xml:space="preserve">
+    <value>Can't delete a category that still has products</value>
+  </data>
+  <data name="Catalog.Product.NotFound" xml:space="preserve">
+    <value>Product not found</value>
+  </data>
+  <data name="Catalog.Product.DuplicateSku" xml:space="preserve">
+    <value>Another product already uses this SKU</value>
+  </data>
+
+  <data name="Files.NoFileProvided" xml:space="preserve">
+    <value>Please upload an image file</value>
+  </data>
+  <data name="Files.TooLarge" xml:space="preserve">
+    <value>The image is larger than the allowed size (5 MB)</value>
+  </data>
+  <data name="Files.InvalidExtension" xml:space="preserve">
+    <value>File extension not allowed. Only jpg, jpeg, png, webp are allowed</value>
+  </data>
+  <data name="Files.InvalidContentType" xml:space="preserve">
+    <value>File type not allowed</value>
+  </data>
+
+  <data name="Cart.Empty" xml:space="preserve">
+    <value>Your cart is empty</value>
+  </data>
+  <data name="Order.NotFound" xml:space="preserve">
+    <value>Order not found</value>
+  </data>
+  <data name="Order.InsufficientStock" xml:space="preserve">
+    <value>Not enough stock available for "{0}" (only {1} left)</value>
+  </data>
+  <data name="Nav.Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Nav.Categories" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="Nav.Brands" xml:space="preserve">
+    <value>Brands</value>
+  </data>
+  <data name="Nav.Products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Nav.Discounts" xml:space="preserve">
+    <value>Discounts</value>
+  </data>
+  <data name="Nav.Cart" xml:space="preserve">
+    <value>Cart</value>
+  </data>
+  <data name="Nav.Orders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Nav.MyOrders" xml:space="preserve">
+    <value>My Orders</value>
+  </data>
+  <data name="Nav.AllOrders" xml:space="preserve">
+    <value>All Orders</value>
+  </data>
+  <data name="Nav.Addresses" xml:space="preserve">
+    <value>Addresses</value>
+  </data>
+  <data name="Nav.Reviews" xml:space="preserve">
+    <value>Reviews</value>
+  </data>
+  <data name="Nav.Wishlist" xml:space="preserve">
+    <value>Wishlist</value>
+  </data>
+  <data name="Nav.Login" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="Nav.Register" xml:space="preserve">
+    <value>Sign Up</value>
+  </data>
+  <data name="Nav.Logout" xml:space="preserve">
+    <value>Sign Out</value>
+  </data>
+  <data name="Nav.MyAccount" xml:space="preserve">
+    <value>My Account</value>
+  </data>
+  <data name="Nav.Catalog" xml:space="preserve">
+    <value>Catalog</value>
+  </data>
+  <data name="Nav.Shopping" xml:space="preserve">
+    <value>Shopping</value>
+  </data>
+  <data name="Nav.Administration" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Common.Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Common.Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Common.Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Common.Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Common.Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Common.Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Common.Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Common.Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Common.Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Common.Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Common.Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Common.Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Common.No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Common.Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Common.NoDataFound" xml:space="preserve">
+    <value>No data found</value>
+  </data>
+  <data name="Common.Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Common.Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Common.Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="Common.Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Common.Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Common.Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Common.Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="Common.AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="Common.ThisActionCannotBeUndone" xml:space="preserve">
+    <value>This action can't be undone</value>
+  </data>
+  <data name="Common.SuccessTitle" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Common.ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Common.OperationSuccessful" xml:space="preserve">
+    <value>Operation completed successfully</value>
+  </data>
+  <data name="Common.Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Common.ViewDetails" xml:space="preserve">
+    <value>View details</value>
+  </data>
+  <data name="Common.Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Common.Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Common.Optional" xml:space="preserve">
+    <value>optional</value>
+  </data>
+  <data name="Common.WelcomeBack" xml:space="preserve">
+    <value>Welcome back</value>
+  </data>
+  <data name="Auth.Login.Title" xml:space="preserve">
+    <value>Sign in to your account</value>
+  </data>
+  <data name="Auth.Login.Subtitle" xml:space="preserve">
+    <value>Enter your credentials to continue</value>
+  </data>
+  <data name="Auth.Login.Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Auth.Login.Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Auth.Login.SubmitButton" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="Auth.Login.NoAccount" xml:space="preserve">
+    <value>Don't have an account?</value>
+  </data>
+  <data name="Auth.Login.ForgotPasswordLink" xml:space="preserve">
+    <value>Forgot password?</value>
+  </data>
+  <data name="Auth.Register.Title" xml:space="preserve">
+    <value>Create a new account</value>
+  </data>
+  <data name="Auth.Register.FullName" xml:space="preserve">
+    <value>Full name</value>
+  </data>
+  <data name="Auth.Register.ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="Auth.Register.SubmitButton" xml:space="preserve">
+    <value>Create Account</value>
+  </data>
+  <data name="Auth.Register.HaveAccount" xml:space="preserve">
+    <value>Already have an account?</value>
+  </data>
+  <data name="Auth.ForgotPassword.Title" xml:space="preserve">
+    <value>Forgot your password?</value>
+  </data>
+  <data name="Auth.ForgotPassword.Subtitle" xml:space="preserve">
+    <value>Enter your email and we'll send you a reset link</value>
+  </data>
+  <data name="Auth.ForgotPassword.SubmitButton" xml:space="preserve">
+    <value>Send Reset Link</value>
+  </data>
+  <data name="Auth.ResetPassword.Title" xml:space="preserve">
+    <value>Reset your password</value>
+  </data>
+  <data name="Auth.ResetPassword.NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="Auth.ResetPassword.ConfirmNewPassword" xml:space="preserve">
+    <value>Confirm new password</value>
+  </data>
+  <data name="Auth.ResetPassword.SubmitButton" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+  <data name="Auth.ResetPassword.Token" xml:space="preserve">
+    <value>Reset code</value>
+  </data>
+  <data name="Category.Title" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="Category.Create" xml:space="preserve">
+    <value>New Category</value>
+  </data>
+  <data name="Category.Edit" xml:space="preserve">
+    <value>Edit Category</value>
+  </data>
+  <data name="Category.Slug" xml:space="preserve">
+    <value>Slug</value>
+  </data>
+  <data name="Category.ParentCategory" xml:space="preserve">
+    <value>Parent Category</value>
+  </data>
+  <data name="Category.ProductCount" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Category.None" xml:space="preserve">
+    <value>None (top-level)</value>
+  </data>
+  <data name="Brand.Title" xml:space="preserve">
+    <value>Brands</value>
+  </data>
+  <data name="Brand.Create" xml:space="preserve">
+    <value>New Brand</value>
+  </data>
+  <data name="Brand.Edit" xml:space="preserve">
+    <value>Edit Brand</value>
+  </data>
+  <data name="Brand.Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="Product.Title" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Product.Create" xml:space="preserve">
+    <value>New Product</value>
+  </data>
+  <data name="Product.Edit" xml:space="preserve">
+    <value>Edit Product</value>
+  </data>
+  <data name="Product.SKU" xml:space="preserve">
+    <value>SKU</value>
+  </data>
+  <data name="Product.StockQuantity" xml:space="preserve">
+    <value>Stock Quantity</value>
+  </data>
+  <data name="Product.CompareAtPrice" xml:space="preserve">
+    <value>Compare-at Price</value>
+  </data>
+  <data name="Product.Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Product.Brand" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="Product.Images" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="Product.UploadImages" xml:space="preserve">
+    <value>Upload Images</value>
+  </data>
+  <data name="Product.UploadImage" xml:space="preserve">
+    <value>Upload Image</value>
+  </data>
+  <data name="Product.CompareAtPriceMustBeGreater" xml:space="preserve">
+    <value>Compare-at price must be greater than standard price.</value>
+  </data>
+  <data name="Product.BasicInformation" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="Product.MediaGallery" xml:space="preserve">
+    <value>Product Images</value>
+  </data>
+  <data name="Product.VariantManagement" xml:space="preserve">
+    <value>Product Variants</value>
+  </data>
+  <data name="Product.BaseStockQuantity" xml:space="preserve">
+    <value>Base Stock (No Variants)</value>
+  </data>
+  <data name="Product.TotalVariantStock" xml:space="preserve">
+    <value>Total stock across variants</value>
+  </data>
+  <data name="Product.VariantsExistNote" xml:space="preserve">
+    <value>Total variant stock: {0} units across {1} variants</value>
+  </data>
+  <data name="Product.ChooseFiles" xml:space="preserve">
+    <value>Choose Files</value>
+  </data>
+  <data name="Product.Variants" xml:space="preserve">
+    <value>Variants</value>
+  </data>
+  <data name="Product.AddVariant" xml:space="preserve">
+    <value>Add Variant</value>
+  </data>
+  <data name="Product.Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="Product.Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="Product.SetAsMain" xml:space="preserve">
+    <value>Set as main</value>
+  </data>
+  <data name="Product.MainImage" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="Product.OutOfStock" xml:space="preserve">
+    <value>Out of stock</value>
+  </data>
+  <data name="Product.InStock" xml:space="preserve">
+    <value>In stock</value>
+  </data>
+  <data name="Product.AddToCart" xml:space="preserve">
+    <value>Add to Cart</value>
+  </data>
+  <data name="Product.AddToWishlist" xml:space="preserve">
+    <value>Add to Wishlist</value>
+  </data>
+  <data name="Product.NoImage" xml:space="preserve">
+    <value>No image</value>
+  </data>
+  <data name="Discount.Title" xml:space="preserve">
+    <value>Discounts</value>
+  </data>
+  <data name="Discount.Create" xml:space="preserve">
+    <value>New Discount</value>
+  </data>
+  <data name="Discount.Edit" xml:space="preserve">
+    <value>Edit Discount</value>
+  </data>
+  <data name="Discount.Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Discount.Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Discount.TypePercentage" xml:space="preserve">
+    <value>Percentage</value>
+  </data>
+  <data name="Discount.TypeFixed" xml:space="preserve">
+    <value>Fixed Amount</value>
+  </data>
+  <data name="Discount.Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="Discount.StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="Discount.EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="Discount.UsageLimit" xml:space="preserve">
+    <value>Usage Limit</value>
+  </data>
+  <data name="Discount.UsageCount" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="Discount.MinimumOrderAmount" xml:space="preserve">
+    <value>Minimum Order Amount</value>
+  </data>
+  <data name="Discount.AssignedProducts" xml:space="preserve">
+    <value>Assigned Products</value>
+  </data>
+  <data name="Discount.AssignProduct" xml:space="preserve">
+    <value>Assign Product</value>
+  </data>
+  <data name="Discount.BasicInformation" xml:space="preserve">
+    <value>Discount Details</value>
+  </data>
+  <data name="Discount.SelectProductsHint" xml:space="preserve">
+    <value>Select the products that this discount applies to:</value>
+  </data>
+  <data name="Product.SelectProduct" xml:space="preserve">
+    <value>Select a product</value>
+  </data>
+  <data name="Discount.SelectProduct" xml:space="preserve">
+    <value>Select a product</value>
+  </data>
+  <data name="SelectProduct" xml:space="preserve">
+    <value>Select a product</value>
+  </data>
+  <data name="Common.PageSize" xml:space="preserve">
+    <value>Page Size</value>
+  </data>
+  <data name="Cart.Title" xml:space="preserve">
+    <value>My Cart</value>
+  </data>
+  <data name="Cart.AddToCart" xml:space="preserve">
+    <value>Add to Cart</value>
+  </data>
+  <data name="Cart.Checkout" xml:space="preserve">
+    <value>Checkout</value>
+  </data>
+  <data name="Cart.Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Cart.ContinueShopping" xml:space="preserve">
+    <value>Continue Shopping</value>
+  </data>
+  <data name="Cart.OrderSummary" xml:space="preserve">
+    <value>Order Summary</value>
+  </data>
+  <data name="Order.Title" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Order.MyOrders" xml:space="preserve">
+    <value>My Orders</value>
+  </data>
+  <data name="Order.OrderNumber" xml:space="preserve">
+    <value>Order #</value>
+  </data>
+  <data name="Order.Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Order.PaymentMethod" xml:space="preserve">
+    <value>Payment Method</value>
+  </data>
+  <data name="Order.PaymentStatus" xml:space="preserve">
+    <value>Payment Status</value>
+  </data>
+  <data name="Order.Items" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="Order.ShippingAddress" xml:space="preserve">
+    <value>Shipping Address</value>
+  </data>
+  <data name="Order.PlaceOrder" xml:space="preserve">
+    <value>Place Order</value>
+  </data>
+  <data name="Order.UpdateStatus" xml:space="preserve">
+    <value>Update Status</value>
+  </data>
+  <data name="Order.SubTotal" xml:space="preserve">
+    <value>Subtotal</value>
+  </data>
+  <data name="Order.ShippingFee" xml:space="preserve">
+    <value>Shipping Fee</value>
+  </data>
+  <data name="Order.DiscountAmount" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="Order.TotalAmount" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Order.SelectAddress" xml:space="preserve">
+    <value>Select a shipping address</value>
+  </data>
+  <data name="Order.NoAddressYet" xml:space="preserve">
+    <value>You don't have any saved addresses yet</value>
+  </data>
+  <data name="Order.StatusHistory" xml:space="preserve">
+    <value>Status History</value>
+  </data>
+  <data name="Order.EmptyList" xml:space="preserve">
+    <value>You haven't placed any orders yet</value>
+  </data>
+  <data name="Address.Title" xml:space="preserve">
+    <value>Addresses</value>
+  </data>
+  <data name="Address.Create" xml:space="preserve">
+    <value>New Address</value>
+  </data>
+  <data name="Address.Edit" xml:space="preserve">
+    <value>Edit Address</value>
+  </data>
+  <data name="Address.FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="Address.Phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="Address.Street" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="Address.City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Address.Governorate" xml:space="preserve">
+    <value>Governorate</value>
+  </data>
+  <data name="Address.PostalCode" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="Address.SetDefault" xml:space="preserve">
+    <value>Set as default</value>
+  </data>
+  <data name="Address.Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Address.EmptyList" xml:space="preserve">
+    <value>No saved addresses yet</value>
+  </data>
+  <data name="Review.Title" xml:space="preserve">
+    <value>Reviews</value>
+  </data>
+  <data name="Review.Rating" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="Review.Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="Review.Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="Review.PendingApproval" xml:space="preserve">
+    <value>Pending approval</value>
+  </data>
+  <data name="Review.Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Review.WriteReview" xml:space="preserve">
+    <value>Write a Review</value>
+  </data>
+  <data name="Review.SignInToReview" xml:space="preserve">
+    <value>Please sign in to write a review</value>
+  </data>
+  <data name="Review.SignInPromptSubtitle" xml:space="preserve">
+    <value>Share your experience with this product with other shoppers</value>
+  </data>
+  <data name="Review.EmptyList" xml:space="preserve">
+    <value>No reviews yet</value>
+  </data>
+  <data name="Review.ModerationTitle" xml:space="preserve">
+    <value>Review Moderation</value>
+  </data>
+  <data name="Wishlist.Title" xml:space="preserve">
+    <value>My Wishlist</value>
+  </data>
+  <data name="Wishlist.AddToWishlist" xml:space="preserve">
+    <value>Add to Wishlist</value>
+  </data>
+  <data name="Wishlist.Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Wishlist.EmptyList" xml:space="preserve">
+    <value>Your wishlist is empty</value>
+  </data>
+  <data name="Theme.Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Theme.Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Language.English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Language.Arabic" xml:space="preserve">
+    <value>Arabic</value>
+  </data>
+  <data name="Dashboard.Welcome" xml:space="preserve">
+    <value>Welcome to your dashboard</value>
+  </data>
+  <data name="Dashboard.QuickLinks" xml:space="preserve">
+    <value>Quick Links</value>
+  </data>
+  <data name="Order.Status.Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Order.Status.Confirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="Order.Status.Processing" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="Order.Status.Shipped" xml:space="preserve">
+    <value>Shipped</value>
+  </data>
+  <data name="Order.Status.Delivered" xml:space="preserve">
+    <value>Delivered</value>
+  </data>
+  <data name="Order.Status.Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Order.PaymentMethod.Cash" xml:space="preserve">
+    <value>Cash</value>
+  </data>
+  <data name="Order.PaymentMethod.BankTransfer" xml:space="preserve">
+    <value>Bank Transfer</value>
+  </data>
+  <data name="Order.PaymentMethod.Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Order.PaymentStatus.Unpaid" xml:space="preserve">
+    <value>Unpaid</value>
+  </data>
+  <data name="Order.PaymentStatus.Paid" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="Order.PaymentStatus.PartiallyPaid" xml:space="preserve">
+    <value>Partially Paid</value>
+  </data>
+  <data name="The {0} field is required." xml:space="preserve">
+    <value>The {0} field is required.</value>
+  </data>
+  <data name="The {0} field is not a valid e-mail address." xml:space="preserve">
+    <value>The {0} field is not a valid e-mail address.</value>
+  </data>
+  <data name="The {0} field is not a valid phone number." xml:space="preserve">
+    <value>The {0} field is not a valid phone number.</value>
+  </data>
+  <data name="'{0}' and '{1}' do not match." xml:space="preserve">
+    <value>'{0}' and '{1}' do not match.</value>
+  </data>
+  <data name="The field {0} must be a string with a minimum length of {2} and a maximum length of {1}." xml:space="preserve">
+    <value>The field {0} must be a string with a minimum length of {2} and a maximum length of {1}.</value>
+  </data>
+  <data name="The field {0} must be a string with a maximum length of {1}." xml:space="preserve">
+    <value>The field {0} must be a string with a maximum length of {1}.</value>
+  </data>
+  <data name="The field {0} must be between {1} and {2}." xml:space="preserve">
+    <value>The field {0} must be between {1} and {2}.</value>
+  </data>
+  <data name="The field {0} must match the regular expression '{1}'." xml:space="preserve">
+    <value>The field {0} must match the regular expression '{1}'.</value>
+  </data>
+  <data name="Catalog.Brand.NotFound" xml:space="preserve">
+    <value>Brand not found</value>
+  </data>
+  <data name="Catalog.Brand.DuplicateName" xml:space="preserve">
+    <value>Another brand already uses this name</value>
+  </data>
+  <data name="Catalog.Brand.HasProducts" xml:space="preserve">
+    <value>Can't delete a brand that still has products</value>
+  </data>
+  <data name="Address.NotFound" xml:space="preserve">
+    <value>Address not found</value>
+  </data>
+  <data name="Wishlist.Empty" xml:space="preserve">
+    <value>Your wishlist is empty</value>
+  </data>
+  <data name="Catalog.Variant.NotFound" xml:space="preserve">
+    <value>Variant not found</value>
+  </data>
+  <data name="Catalog.Variant.DuplicateSku" xml:space="preserve">
+    <value>Another variant already uses this SKU</value>
+  </data>
+  <data name="Cart.ItemNotFound" xml:space="preserve">
+    <value>Item not found in your cart</value>
+  </data>
+  <data name="Order.CannotChangeFinalStatus" xml:space="preserve">
+    <value>Can't change the status of an order that's already delivered or cancelled</value>
+  </data>
+  <data name="Files.AtLeastOneRequired" xml:space="preserve">
+    <value>Please upload at least one image</value>
+  </data>
+  <data name="Catalog.ProductImage.NotFound" xml:space="preserve">
+    <value>Image not found</value>
+  </data>
+  <data name="Discount.NotFound" xml:space="preserve">
+    <value>Discount not found</value>
+  </data>
+  <data name="Discount.DuplicateCode" xml:space="preserve">
+    <value>Another discount already uses this code</value>
+  </data>
+  <data name="Discount.ProductAlreadyAssigned" xml:space="preserve">
+    <value>This product is already assigned to this discount</value>
+  </data>
+  <data name="Discount.ProductNotAssigned" xml:space="preserve">
+    <value>This product isn't assigned to this discount</value>
+  </data>
+  <data name="Review.AlreadyReviewed" xml:space="preserve">
+    <value>You've already reviewed this product</value>
+  </data>
+  <data name="Review.NotFound" xml:space="preserve">
+    <value>Review not found</value>
+  </data>
+  <data name="Catalog.Category.ParentNotFound" xml:space="preserve">
+    <value>Parent category not found</value>
+  </data>
+  <data name="Catalog.Category.CannotBeSelfParent" xml:space="preserve">
+    <value>A category can't be its own parent</value>
+  </data>
+  <data name="Discount.EndDateAfterStartDate" xml:space="preserve">
+    <value>The end date must be after the start date</value>
+  </data>
+  <data name="Discount.PercentageRange" xml:space="preserve">
+    <value>Percentage discount must be between 1 and 100</value>
+  </data>
+  <data name="Discount.ValueMustBePositive" xml:space="preserve">
+    <value>Discount value must be greater than zero</value>
+  </data>
+  <data name="Jwt.MalformedToken" xml:space="preserve">
+    <value>Malformed token</value>
+  </data>
+  <data name="Jwt.InvalidSignature" xml:space="preserve">
+    <value>Invalid token signature</value>
+  </data>
+  <data name="Jwt.UnreadablePayload" xml:space="preserve">
+    <value>Could not read token data</value>
+  </data>
+  <data name="Jwt.Expired" xml:space="preserve">
+    <value>Token has expired</value>
+  </data>
+  <data name="Jwt.Invalid" xml:space="preserve">
+    <value>Invalid token</value>
+  </data>
+  <data name="Jwt.InvalidIssuer" xml:space="preserve">
+    <value>Invalid token issuer</value>
+  </data>
+  <data name="Jwt.InvalidAudience" xml:space="preserve">
+    <value>Invalid token audience</value>
+  </data>
+  <data name="Jwt.NoToken" xml:space="preserve">
+    <value>No token provided</value>
+  </data>
+  <data name="Email.PasswordReset.Subject" xml:space="preserve">
+    <value>Reset your password - Lumaire</value>
+  </data>
+  <data name="Email.PasswordReset.Body" xml:space="preserve">
+    <value>Hi {0},
+
+We received a request to reset your password.
+Click the link below within 15 minutes to reset it:
+
+{1}
+
+If you didn't request this, just ignore this email.</value>
+  </data>
+  <data name="Email.SmtpNotConfigured" xml:space="preserve">
+    <value>SMTP not configured. Password reset link for {0}: {1}</value>
+  </data>
+  <data name="Order.CreatedNote" xml:space="preserve">
+    <value>Order created</value>
+  </data>
+  <data name="Catalog.Product.CreatedButImageUploadFailed" xml:space="preserve">
+    <value>The product was created, but there was an error uploading images: {0}</value>
+  </data>
+  <data name="Common.OkGotIt" xml:space="preserve">
+    <value>Ok, got it!</value>
+  </data>
+  <data name="Validation.Required" xml:space="preserve">
+    <value>{PropertyName} is required</value>
+  </data>
+  <data name="Validation.Email" xml:space="preserve">
+    <value>{PropertyName} must be a valid email address</value>
+  </data>
+  <data name="Validation.MinLength" xml:space="preserve">
+    <value>{PropertyName} must be at least {MinLength} characters</value>
+  </data>
+  <data name="Validation.MaxLength" xml:space="preserve">
+    <value>{PropertyName} must not exceed {MaxLength} characters</value>
+  </data>
+  <data name="Validation.Length" xml:space="preserve">
+    <value>{PropertyName} must be between {MinLength} and {MaxLength} characters</value>
+  </data>
+  <data name="Validation.PasswordMismatch" xml:space="preserve">
+    <value>Passwords do not match</value>
+  </data>
+  <data name="Validation.GreaterThanZero" xml:space="preserve">
+    <value>{PropertyName} must be greater than zero</value>
+  </data>
+  <data name="Validation.GreaterThanOrEqualToZero" xml:space="preserve">
+    <value>{PropertyName} can't be negative</value>
+  </data>
+  <data name="Validation.InvalidSlug" xml:space="preserve">
+    <value>Slug can only contain lowercase letters, numbers, and hyphens</value>
+  </data>
+  <data name="Validation.InvalidPhone" xml:space="preserve">
+    <value>{PropertyName} must be a valid phone number</value>
+  </data>
+  <data name="Nav.Notifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Nav.Chat" xml:space="preserve">
+    <value>Support Chat</value>
+  </data>
+  <data name="Nav.AuditLog" xml:space="preserve">
+    <value>Audit Log</value>
+  </data>
+  <data name="Notification.NotFound" xml:space="preserve">
+    <value>Notification not found</value>
+  </data>
+  <data name="Notification.Title" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Notification.Empty" xml:space="preserve">
+    <value>No notifications yet</value>
+  </data>
+  <data name="Notification.MarkAllRead" xml:space="preserve">
+    <value>Mark all as read</value>
+  </data>
+  <data name="Notification.NewOrder.Title" xml:space="preserve">
+    <value>New order received</value>
+  </data>
+  <data name="Notification.NewOrder.Message" xml:space="preserve">
+    <value>A new order {0} was placed</value>
+  </data>
+  <data name="Notification.OrderStatusChanged.Title" xml:space="preserve">
+    <value>Your order status changed</value>
+  </data>
+  <data name="Notification.OrderStatusChanged.Message" xml:space="preserve">
+    <value>Order {0} is now {1}</value>
+  </data>
+  <data name="Chat.ConversationNotFound" xml:space="preserve">
+    <value>Conversation not found</value>
+  </data>
+  <data name="Chat.NewMessageNotificationTitle" xml:space="preserve">
+    <value>New chat message</value>
+  </data>
+  <data name="Chat.NewMessageNotificationBody" xml:space="preserve">
+    <value>{0} sent you a new message</value>
+  </data>
+  <data name="Chat.Title" xml:space="preserve">
+    <value>Support Chat</value>
+  </data>
+  <data name="Chat.AdminTitle" xml:space="preserve">
+    <value>Customer Conversations</value>
+  </data>
+  <data name="Chat.TypeMessage" xml:space="preserve">
+    <value>Type a message...</value>
+  </data>
+  <data name="Chat.Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Chat.NoConversations" xml:space="preserve">
+    <value>No conversations yet</value>
+  </data>
+  <data name="Chat.SelectConversation" xml:space="preserve">
+    <value>Select a conversation to start chatting</value>
+  </data>
+  <data name="Chat.Empty" xml:space="preserve">
+    <value>No messages yet, say hello!</value>
+  </data>
+  <data name="AuditLog.Title" xml:space="preserve">
+    <value>Audit Log</value>
+  </data>
+  <data name="AuditLog.Filter.Entity" xml:space="preserve">
+    <value>Entity</value>
+  </data>
+  <data name="AuditLog.Filter.Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="AuditLog.Filter.User" xml:space="preserve">
+    <value>User Id</value>
+  </data>
+  <data name="AuditLog.Filter.From" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="AuditLog.Filter.To" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="AuditLog.Filter.Apply" xml:space="preserve">
+    <value>Apply Filters</value>
+  </data>
+  <data name="AuditLog.Column.Timestamp" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="AuditLog.Column.User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="AuditLog.Column.Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="AuditLog.Column.Entity" xml:space="preserve">
+    <value>Entity</value>
+  </data>
+  <data name="AuditLog.Column.Changes" xml:space="preserve">
+    <value>Changes</value>
+  </data>
+  <data name="AuditLog.Action.Create" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="AuditLog.Action.Update" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="AuditLog.Action.Delete" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="AuditLog.System" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="AuditLog.ViewChanges" xml:space="preserve">
+    <value>View changes</value>
+  </data>
+  <data name="Notification.NewReview.Title" xml:space="preserve">
+    <value>New product review</value>
+  </data>
+  <data name="Notification.NewReview.Message" xml:space="preserve">
+    <value>A new review was submitted for {0}</value>
+  </data>
+  <data name="Nav.Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Auth.RefreshToken.Invalid" xml:space="preserve">
+    <value>This session has expired or is invalid, please sign in again</value>
+  </data>
+  <data name="Auth.Logout.InvalidToken" xml:space="preserve">
+    <value>This session token is invalid or was already signed out</value>
+  </data>
+  <data name="Auth.ConfirmEmail.Invalid" xml:space="preserve">
+    <value>This confirmation link is invalid or has expired</value>
+  </data>
+  <data name="Auth.ConfirmEmail.AlreadyConfirmed" xml:space="preserve">
+    <value>This email is already confirmed</value>
+  </data>
+  <data name="Auth.ConfirmEmail.Success" xml:space="preserve">
+    <value>Your email has been confirmed successfully</value>
+  </data>
+  <data name="Auth.TwoFactor.CodeSent" xml:space="preserve">
+    <value>We emailed you a verification code, please enter it below</value>
+  </data>
+  <data name="Auth.TwoFactor.CodeLabel" xml:space="preserve">
+    <value>Verification code</value>
+  </data>
+  <data name="Auth.TwoFactor.VerifyButton" xml:space="preserve">
+    <value>Verify &amp; Sign In</value>
+  </data>
+  <data name="Auth.TwoFactor.BackToLogin" xml:space="preserve">
+    <value>Back to login</value>
+  </data>
+  <data name="Auth.ExternalLogin.NotConfigured" xml:space="preserve">
+    <value>This sign-in method isn't set up yet, please use your email and password</value>
+  </data>
+  <data name="Auth.ExternalLogin.ProviderError" xml:space="preserve">
+    <value>Sign-in was cancelled or failed: {0}</value>
+  </data>
+  <data name="Auth.ExternalLogin.Failed" xml:space="preserve">
+    <value>We couldn't complete sign-in with that provider, please try again</value>
+  </data>
+  <data name="Auth.ExternalLogin.NoEmail" xml:space="preserve">
+    <value>This account has no email address we can use, please try a different sign-in method</value>
+  </data>
+  <data name="Auth.ExternalLogin.OrDivider" xml:space="preserve">
+    <value>or continue with</value>
+  </data>
+  <data name="Auth.ExternalLogin.Google" xml:space="preserve">
+    <value>Google</value>
+  </data>
+  <data name="Auth.ExternalLogin.Facebook" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="Auth.Showcase.Title" xml:space="preserve">
+    <value>Everything you love, in one place</value>
+  </data>
+  <data name="Auth.Showcase.Subtitle" xml:space="preserve">
+    <value>Sign in to track your orders, save your favourites and check out faster.</value>
+  </data>
+  <data name="Auth.Showcase.Point1.Title" xml:space="preserve">
+    <value>Secure by default</value>
+  </data>
+  <data name="Auth.Showcase.Point1.Body" xml:space="preserve">
+    <value>Your data is protected with encrypted sessions and optional two-factor login.</value>
+  </data>
+  <data name="Auth.Showcase.Point2.Title" xml:space="preserve">
+    <value>Fast checkout</value>
+  </data>
+  <data name="Auth.Showcase.Point2.Body" xml:space="preserve">
+    <value>Saved addresses and a persistent cart mean fewer clicks every time you shop.</value>
+  </data>
+  <data name="Auth.Showcase.Point3.Title" xml:space="preserve">
+    <value>Support when you need it</value>
+  </data>
+  <data name="Auth.Showcase.Point3.Body" xml:space="preserve">
+    <value>Our team is on hand to help with orders, returns and anything in between.</value>
+  </data>
+  <data name="Auth.Footer.Rights" xml:space="preserve">
+    <value>All rights reserved.</value>
+  </data>
+  <data name="Auth.ExternalLogin.Processing" xml:space="preserve">
+    <value>Signing you in…</value>
+  </data>
+  <data name="Auth.TwoFactor.ChallengeNotFound" xml:space="preserve">
+    <value>This verification request is invalid or has expired, please sign in again</value>
+  </data>
+  <data name="Auth.TwoFactor.InvalidCode" xml:space="preserve">
+    <value>The verification code is incorrect or has expired</value>
+  </data>
+  <data name="Auth.TwoFactor.TooManyAttempts" xml:space="preserve">
+    <value>Too many incorrect attempts, please sign in again to request a new code</value>
+  </data>
+  <data name="Auth.TwoFactor.WrongPassword" xml:space="preserve">
+    <value>Your current password is incorrect</value>
+  </data>
+  <data name="Auth.TwoFactor.AlreadyEnabled" xml:space="preserve">
+    <value>Two-factor authentication is already enabled on this account</value>
+  </data>
+  <data name="Auth.TwoFactor.AlreadyDisabled" xml:space="preserve">
+    <value>Two-factor authentication is already disabled on this account</value>
+  </data>
+  <data name="Email.Confirmation.Subject" xml:space="preserve">
+    <value>Confirm your email address</value>
+  </data>
+  <data name="Email.Confirmation.Body" xml:space="preserve">
+    <value>Hello {0}, please confirm your email by opening this link: {1}</value>
+  </data>
+  <data name="Email.TwoFactor.Subject" xml:space="preserve">
+    <value>Your verification code</value>
+  </data>
+  <data name="Order.ShippingFree" xml:space="preserve">
+    <value>Free</value>
+  </data>
+  <data name="Product.AllCategories" xml:space="preserve">
+    <value>All Categories</value>
+  </data>
+  <data name="Product.AllBrands" xml:space="preserve">
+    <value>All Brands</value>
+  </data>
+  <data name="Product.Singular" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="Product.Plural" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Product.SelectCategory" xml:space="preserve">
+    <value>Select a category</value>
+  </data>
+  <data name="Product.SelectBrand" xml:space="preserve">
+    <value>Select a brand</value>
+  </data>
+  <data name="Language.Title" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Theme.Title" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Order.WhatsAppContactLabel" xml:space="preserve">
+    <value>For payment or inquiries (InstaPay / Vodafone Cash)</value>
+  </data>
+  <data name="The field {0} is required." xml:space="preserve">
+    <value>The {0} field is required.</value>
+  </data>
+  <data name="{0} is required" xml:space="preserve">
+    <value>{0} is required</value>
+  </data>
+  <data name="The field {0} must be a number." xml:space="preserve">
+    <value>The field {0} must be a number.</value>
+  </data>
+  <data name="The {0} field must be a number." xml:space="preserve">
+    <value>The field {0} must be a number.</value>
+  </data>
+  <data name="The {0} field must be a string with a minimum length of {2} and a maximum length of {1}." xml:space="preserve">
+    <value>The field {0} must be a string with a minimum length of {2} and a maximum length of {1}.</value>
+  </data>
+  <data name="The {0} field must be a string with a maximum length of {1}." xml:space="preserve">
+    <value>The field {0} must be a string with a maximum length of {1}.</value>
+  </data>
+  <data name="The field {0} must be a string with a minimum length of {1}." xml:space="preserve">
+    <value>The field {0} must be a string with a minimum length of {1}.</value>
+  </data>
+  <data name="The {0} field must be a string with a minimum length of {1}." xml:space="preserve">
+    <value>The field {0} must be a string with a minimum length of {1}.</value>
+  </data>
+  <data name="The {0} field must be between {1} and {2}." xml:space="preserve">
+    <value>The field {0} must be between {1} and {2}.</value>
+  </data>
+  <data name="The field {0} must be a valid email address." xml:space="preserve">
+    <value>The {0} field is not a valid e-mail address.</value>
+  </data>
+  <data name="The field {0} must be a valid phone number." xml:space="preserve">
+    <value>The {0} field is not a valid phone number.</value>
+  </data>
+  <data name="&quot;{0}&quot; and &quot;{1}&quot; do not match." xml:space="preserve">
+    <value>'{0}' and '{1}' do not match.</value>
+  </data>
+  <data name="The {0} field must match the regular expression '{1}'." xml:space="preserve">
+    <value>The field {0} must match the regular expression '{1}'.</value>
+  </data>
+  <data name="Validation.ModelBinding.AttemptedValueIsInvalid" xml:space="preserve">
+    <value>The value '{0}' is not valid for {1}.</value>
+  </data>
+  <data name="Validation.ModelBinding.MissingBindRequiredValue" xml:space="preserve">
+    <value>A value for the '{0}' property was not provided.</value>
+  </data>
+  <data name="Validation.ModelBinding.MissingKeyOrValue" xml:space="preserve">
+    <value>A value is required.</value>
+  </data>
+  <data name="Validation.ModelBinding.MissingRequestBodyRequiredValue" xml:space="preserve">
+    <value>A non-empty request body is required.</value>
+  </data>
+  <data name="Validation.ModelBinding.NonPropertyAttemptedValueIsInvalid" xml:space="preserve">
+    <value>The value '{0}' is not valid.</value>
+  </data>
+  <data name="Validation.ModelBinding.NonPropertyUnknownValueIsInvalid" xml:space="preserve">
+    <value>The supplied value is invalid.</value>
+  </data>
+  <data name="Validation.ModelBinding.NonPropertyValueMustBeANumber" xml:space="preserve">
+    <value>The field must be a number.</value>
+  </data>
+  <data name="Validation.ModelBinding.UnknownValueIsInvalid" xml:space="preserve">
+    <value>The supplied value is invalid for {0}.</value>
+  </data>
+  <data name="Validation.ModelBinding.ValueIsInvalid" xml:space="preserve">
+    <value>The value '{0}' is invalid.</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SKU" xml:space="preserve">
+    <value>SKU</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="CompareAtPrice" xml:space="preserve">
+    <value>Compare-at Price</value>
+  </data>
+  <data name="StockQuantity" xml:space="preserve">
+    <value>Stock Quantity</value>
+  </data>
+  <data name="CategoryId" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="BrandId" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="Brand" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Discount Code</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="DiscountType" xml:space="preserve">
+    <value>Discount Type</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="MinimumOrderAmount" xml:space="preserve">
+    <value>Minimum Order Amount</value>
+  </data>
+  <data name="UsageLimit" xml:space="preserve">
+    <value>Usage Limit</value>
+  </data>
+  <data name="Slug" xml:space="preserve">
+    <value>Slug</value>
+  </data>
+  <data name="ParentCategoryId" xml:space="preserve">
+    <value>Parent Category</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="ReviewText" xml:space="preserve">
+    <value>Review Text</value>
+  </data>
+  <data name="AddressLine1" xml:space="preserve">
+    <value>Address Line 1</value>
+  </data>
+  <data name="AddressLine2" xml:space="preserve">
+    <value>Address Line 2</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State / Governorate</value>
+  </data>
+  <data name="PostalCode" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="RecipientName" xml:space="preserve">
+    <value>Recipient Name</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember Me</value>
+  </data>
+</root>

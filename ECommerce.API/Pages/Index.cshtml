@@ -1,0 +1,91 @@
+@page "/"
+@model ECommerce.API.Pages.IndexModel
+@{
+    ViewData["Title"] = Localizer["Nav.Dashboard"].Value;
+}
+
+<div class="page-header">
+    <h1>
+        @if (User.Identity is { IsAuthenticated: true })
+        {
+            @Localizer["Common.WelcomeBack"]
+        }
+        else
+        {
+            @Localizer["Nav.Dashboard"]
+        }
+    </h1>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="fw-bold mb-2">@Localizer["Dashboard.Welcome"]</h5>
+        <p class="text-muted mb-0">Lumaire</p>
+    </div>
+</div>
+
+<h6 class="fw-bold mb-3">@Localizer["Dashboard.QuickLinks"]</h6>
+<div class="row g-4">
+    <div class="col-sm-6 col-lg-3">
+        <a asp-page="/Products/Index" class="text-decoration-none text-reset">
+            <div class="card h-100 text-center py-4">
+                <i class="bi bi-box-seam fs-1 text-brand mb-2"></i>
+                <div class="fw-semibold">@Localizer["Nav.Products"]</div>
+            </div>
+        </a>
+    </div>
+    @if (User.Identity is { IsAuthenticated: true })
+    {
+        <div class="col-sm-6 col-lg-3">
+            <a asp-page="/Cart/Index" class="text-decoration-none text-reset">
+                <div class="card h-100 text-center py-4">
+                    <i class="bi bi-cart3 fs-1 text-brand mb-2"></i>
+                    <div class="fw-semibold">@Localizer["Nav.Cart"]</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <a asp-page="/Orders/Index" class="text-decoration-none text-reset">
+                <div class="card h-100 text-center py-4">
+                    <i class="bi bi-receipt fs-1 text-brand mb-2"></i>
+                    <div class="fw-semibold">@Localizer["Nav.MyOrders"]</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <a asp-page="/Wishlist/Index" class="text-decoration-none text-reset">
+                <div class="card h-100 text-center py-4">
+                    <i class="bi bi-heart fs-1 text-brand mb-2"></i>
+                    <div class="fw-semibold">@Localizer["Nav.Wishlist"]</div>
+                </div>
+            </a>
+        </div>
+    }
+    @if (Model.IsAdmin)
+    {
+        <div class="col-sm-6 col-lg-3">
+            <a asp-page="/Categories/Index" class="text-decoration-none text-reset">
+                <div class="card h-100 text-center py-4">
+                    <i class="bi bi-diagram-3 fs-1 text-brand mb-2"></i>
+                    <div class="fw-semibold">@Localizer["Nav.Categories"]</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <a asp-page="/Discounts/Index" class="text-decoration-none text-reset">
+                <div class="card h-100 text-center py-4">
+                    <i class="bi bi-tags fs-1 text-brand mb-2"></i>
+                    <div class="fw-semibold">@Localizer["Nav.Discounts"]</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <a asp-page="/Orders/Admin/AllOrders" class="text-decoration-none text-reset">
+                <div class="card h-100 text-center py-4">
+                    <i class="bi bi-clipboard-data fs-1 text-brand mb-2"></i>
+                    <div class="fw-semibold">@Localizer["Nav.AllOrders"]</div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
