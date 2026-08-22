@@ -155,6 +155,53 @@ When you see messages in the terminal saying the app has started, open your web 
 
 ---
 
+## Performance Optimizations
+
+Recent architectural and data-access optimizations have significantly improved throughput, latency, and database efficiency across the application:
+
+### 1. Database Round-Trip Reduction
+- **Merged Existence & Data-Fetching Queries**: Replaced separate existence checks (`AnyAsync`) with consolidated queries that both validate existence and fetch necessary related data (e.g., entity names for `Category`, `Brand`, etc.) in a single round-trip.
+- **Single `SaveChangesAsync()` per Request**: Collapsed multiple `SaveChangesAsync()` invocations across Create/Update handlers into a single database commit. File and image storage operations execute prior to persistence rather than splitting work across multiple saves.
+- **Eliminated Post-Mutation Re-Queries**: Response DTOs are constructed directly from in-memory tracked entities and pre-fetched relational data rather than executing redundant database queries following inserts or updates.
+
+### 2. Query Pattern Improvements (`Include` &rarr; `Select`)
+- **Targeted Projections**: Replaced heavy `.Include()` / `.ThenInclude()` navigation chains with selective `.Select()` projections wherever full entity graphs were not required. This avoids unnecessary EF Core SplitQuery overhead and over-fetching, reserving `.Include()` strictly for scenarios where domain logic mutates navigation collections in memory.
+
+### 3. In-Memory Caching (`IMemoryCache`)
+Read-heavy catalog and discount operations utilize in-memory caching with decorator handlers and explicit cache invalidation on mutations:
+- **Categories**: `CachedGetAllCategoriesQueryHandler` caches all categories under key `catalog:categories` (10-minute expiration). Invalidated via `_cache.Remove(...)` on category Create, Update, or Delete.
+- **Brands**: `CachedGetAllBrandsQueryHandler` caches all brands under key `catalog:brands` (10-minute expiration). Invalidated on brand Create, Update, Delete, or logo upload.
+- **Active Discounts**: `CachedDiscountResolver` caches active discounts under key `discounts:active:all` (5-minute expiration). Invalidated on discount Create, Update, Delete, or product assignment/removal.
+
+### 4. Database Indexing & Integrity Constraints
+Database-level indexes and constraints enforce relational uniqueness and accelerate query filtering:
+- **Unique Indexes (Duplicate-Check Logic)**: Uniqueness validation (e.g., SKU, Slug, Brand Name) relies on database-enforced unique indexes rather than solely application-level checks:
+  - `Product.SKU` and `ProductVariant.SKU`
+  - `Category.Slug`
+  - `Brand.Name`
+  - `Discount.Code` (filtered: `[Code] IS NOT NULL`)
+  - `Order.OrderNumber`
+  - `ChatConversation.CustomerId`
+  - `Wishlist.UserId`
+  - `WishlistItem (WishlistId, ProductId)`
+  - `ProductReview (ProductId, UserId)`
+  - `ProductDiscount (ProductId, DiscountId)`
+  - `RefreshToken.TokenHash`
+- **Composite & Query Indexes**:
+  - `Product`: `(CategoryId, IsActive, CreatedAt)`, `(BrandId, IsActive)`, `IsActive`, `Name`
+  - `ProductImage`: `(ProductId, IsMain, DisplayOrder)`
+  - `OrderStatusHistory`: `(OrderId, CreatedAt)`
+  - `CartItem`: `(CartId, ProductId)`
+  - `Notification`: `(UserId, IsRead)`, `CreatedAt`
+  - `AuditLog`: `Timestamp`, `(EntityName, EntityId)`, `UserId`
+
+### 5. Measured Impact
+Benchmarking key operations demonstrated substantial improvements in throughput and execution time:
+- **`CreateProduct` Execution Time**: Dropped from **~3.3s (cold) / ~1.27s (warm)** down to **~0.9s**.
+- **Database Round-Trips**: Reduced from roughly **8–10 round-trips** down to **~3 round-trips** per request.
+
+---
+
 ## Want to Help? (Contributing)
 
 We love help from friends! If you want to make this project even better:
