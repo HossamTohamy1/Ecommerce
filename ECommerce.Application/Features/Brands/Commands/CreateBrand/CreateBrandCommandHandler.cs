@@ -8,14 +8,16 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Res
     private readonly IApplicationDbContext _context;
     private readonly IFileStorageService _fileStorage;
     private readonly IStringLocalizer<SharedResource> _localizer;
+    private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
     private const string LogoFolder = "brands";
 
-    public CreateBrandCommandHandler(IApplicationDbContext context, IFileStorageService fileStorage, IStringLocalizer<SharedResource> localizer)
+    public CreateBrandCommandHandler(IApplicationDbContext context, IFileStorageService fileStorage, IStringLocalizer<SharedResource> localizer, Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
     {
         _context = context;
         _fileStorage = fileStorage;
         _localizer = localizer;
+        _cache = cache;
     }
 
     public async Task<Result<BrandDto>> Handle(CreateBrandCommand command, CancellationToken ct)
@@ -61,12 +63,16 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Res
             return Result<BrandDto>.Failure(_localizer["Catalog.Brand.DuplicateName"].Value);
         }
 
-        var dto = await _context.Set<Brand>()
-            .AsNoTracking()
-            .Where(b => b.Id == brand.Id)
-            .ProjectToType<BrandDto>()
-            .FirstOrDefaultAsync(ct);
+        _cache.Remove("catalog:brands");
 
-        return dto is null ? Result<BrandDto>.Failure(_localizer["Catalog.Brand.NotFound"].Value) : Result<BrandDto>.Success(dto);
+        var dto = new BrandDto
+        {
+            Id = brand.Id,
+            Name = brand.Name,
+            LogoUrl = brand.LogoUrl,
+            ProductCount = 0
+        };
+
+        return Result<BrandDto>.Success(dto);
     }
 }

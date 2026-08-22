@@ -8,14 +8,16 @@ public class UploadBrandLogoCommandHandler : IRequestHandler<UploadBrandLogoComm
     private readonly IApplicationDbContext _context;
     private readonly IFileStorageService _fileStorage;
     private readonly IStringLocalizer<SharedResource> _localizer;
+    private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
     private const string LogoFolder = "brands";
 
-    public UploadBrandLogoCommandHandler(IApplicationDbContext context, IFileStorageService fileStorage, IStringLocalizer<SharedResource> localizer)
+    public UploadBrandLogoCommandHandler(IApplicationDbContext context, IFileStorageService fileStorage, IStringLocalizer<SharedResource> localizer, Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
     {
         _context = context;
         _fileStorage = fileStorage;
         _localizer = localizer;
+        _cache = cache;
     }
 
     public async Task<Result<BrandDto>> Handle(UploadBrandLogoCommand command, CancellationToken ct)
@@ -42,12 +44,18 @@ public class UploadBrandLogoCommandHandler : IRequestHandler<UploadBrandLogoComm
             await _fileStorage.DeleteAsync(oldLogoUrl, ct);
         }
 
-        var dto = await _context.Set<Brand>()
-            .AsNoTracking()
-            .Where(b => b.Id == command.Id)
-            .ProjectToType<BrandDto>()
-            .FirstOrDefaultAsync(ct);
+        _cache.Remove("catalog:brands");
 
-        return dto is null ? Result<BrandDto>.Failure(_localizer["Catalog.Brand.NotFound"].Value) : Result<BrandDto>.Success(dto);
+        var productCount = await _context.Set<Product>().CountAsync(p => p.BrandId == command.Id, ct);
+
+        var dto = new BrandDto
+        {
+            Id = brand.Id,
+            Name = brand.Name,
+            LogoUrl = brand.LogoUrl,
+            ProductCount = productCount
+        };
+
+        return Result<BrandDto>.Success(dto);
     }
 }

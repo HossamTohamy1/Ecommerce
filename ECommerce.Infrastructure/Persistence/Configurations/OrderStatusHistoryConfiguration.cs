@@ -12,6 +12,8 @@ public class OrderStatusHistoryConfiguration : IEntityTypeConfiguration<OrderSta
         builder.Property(h => h.Status).HasConversion<string>().HasMaxLength(20);
         builder.Property(h => h.Note).HasMaxLength(1000);
 
+        builder.HasIndex(h => new { h.OrderId, h.CreatedAt });
+
         builder.HasQueryFilter(h => !h.IsDeleted);
     }
 }

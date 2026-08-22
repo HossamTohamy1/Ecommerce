@@ -144,11 +144,8 @@ try
 
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-    //if (!app.Environment.IsDevelopment())
-    //{
-        app.UseHttpsRedirection();
-        app.UseExceptionHandler("/Error");
-    //}
+    app.UseHttpsRedirection();
+    app.UseExceptionHandler("/Error");
 
     app.UseStaticFiles();
 

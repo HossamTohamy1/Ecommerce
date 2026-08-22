@@ -101,7 +101,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script>
-        // Global vendor polyfills & stubs to ensure theme scripts never throw Uncaught ReferenceErrors
         var SmoothScroll = window.SmoothScroll = window.SmoothScroll || function(selector, options) { return { destroy: function() {}, init: function() {} }; };
         var smoothScroll = window.smoothScroll = window.smoothScroll || window.SmoothScroll;
         var countUp = window.countUp = window.countUp || { CountUp: function() { return { start: function() {} }; } };

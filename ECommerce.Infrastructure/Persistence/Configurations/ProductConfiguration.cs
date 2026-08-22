@@ -18,6 +18,9 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.HasIndex(p => p.SKU).IsUnique();
         builder.HasIndex(p => p.Name);
+        builder.HasIndex(p => new { p.CategoryId, p.IsActive, p.CreatedAt });
+        builder.HasIndex(p => new { p.BrandId, p.IsActive });
+        builder.HasIndex(p => p.IsActive);
 
         builder.HasOne(p => p.Category)
             .WithMany(c => c.Products)

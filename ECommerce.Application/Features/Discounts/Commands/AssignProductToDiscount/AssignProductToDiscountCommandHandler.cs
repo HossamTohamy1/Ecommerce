@@ -4,11 +4,13 @@ public class AssignProductToDiscountCommandHandler : IRequestHandler<AssignProdu
 {
     private readonly IApplicationDbContext _context;
     private readonly IStringLocalizer<SharedResource> _localizer;
+    private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
-    public AssignProductToDiscountCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer)
+    public AssignProductToDiscountCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer, Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
     {
         _context = context;
         _localizer = localizer;
+        _cache = cache;
     }
 
     public async Task<Result> Handle(AssignProductToDiscountCommand command, CancellationToken ct)
@@ -38,6 +40,7 @@ public class AssignProductToDiscountCommandHandler : IRequestHandler<AssignProdu
 
         await _context.SaveChangesAsync(ct);
 
+        _cache.Remove("discounts:active:all");
         return Result.Success();
     }
 

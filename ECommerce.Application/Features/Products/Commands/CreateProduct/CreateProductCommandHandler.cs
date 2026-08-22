@@ -30,14 +30,41 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             return Result<ProductDto>.Failure(_localizer["Catalog.Product.DuplicateSku"].Value);
         }
 
-        if (!await _context.Set<Category>().AnyAsync(c => c.Id == command.Request.CategoryId, ct))
+        var categoryName = await _context.Set<Category>()
+            .Where(c => c.Id == command.Request.CategoryId)
+            .Select(c => c.Name)
+            .FirstOrDefaultAsync(ct);
+
+        if (categoryName is null)
         {
             return Result<ProductDto>.Failure(_localizer["Catalog.Category.NotFound"].Value);
         }
 
-        if (command.Request.BrandId.HasValue && !await _context.Set<Brand>().AnyAsync(b => b.Id == command.Request.BrandId, ct))
+        string? brandName = null;
+        if (command.Request.BrandId.HasValue)
         {
-            return Result<ProductDto>.Failure(_localizer["Catalog.Brand.NotFound"].Value);
+            brandName = await _context.Set<Brand>()
+                .Where(b => b.Id == command.Request.BrandId.Value)
+                .Select(b => b.Name)
+                .FirstOrDefaultAsync(ct);
+
+            if (brandName is null)
+            {
+                return Result<ProductDto>.Failure(_localizer["Catalog.Brand.NotFound"].Value);
+            }
+        }
+
+        string? imageUrl = null;
+        if (command.Request.Images is { Count: > 0 })
+        {
+            var file = command.Request.Images.First();
+            var uploadResult = await _fileStorage.SaveAsync(file, ImagesFolder, ct);
+            if (!uploadResult.Succeeded)
+            {
+                return Result<ProductDto>.Failure(_localizer["Catalog.Product.CreatedButImageUploadFailed", uploadResult.Error!].Value);
+            }
+
+            imageUrl = uploadResult.Data!.RelativeUrl;
         }
 
         Product product;
@@ -53,9 +80,18 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
                 command.Request.CategoryId,
                 command.Request.BrandId,
                 command.UserId);
+
+            if (!string.IsNullOrEmpty(imageUrl))
+            {
+                product.AddImage(imageUrl, command.UserId);
+            }
         }
         catch (DomainException ex)
         {
+            if (!string.IsNullOrEmpty(imageUrl))
+            {
+                await _fileStorage.DeleteAsync(imageUrl, ct);
+            }
             return Result<ProductDto>.Failure(LocalizeDomainError(ex));
         }
 
@@ -67,50 +103,51 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
         }
         catch (DbUpdateException)
         {
+            if (!string.IsNullOrEmpty(imageUrl))
+            {
+                await _fileStorage.DeleteAsync(imageUrl, ct);
+            }
             return Result<ProductDto>.Failure(_localizer["Catalog.Product.DuplicateSku"].Value);
         }
 
-        if (command.Request.Images is { Count: > 0 })
+        var dto = new ProductDto
         {
-            var file = command.Request.Images.First();
-            var uploadResult = await _fileStorage.SaveAsync(file, ImagesFolder, ct);
-            if (!uploadResult.Succeeded)
-            {
-                return Result<ProductDto>.Failure(_localizer["Catalog.Product.CreatedButImageUploadFailed", uploadResult.Error!].Value);
-            }
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            SKU = product.SKU,
+            Price = product.Price,
+            CompareAtPrice = product.CompareAtPrice,
+            StockQuantity = product.StockQuantity,
+            IsActive = product.IsActive,
+            CategoryId = product.CategoryId,
+            CategoryName = categoryName,
+            BrandId = product.BrandId,
+            BrandName = brandName,
+            Images = product.Images
+                .OrderByDescending(i => i.IsMain).ThenBy(i => i.DisplayOrder)
+                .Select(i => new ProductImageDto
+                {
+                    Id = i.Id,
+                    ImageUrl = i.ImageUrl,
+                    IsMain = i.IsMain,
+                    DisplayOrder = i.DisplayOrder
+                })
+                .ToList(),
+            Variants = product.Variants
+                .Select(v => new ProductVariantDto
+                {
+                    Id = v.Id,
+                    SKU = v.SKU,
+                    Price = v.Price,
+                    StockQuantity = v.StockQuantity,
+                    Size = v.Size,
+                    Color = v.Color
+                })
+                .ToList()
+        };
 
-            product.AddImage(uploadResult.Data!.RelativeUrl, command.UserId);
-            await _context.SaveChangesAsync(ct);
-        }
-
-        var dto = await _context.Set<Product>()
-            .AsNoTracking()
-            .Where(p => p.Id == product.Id)
-            .Select(p => new ProductDto
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                SKU = p.SKU,
-                Price = p.Price,
-                CompareAtPrice = p.CompareAtPrice,
-                StockQuantity = p.StockQuantity,
-                IsActive = p.IsActive,
-                CategoryId = p.CategoryId,
-                CategoryName = p.Category.Name,
-                BrandId = p.BrandId,
-                BrandName = p.Brand != null ? p.Brand.Name : null,
-                Images = p.Images
-                    .OrderByDescending(i => i.IsMain).ThenBy(i => i.DisplayOrder)
-                    .Select(i => new ProductImageDto { Id = i.Id, ImageUrl = i.ImageUrl, IsMain = i.IsMain, DisplayOrder = i.DisplayOrder })
-                    .ToList(),
-                Variants = p.Variants
-                    .Select(v => new ProductVariantDto { Id = v.Id, SKU = v.SKU, Price = v.Price, StockQuantity = v.StockQuantity, Size = v.Size, Color = v.Color })
-                    .ToList()
-            })
-            .FirstOrDefaultAsync(ct);
-
-        return dto is null ? Result<ProductDto>.Failure(_localizer["Catalog.Product.NotFound"].Value) : Result<ProductDto>.Success(dto);
+        return Result<ProductDto>.Success(dto);
     }
 
     private string LocalizeDomainError(DomainException ex) => ex.Code switch

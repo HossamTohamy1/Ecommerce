@@ -30,14 +30,12 @@ public class LocalizedDisplayMetadataProvider : IDisplayMetadataProvider
 
         context.DisplayMetadata.DisplayName = () =>
         {
-            // 1. Direct property name lookup (e.g. "Name", "SKU", "Price")
             var localized = _localizer[propertyName];
             if (!localized.ResourceNotFound)
             {
                 return localized.Value;
             }
 
-            // 2. Look up with common prefixes
             var prefixes = new[] { "Common.", "Product.", "Auth.", "Discount.", "Order.", "Catalog.Category.", "Address." };
             foreach (var prefix in prefixes)
             {

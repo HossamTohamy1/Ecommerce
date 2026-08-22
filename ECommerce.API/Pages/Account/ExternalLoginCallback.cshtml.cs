@@ -8,11 +8,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ECommerce.API.Pages.Account;
 
-/// <summary>
-/// Landing page for both Google and Facebook after they finish authenticating the user.
-/// The provider's claims are picked up from the short-lived "Identity.External" cookie
-/// (see DependencyInjection.AddInfrastructure) via SignInManager, never trusted from the URL.
-/// </summary>
 public class ExternalLoginCallbackModel : RazorPageBase
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
@@ -50,7 +45,6 @@ public class ExternalLoginCallbackModel : RazorPageBase
         var email = info.Principal.FindFirstValue(ClaimTypes.Email);
         if (string.IsNullOrWhiteSpace(email))
         {
-            // Facebook accounts without a verified/public email don't hand one over — nothing we can do.
             TempData["ErrorMessage"] = _localizer["Auth.ExternalLogin.NoEmail"].Value;
             return RedirectToPage("/Account/Login");
         }
@@ -65,7 +59,6 @@ public class ExternalLoginCallbackModel : RazorPageBase
             FullName = fullName
         }));
 
-        // The external handshake is done either way — drop the temporary cookie now.
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
         if (!result.Succeeded || result.Data is null)
@@ -76,7 +69,6 @@ public class ExternalLoginCallbackModel : RazorPageBase
 
         if (result.Data.RequiresTwoFactor)
         {
-            // The linked account still has 2FA on — hand off to the normal Login page's OTP step.
             TempData["InfoMessage"] = _localizer["Auth.TwoFactor.CodeSent"].Value;
             return RedirectToPage("/Account/Login", new { challengeId = result.Data.TwoFactorChallengeId, returnUrl });
         }

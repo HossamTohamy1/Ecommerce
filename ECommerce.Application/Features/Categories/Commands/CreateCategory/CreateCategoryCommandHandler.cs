@@ -7,11 +7,13 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 {
     private readonly IApplicationDbContext _context;
     private readonly IStringLocalizer<SharedResource> _localizer;
+    private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
-    public CreateCategoryCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer)
+    public CreateCategoryCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer, Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
     {
         _context = context;
         _localizer = localizer;
+        _cache = cache;
     }
 
     public async Task<Result<CategoryDto>> Handle(CreateCategoryCommand command, CancellationToken ct)
@@ -29,10 +31,18 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
             return Result<CategoryDto>.Failure(_localizer["Catalog.Category.DuplicateSlug"].Value);
         }
 
-        if (command.Request.ParentCategoryId.HasValue &&
-            !await _context.Set<Category>().AnyAsync(c => c.Id == command.Request.ParentCategoryId, ct))
+        string? parentCategoryName = null;
+        if (command.Request.ParentCategoryId.HasValue)
         {
-            return Result<CategoryDto>.Failure(_localizer["Catalog.Category.ParentNotFound"].Value);
+            parentCategoryName = await _context.Set<Category>()
+                .Where(c => c.Id == command.Request.ParentCategoryId.Value)
+                .Select(c => c.Name)
+                .FirstOrDefaultAsync(ct);
+
+            if (parentCategoryName is null)
+            {
+                return Result<CategoryDto>.Failure(_localizer["Catalog.Category.ParentNotFound"].Value);
+            }
         }
 
         Category category;
@@ -56,15 +66,19 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
             return Result<CategoryDto>.Failure(_localizer["Catalog.Category.DuplicateSlug"].Value);
         }
 
-        var dto = await _context.Set<Category>()
-            .AsNoTracking()
-            .Where(c => c.Id == category.Id)
-            .ProjectToType<CategoryDto>()
-            .FirstOrDefaultAsync(ct);
+        _cache.Remove("catalog:categories");
 
-        return dto is null
-            ? Result<CategoryDto>.Failure(_localizer["Catalog.Category.NotFound"].Value)
-            : Result<CategoryDto>.Success(dto);
+        var dto = new CategoryDto
+        {
+            Id = category.Id,
+            Name = category.Name,
+            Slug = category.Slug,
+            ParentCategoryId = category.ParentCategoryId,
+            ParentCategoryName = parentCategoryName,
+            ProductCount = 0
+        };
+
+        return Result<CategoryDto>.Success(dto);
     }
 
     private string LocalizeDomainError(DomainException ex) => ex.Code switch

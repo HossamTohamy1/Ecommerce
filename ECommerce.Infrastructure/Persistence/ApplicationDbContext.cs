@@ -16,10 +16,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         nameof(ChatConversation)
     };
 
-    // Note: RefreshToken / EmailConfirmationToken / TwoFactorCode don't derive from BaseEntity
-    // (same as PasswordResetToken), so they are never picked up by BuildAuditEntries() below —
-    // no explicit exclusion needed, but documented here to avoid confusion.
-
     private readonly ICurrentUserService? _currentUserService;
     private readonly IHttpContextAccessor? _httpContextAccessor;
 

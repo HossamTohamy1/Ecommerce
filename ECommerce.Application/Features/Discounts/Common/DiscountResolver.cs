@@ -46,6 +46,22 @@ public class DiscountResolver : IDiscountResolver
                 g => g.OrderByDescending(x => x.Discount.Value).First().Discount);
     }
 
+    public async Task<Dictionary<Guid, Discount>> GetAllActiveDiscountsAsync(DateTime now, CancellationToken ct = default)
+    {
+        return await _context.Set<ProductDiscount>()
+            .Where(x => x.Discount.IsActive
+                        && x.Discount.StartDate <= now
+                        && x.Discount.EndDate >= now
+                        && (x.Discount.UsageLimit == null || x.Discount.UsageCount < x.Discount.UsageLimit))
+            .GroupBy(x => x.ProductId)
+            .Select(g => new
+            {
+                ProductId = g.Key,
+                Discount = g.OrderByDescending(x => x.Discount.Value).First().Discount
+            })
+            .ToDictionaryAsync(x => x.ProductId, x => x.Discount, ct);
+    }
+
     public decimal CalculateDiscountAmount(decimal price, Discount discount)
     {
         if (discount.DiscountType == DiscountType.Percentage)

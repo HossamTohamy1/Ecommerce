@@ -99,44 +99,40 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
             _localizer["Notification.NewOrder.Message", order.OrderNumber.Value].Value,
             $"/Orders/Details/{order.Id}"), ct);
 
-        var dto = await _context.Set<Order>()
-            .AsNoTracking()
-            .Where(o => o.Id == order.Id && o.UserId == command.UserId)
-            .Select(o => new OrderDto
+        var dto = new OrderDto
+        {
+            Id = order.Id,
+            OrderNumber = order.OrderNumber.Value,
+            UserId = order.UserId,
+            Status = order.Status,
+            PaymentMethod = order.PaymentMethod,
+            PaymentStatus = order.PaymentStatus,
+            SubTotal = order.SubTotal.Amount,
+            DiscountAmount = order.DiscountAmount.Amount,
+            ShippingFee = order.ShippingFee.Amount,
+            TotalAmount = order.TotalAmount.Amount,
+            ShippingAddressId = order.ShippingAddressId,
+            ShippingAddressSummary = address.Street + ", " + address.City + ", " + address.Governorate,
+            ConfirmedAt = order.ConfirmedAt,
+            DeliveredAt = order.DeliveredAt,
+            CreatedAt = order.CreatedAt,
+            Items = order.Items.Select(i => new OrderItemDto
             {
-                Id = o.Id,
-                OrderNumber = o.OrderNumber.Value,
-                UserId = o.UserId,
-                Status = o.Status,
-                PaymentMethod = o.PaymentMethod,
-                PaymentStatus = o.PaymentStatus,
-                SubTotal = o.SubTotal.Amount,
-                DiscountAmount = o.DiscountAmount.Amount,
-                ShippingFee = o.ShippingFee.Amount,
-                TotalAmount = o.TotalAmount.Amount,
-                ShippingAddressId = o.ShippingAddressId,
-                ShippingAddressSummary = o.ShippingAddress.Street + ", " + o.ShippingAddress.City + ", " + o.ShippingAddress.Governorate,
-                ConfirmedAt = o.ConfirmedAt,
-                DeliveredAt = o.DeliveredAt,
-                CreatedAt = o.CreatedAt,
-                Items = o.Items.Select(i => new OrderItemDto
-                {
-                    Id = i.Id,
-                    ProductId = i.ProductId,
-                    ProductName = i.ProductName,
-                    ProductVariantId = i.ProductVariantId,
-                    Quantity = i.Quantity,
-                    UnitPrice = i.UnitPrice.Amount,
-                    DiscountApplied = i.DiscountApplied.Amount
-                }).ToList(),
-                StatusHistory = o.StatusHistory
-                    .OrderBy(h => h.CreatedAt)
-                    .Select(h => new OrderStatusHistoryDto { Status = h.Status, Note = h.Note, CreatedAt = h.CreatedAt })
-                    .ToList()
-            })
-            .FirstOrDefaultAsync(ct);
+                Id = i.Id,
+                ProductId = i.ProductId,
+                ProductName = i.ProductName,
+                ProductVariantId = i.ProductVariantId,
+                Quantity = i.Quantity,
+                UnitPrice = i.UnitPrice.Amount,
+                DiscountApplied = i.DiscountApplied.Amount
+            }).ToList(),
+            StatusHistory = order.StatusHistory
+                .OrderBy(h => h.CreatedAt)
+                .Select(h => new OrderStatusHistoryDto { Status = h.Status, Note = h.Note, CreatedAt = h.CreatedAt })
+                .ToList()
+        };
 
-        return dto is null ? Result<OrderDto>.Failure(_localizer["Order.NotFound"].Value) : Result<OrderDto>.Success(dto);
+        return Result<OrderDto>.Success(dto);
     }
 
     private async Task<Money> CalculateDiscountAsync(Guid productId, Money lineTotal, DateTime now, CancellationToken ct)

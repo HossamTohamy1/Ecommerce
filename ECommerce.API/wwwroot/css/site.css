@@ -613,7 +613,6 @@ html[dir="rtl"] #kt_header_menu_items,
     }
 }
 
-/* ── Responsive Mobile Navigation Drawer ───────────────────────────────── */
 .mobile-drawer-backdrop {
     position: fixed;
     top: 0;
@@ -739,14 +738,12 @@ html[dir="rtl"] .mobile-drawer {
     border-color: var(--bs-border-color) !important;
 }
 
-/* ── Dropdown Screen Bounds Protection on Mobile ───────────────────────── */
 @media (max-width: 767.98px) {
     .menu-sub-dropdown {
         max-width: calc(100vw - 1.5rem) !important;
     }
 }
 
-/* ── Responsive Tables & Action Buttons ────────────────────────────────── */
 .table-responsive {
     max-width: 100%;
     overflow-x: auto;
@@ -811,8 +808,6 @@ html[dir="rtl"] .mobile-drawer {
         min-height: 38px;
     }
 }
-
-/* ── Auth pages (Login / Register / Forgot / Reset password) ─────────────── */
 
 body.auth-page {
     background-color: #F5F8FA;
@@ -908,8 +903,6 @@ html[data-theme="dark"] .auth-showcase {
     }
 }
 
-/* Social / OAuth buttons */
-
 .btn-social {
     display: flex;
     align-items: center;
@@ -975,8 +968,6 @@ html[data-theme="dark"] .auth-divider::after {
     background: var(--bs-border-color);
 }
 
-/* ── Main app header polish ───────────────────────────────────────────────── */
-
 #kt_header {
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06), 0 4px 14px rgba(0, 0, 0, 0.04);
 }
@@ -997,8 +988,6 @@ html[data-theme="dark"] #kt_header {
     border-radius: 0.85rem;
     overflow: hidden;
 }
-
-/* ── User Menu Pill Button ────────────────────────────────────────────────── */
 
 .user-menu-btn {
     display: inline-flex;
@@ -1032,8 +1021,6 @@ html[data-theme="dark"] .user-menu-btn:hover {
     border-color: var(--bs-primary);
     color: #ffffff;
 }
-
-/* ── Custom File Input (Dark & Light) ─────────────────────────────────────── */
 
 .form-control[type="file"] {
     padding: 0.375rem 0.75rem;
@@ -1076,8 +1063,6 @@ html[data-theme="dark"] .form-control[type="file"]::file-selector-button:hover {
     color: #ffffff;
 }
 
-/* ── Brand Card & Logo Styling ────────────────────────────────────────────── */
-
 .brand-logo-img {
     max-height: 64px;
     max-width: 100%;
@@ -1103,8 +1088,6 @@ html[data-theme="dark"] .brand-card-footer {
     background-color: rgba(255, 255, 255, 0.02);
     border-top: 1px solid var(--bs-border-color);
 }
-
-/* ── Variant Table & Form Styling ─────────────────────────────────────────── */
 
 .table-variant-header th {
     background-color: #1b1b29 !important;
@@ -1135,8 +1118,6 @@ html:not([data-theme="dark"]) .add-variant-box {
     border: 1px dashed #d8dbe0;
 }
 
-/* ── Scrollbars Polish ────────────────────────────────────────────────────── */
-
 html, body {
     scrollbar-color: #2b2b40 transparent;
     scrollbar-width: thin;
@@ -1159,8 +1140,6 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
     background: #3f3f5a;
 }
-
-/* ── Empty State Box ──────────────────────────────────────────────────────── */
 
 .empty-state-box {
     display: flex;
@@ -1189,8 +1168,6 @@ html[data-theme="dark"] .empty-state-box {
 html[data-theme="dark"] .empty-state-box i {
     color: #565674 !important;
 }
-
-/* ── Select2 Theming (Dark & Light & RTL) ─────────────────────────────────── */
 
 .select2-container {
     width: 100% !important;
@@ -1342,7 +1319,6 @@ html[dir="rtl"] .select2-container--default .select2-selection--single {
     background-color: #ffffff !important;
 }
 
-/* ── Dark theme overrides for Select2 ────────────────────────────────────── */
 html[data-theme="dark"] .select2-container .select2-selection--single,
 html[data-theme="dark"] .select2-container--default .select2-selection--single {
     background-color: #1b1b29 !important;
@@ -1425,7 +1401,6 @@ html[data-theme="dark"] .select2-results__message {
     color: #565674 !important;
 }
 
-/* Checkout Page Specific Styles */
 .checkout-address-card {
     transition: all 0.2s ease-in-out;
     background-color: var(--bs-card-bg, #ffffff);
@@ -1459,10 +1434,6 @@ html[data-theme="dark"] .checkout-address-card {
 html[data-theme="dark"] .checkout-address-card.bg-light-primary {
     background-color: rgba(0, 158, 247, 0.12) !important;
 }
-
-/* ==========================================================================
-   Chat / Customer Support Styling (Admin & Customer)
-   ========================================================================== */
 
 #conversationsList {
     background-color: var(--bs-body-bg);
@@ -1510,7 +1481,6 @@ html[data-theme="dark"] .checkout-address-card.bg-light-primary {
     color: var(--bs-gray-800, #3f4254) !important;
 }
 
-/* Dark Theme Chat Overrides */
 html[data-theme="dark"] #chatConversationsCol {
     border-color: #2b2b40 !important;
 }
@@ -1575,10 +1545,6 @@ html[data-theme="dark"] #chatFormWrapper {
     border-color: #2b2b40 !important;
 }
 
-/* ==========================================================================
-   Notifications Page Styling
-   ========================================================================== */
-
 .notification-list .notification-item {
     padding: 1.15rem 1.5rem;
     transition: background-color 0.2s ease, border-color 0.2s ease;
@@ -1619,7 +1585,6 @@ html[data-theme="dark"] #chatFormWrapper {
     color: var(--bs-gray-500, #a1a5b7);
 }
 
-/* Dark Theme Notification Overrides */
 html[data-theme="dark"] .notification-list .notification-item {
     background-color: #1e1e2d;
     border-bottom: 1px solid #2b2b40;
@@ -1653,7 +1618,6 @@ html[data-theme="dark"] .notification-time {
     color: #7e8299;
 }
 
-/* General Dark Theme List Group Fallbacks */
 html[data-theme="dark"] .list-group-item {
     background-color: #1e1e2d;
     color: #cdcdde;
@@ -1678,10 +1642,6 @@ html[data-theme="dark"] #notificationsDropdownList .bg-light-primary {
     background-color: rgba(0, 158, 247, 0.15) !important;
     color: #ffffff !important;
 }
-
-/* ==========================================================================
-   Audit Logs Details Panel Styling
-   ========================================================================== */
 
 .audit-changes-panel {
     background-color: var(--bs-light, #f5f8fa);
@@ -1715,10 +1675,6 @@ html[data-theme="dark"] .audit-changes-panel .badge-light-success {
     color: #50cd89 !important;
 }
 
-/* ==========================================================================
-   Universal Pagination Sliding Window & Ellipsis
-   ========================================================================== */
-
 .pagination {
     flex-wrap: nowrap;
     gap: 0.25rem;
@@ -1738,10 +1694,4 @@ html[data-theme="dark"] .pagination .page-item.disabled .page-link {
     border-color: transparent !important;
     color: #7e8299 !important;
 }
-
-
-
-
-
-
 

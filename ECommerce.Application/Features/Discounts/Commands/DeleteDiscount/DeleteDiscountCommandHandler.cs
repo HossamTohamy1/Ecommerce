@@ -4,11 +4,13 @@ public class DeleteDiscountCommandHandler : IRequestHandler<DeleteDiscountComman
 {
     private readonly IApplicationDbContext _context;
     private readonly IStringLocalizer<SharedResource> _localizer;
+    private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
-    public DeleteDiscountCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer)
+    public DeleteDiscountCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer, Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
     {
         _context = context;
         _localizer = localizer;
+        _cache = cache;
     }
 
     public async Task<Result> Handle(DeleteDiscountCommand command, CancellationToken ct)
@@ -22,6 +24,7 @@ public class DeleteDiscountCommandHandler : IRequestHandler<DeleteDiscountComman
         discount.IsDeleted = true;
         await _context.SaveChangesAsync(ct);
 
+        _cache.Remove("discounts:active:all");
         return Result.Success();
     }
 }

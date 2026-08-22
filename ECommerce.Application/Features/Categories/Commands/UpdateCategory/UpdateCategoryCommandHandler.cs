@@ -7,11 +7,13 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
 {
     private readonly IApplicationDbContext _context;
     private readonly IStringLocalizer<SharedResource> _localizer;
+    private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
-    public UpdateCategoryCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer)
+    public UpdateCategoryCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer, Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
     {
         _context = context;
         _localizer = localizer;
+        _cache = cache;
     }
 
     public async Task<Result<CategoryDto>> Handle(UpdateCategoryCommand command, CancellationToken ct)
@@ -35,6 +37,15 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
             return Result<CategoryDto>.Failure(_localizer["Catalog.Category.DuplicateSlug"].Value);
         }
 
+        string? parentCategoryName = null;
+        if (command.Request.ParentCategoryId.HasValue)
+        {
+            parentCategoryName = await _context.Set<Category>()
+                .Where(c => c.Id == command.Request.ParentCategoryId.Value)
+                .Select(c => c.Name)
+                .FirstOrDefaultAsync(ct);
+        }
+
         try
         {
             category.UpdateDetails(normalizedName, normalizedSlug, command.Request.ParentCategoryId, command.Request.IsActive, command.UserId);
@@ -53,15 +64,21 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
             return Result<CategoryDto>.Failure(_localizer["Catalog.Category.DuplicateSlug"].Value);
         }
 
-        var dto = await _context.Set<Category>()
-            .AsNoTracking()
-            .Where(c => c.Id == command.Id)
-            .ProjectToType<CategoryDto>()
-            .FirstOrDefaultAsync(ct);
+        _cache.Remove("catalog:categories");
 
-        return dto is null
-            ? Result<CategoryDto>.Failure(_localizer["Catalog.Category.NotFound"].Value)
-            : Result<CategoryDto>.Success(dto);
+        var productCount = await _context.Set<Product>().CountAsync(p => p.CategoryId == command.Id, ct);
+
+        var dto = new CategoryDto
+        {
+            Id = category.Id,
+            Name = category.Name,
+            Slug = category.Slug,
+            ParentCategoryId = category.ParentCategoryId,
+            ParentCategoryName = parentCategoryName,
+            ProductCount = productCount
+        };
+
+        return Result<CategoryDto>.Success(dto);
     }
 
     private string LocalizeDomainError(DomainException ex) => ex.Code switch

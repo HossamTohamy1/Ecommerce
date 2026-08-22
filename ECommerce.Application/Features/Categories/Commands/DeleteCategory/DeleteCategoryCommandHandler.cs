@@ -4,11 +4,13 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
 {
     private readonly IApplicationDbContext _context;
     private readonly IStringLocalizer<SharedResource> _localizer;
+    private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
-    public DeleteCategoryCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer)
+    public DeleteCategoryCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer, Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
     {
         _context = context;
         _localizer = localizer;
+        _cache = cache;
     }
 
     public async Task<Result> Handle(DeleteCategoryCommand command, CancellationToken ct)
@@ -28,6 +30,7 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
         category.IsDeleted = true;
         await _context.SaveChangesAsync(ct);
 
+        _cache.Remove("catalog:categories");
         return Result.Success();
     }
 }

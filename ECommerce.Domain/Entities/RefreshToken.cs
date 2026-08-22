@@ -1,10 +1,5 @@
 namespace ECommerce.Domain.Entities;
 
-/// <summary>
-/// A rotating refresh token used to obtain new access tokens without re-entering credentials.
-/// Only the hash of the token is persisted (see TokenHasher), the raw value is returned to the
-/// client once and never stored, matching the pattern already used by PasswordResetToken.
-/// </summary>
 public class RefreshToken
 {
     public Guid Id { get; set; } = Guid.NewGuid();
@@ -21,7 +16,6 @@ public class RefreshToken
 
     public DateTime? RevokedAtUtc { get; set; }
 
-    /// <summary>Hash of the token that replaced this one, set when rotated.</summary>
     public string? ReplacedByTokenHash { get; set; }
 
     public bool IsExpired => ExpiresAtUtc <= DateTime.UtcNow;

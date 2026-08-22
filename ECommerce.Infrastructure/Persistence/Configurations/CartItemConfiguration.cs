@@ -11,6 +11,8 @@ public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
 
         builder.Property(i => i.UnitPrice).HasMoneyConversion().HasColumnType("decimal(18,2)");
 
+        builder.HasIndex(i => new { i.CartId, i.ProductId });
+
         builder.HasOne(i => i.Product)
             .WithMany()
             .HasForeignKey(i => i.ProductId)

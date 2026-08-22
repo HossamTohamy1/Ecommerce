@@ -11,6 +11,8 @@ public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImage>
 
         builder.Property(i => i.ImageUrl).IsRequired().HasMaxLength(500);
 
+        builder.HasIndex(i => new { i.ProductId, i.IsMain, i.DisplayOrder });
+
         builder.HasQueryFilter(i => !i.IsDeleted);
     }
 }

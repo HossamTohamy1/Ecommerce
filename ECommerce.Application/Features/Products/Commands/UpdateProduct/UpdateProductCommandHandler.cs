@@ -15,7 +15,11 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
     public async Task<Result<ProductDto>> Handle(UpdateProductCommand command, CancellationToken ct)
     {
-        var product = await _context.Set<Product>().FirstOrDefaultAsync(p => p.Id == command.Id, ct);
+        var product = await _context.Set<Product>()
+            .Include(p => p.Images)
+            .Include(p => p.Variants)
+            .FirstOrDefaultAsync(p => p.Id == command.Id, ct);
+
         if (product is null)
         {
             return Result<ProductDto>.Failure(_localizer["Catalog.Product.NotFound"].Value);
@@ -32,14 +36,28 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             return Result<ProductDto>.Failure(_localizer["Catalog.Product.DuplicateSku"].Value);
         }
 
-        if (!await _context.Set<Category>().AnyAsync(c => c.Id == command.Request.CategoryId, ct))
+        var categoryName = await _context.Set<Category>()
+            .Where(c => c.Id == command.Request.CategoryId)
+            .Select(c => c.Name)
+            .FirstOrDefaultAsync(ct);
+
+        if (categoryName is null)
         {
             return Result<ProductDto>.Failure(_localizer["Catalog.Category.NotFound"].Value);
         }
 
-        if (command.Request.BrandId.HasValue && !await _context.Set<Brand>().AnyAsync(b => b.Id == command.Request.BrandId, ct))
+        string? brandName = null;
+        if (command.Request.BrandId.HasValue)
         {
-            return Result<ProductDto>.Failure(_localizer["Catalog.Brand.NotFound"].Value);
+            brandName = await _context.Set<Brand>()
+                .Where(b => b.Id == command.Request.BrandId.Value)
+                .Select(b => b.Name)
+                .FirstOrDefaultAsync(ct);
+
+            if (brandName is null)
+            {
+                return Result<ProductDto>.Failure(_localizer["Catalog.Brand.NotFound"].Value);
+            }
         }
 
         try
@@ -70,34 +88,44 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             return Result<ProductDto>.Failure(_localizer["Catalog.Product.DuplicateSku"].Value);
         }
 
-        var dto = await _context.Set<Product>()
-            .AsNoTracking()
-            .Where(p => p.Id == command.Id)
-            .Select(p => new ProductDto
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                SKU = p.SKU,
-                Price = p.Price,
-                CompareAtPrice = p.CompareAtPrice,
-                StockQuantity = p.StockQuantity,
-                IsActive = p.IsActive,
-                CategoryId = p.CategoryId,
-                CategoryName = p.Category.Name,
-                BrandId = p.BrandId,
-                BrandName = p.Brand != null ? p.Brand.Name : null,
-                Images = p.Images
-                    .OrderByDescending(i => i.IsMain).ThenBy(i => i.DisplayOrder)
-                    .Select(i => new ProductImageDto { Id = i.Id, ImageUrl = i.ImageUrl, IsMain = i.IsMain, DisplayOrder = i.DisplayOrder })
-                    .ToList(),
-                Variants = p.Variants
-                    .Select(v => new ProductVariantDto { Id = v.Id, SKU = v.SKU, Price = v.Price, StockQuantity = v.StockQuantity, Size = v.Size, Color = v.Color })
-                    .ToList()
-            })
-            .FirstOrDefaultAsync(ct);
+        var dto = new ProductDto
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            SKU = product.SKU,
+            Price = product.Price,
+            CompareAtPrice = product.CompareAtPrice,
+            StockQuantity = product.StockQuantity,
+            IsActive = product.IsActive,
+            CategoryId = product.CategoryId,
+            CategoryName = categoryName,
+            BrandId = product.BrandId,
+            BrandName = brandName,
+            Images = product.Images
+                .OrderByDescending(i => i.IsMain).ThenBy(i => i.DisplayOrder)
+                .Select(i => new ProductImageDto
+                {
+                    Id = i.Id,
+                    ImageUrl = i.ImageUrl,
+                    IsMain = i.IsMain,
+                    DisplayOrder = i.DisplayOrder
+                })
+                .ToList(),
+            Variants = product.Variants
+                .Select(v => new ProductVariantDto
+                {
+                    Id = v.Id,
+                    SKU = v.SKU,
+                    Price = v.Price,
+                    StockQuantity = v.StockQuantity,
+                    Size = v.Size,
+                    Color = v.Color
+                })
+                .ToList()
+        };
 
-        return dto is null ? Result<ProductDto>.Failure(_localizer["Catalog.Product.NotFound"].Value) : Result<ProductDto>.Success(dto);
+        return Result<ProductDto>.Success(dto);
     }
 
     private string LocalizeDomainError(DomainException ex) => ex.Code switch

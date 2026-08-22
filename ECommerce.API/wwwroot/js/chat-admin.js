@@ -68,14 +68,12 @@
         }
 
         function appendMessage(message) {
-            // Deduplicate if already present by id
             if (message.id && messagesEl.querySelector('[data-msg-id="' + message.id + '"]')) {
                 return;
             }
 
             var isMine = message.senderRole === 'Admin';
 
-            // Check if this incoming message matches a recently sent optimistic message
             if (message.id && isMine) {
                 var pending = messagesEl.querySelector('[data-pending="true"]');
                 if (pending && pending.getAttribute('data-content') === message.content) {
@@ -191,7 +189,6 @@
 
             input.value = '';
 
-            // Optimistic render for instant admin UI feedback
             appendMessage({
                 content: content,
                 senderRole: 'Admin',

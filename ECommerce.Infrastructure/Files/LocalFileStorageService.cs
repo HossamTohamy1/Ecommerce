@@ -16,7 +16,7 @@ public class LocalFileStorageService : IFileStorageService
         "image/jpeg", "image/jpg", "image/pjpeg", "image/png", "image/x-png", "image/webp", "image/svg+xml", "image/svg", "application/octet-stream"
     };
 
-    private const long MaxFileSizeBytes = 10 * 1024 * 1024; // 10MB
+    private const long MaxFileSizeBytes = 10 * 1024 * 1024;
 
     private readonly IWebHostEnvironment _environment;
     private readonly IStringLocalizer<SharedResource> _localizer;

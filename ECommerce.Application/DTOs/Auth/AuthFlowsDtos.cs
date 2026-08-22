@@ -42,11 +42,6 @@ public class EnableTwoFactorRequest
     public string CurrentPassword { get; set; } = string.Empty;
 }
 
-/// <summary>
-/// Claims handed over by ASP.NET Core's OAuth handlers (Google/Facebook) once the provider
-/// redirects back. ProviderKey is the stable per-provider user id (e.g. Google's "sub" claim),
-/// never the email, since emails can change or be reused.
-/// </summary>
 public class ExternalLoginRequest
 {
     [Required]

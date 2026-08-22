@@ -20,6 +20,7 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
     {
         var order = await _context.Set<Order>()
             .Include(o => o.StatusHistory)
+            .Include(o => o.Items)
             .FirstOrDefaultAsync(o => o.Id == command.Id, ct);
 
         if (order is null)
@@ -45,44 +46,45 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
             _localizer["Notification.OrderStatusChanged.Message", order.OrderNumber.Value, _localizer["Order.Status." + order.Status].Value].Value,
             $"/Orders/Details/{order.Id}"), ct);
 
-        var dto = await _context.Set<Order>()
-            .AsNoTracking()
-            .Where(o => o.Id == command.Id)
-            .Select(o => new OrderDto
-            {
-                Id = o.Id,
-                OrderNumber = o.OrderNumber.Value,
-                UserId = o.UserId,
-                Status = o.Status,
-                PaymentMethod = o.PaymentMethod,
-                PaymentStatus = o.PaymentStatus,
-                SubTotal = o.SubTotal.Amount,
-                DiscountAmount = o.DiscountAmount.Amount,
-                ShippingFee = o.ShippingFee.Amount,
-                TotalAmount = o.TotalAmount.Amount,
-                ShippingAddressId = o.ShippingAddressId,
-                ShippingAddressSummary = o.ShippingAddress.Street + ", " + o.ShippingAddress.City + ", " + o.ShippingAddress.Governorate,
-                ConfirmedAt = o.ConfirmedAt,
-                DeliveredAt = o.DeliveredAt,
-                CreatedAt = o.CreatedAt,
-                Items = o.Items.Select(i => new OrderItemDto
-                {
-                    Id = i.Id,
-                    ProductId = i.ProductId,
-                    ProductName = i.ProductName,
-                    ProductVariantId = i.ProductVariantId,
-                    Quantity = i.Quantity,
-                    UnitPrice = i.UnitPrice.Amount,
-                    DiscountApplied = i.DiscountApplied.Amount
-                }).ToList(),
-                StatusHistory = o.StatusHistory
-                    .OrderBy(h => h.CreatedAt)
-                    .Select(h => new OrderStatusHistoryDto { Status = h.Status, Note = h.Note, CreatedAt = h.CreatedAt })
-                    .ToList()
-            })
-            .FirstOrDefaultAsync(ct);
+        var addressSummary = await _context.Set<Address>()
+            .Where(a => a.Id == order.ShippingAddressId)
+            .Select(a => a.Street + ", " + a.City + ", " + a.Governorate)
+            .FirstOrDefaultAsync(ct) ?? string.Empty;
 
-        return dto is null ? Result<OrderDto>.Failure(_localizer["Order.NotFound"].Value) : Result<OrderDto>.Success(dto);
+        var dto = new OrderDto
+        {
+            Id = order.Id,
+            OrderNumber = order.OrderNumber.Value,
+            UserId = order.UserId,
+            Status = order.Status,
+            PaymentMethod = order.PaymentMethod,
+            PaymentStatus = order.PaymentStatus,
+            SubTotal = order.SubTotal.Amount,
+            DiscountAmount = order.DiscountAmount.Amount,
+            ShippingFee = order.ShippingFee.Amount,
+            TotalAmount = order.TotalAmount.Amount,
+            ShippingAddressId = order.ShippingAddressId,
+            ShippingAddressSummary = addressSummary,
+            ConfirmedAt = order.ConfirmedAt,
+            DeliveredAt = order.DeliveredAt,
+            CreatedAt = order.CreatedAt,
+            Items = order.Items.Select(i => new OrderItemDto
+            {
+                Id = i.Id,
+                ProductId = i.ProductId,
+                ProductName = i.ProductName,
+                ProductVariantId = i.ProductVariantId,
+                Quantity = i.Quantity,
+                UnitPrice = i.UnitPrice.Amount,
+                DiscountApplied = i.DiscountApplied.Amount
+            }).ToList(),
+            StatusHistory = order.StatusHistory
+                .OrderBy(h => h.CreatedAt)
+                .Select(h => new OrderStatusHistoryDto { Status = h.Status, Note = h.Note, CreatedAt = h.CreatedAt })
+                .ToList()
+        };
+
+        return Result<OrderDto>.Success(dto);
     }
 
     private string LocalizeDomainError(DomainException ex) => ex.Code switch

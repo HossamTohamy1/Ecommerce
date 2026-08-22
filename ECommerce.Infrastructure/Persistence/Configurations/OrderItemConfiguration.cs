@@ -13,6 +13,8 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
         builder.Property(i => i.UnitPrice).HasMoneyConversion().HasColumnType("decimal(18,2)");
         builder.Property(i => i.DiscountApplied).HasMoneyConversion().HasColumnType("decimal(18,2)");
 
+        builder.HasIndex(i => i.OrderId);
+
         builder.HasOne(i => i.Product)
             .WithMany()
             .HasForeignKey(i => i.ProductId)

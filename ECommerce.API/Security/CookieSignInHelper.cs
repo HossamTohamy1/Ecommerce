@@ -5,10 +5,6 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace ECommerce.API.Security;
 
-/// <summary>
-/// Signs an already-issued AuthResponse into the app's cookie scheme. Used by every Razor Pages
-/// login path (password, 2FA verification, external/OAuth) so the claims never drift between them.
-/// </summary>
 public static class CookieSignInHelper
 {
     public static async Task SignInAsync(HttpContext httpContext, AuthResponse data)

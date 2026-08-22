@@ -10,12 +10,12 @@ namespace ECommerce.API.Pages.AuditLogs.Admin;
 public class IndexModel : RazorPageBase
 {
     private readonly IMediator _mediator;
-    private readonly ApplicationDbContext _dbContext;
+    private readonly IServiceScopeFactory _scopeFactory;
 
-    public IndexModel(IMediator mediator, ApplicationDbContext dbContext)
+    public IndexModel(IMediator mediator, IServiceScopeFactory scopeFactory)
     {
         _mediator = mediator;
-        _dbContext = dbContext;
+        _scopeFactory = scopeFactory;
     }
 
     [BindProperty(SupportsGet = true, Name = "page")]
@@ -82,86 +82,142 @@ public class IndexModel : RazorPageBase
             @"\b[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\b",
             System.Text.RegularExpressions.RegexOptions.Compiled);
 
-        var foundGuids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var parsedGuids = new HashSet<Guid>();
 
         foreach (var item in Result.Items)
         {
-            if (!string.IsNullOrEmpty(item.EntityId)) foundGuids.Add(item.EntityId);
-            if (!string.IsNullOrEmpty(item.UserId)) foundGuids.Add(item.UserId);
+            if (Guid.TryParse(item.EntityId, out var eid)) parsedGuids.Add(eid);
+            if (Guid.TryParse(item.UserId, out var uid)) parsedGuids.Add(uid);
 
             if (!string.IsNullOrEmpty(item.Changes))
             {
                 foreach (System.Text.RegularExpressions.Match match in guidRegex.Matches(item.Changes))
                 {
-                    foundGuids.Add(match.Value);
+                    if (Guid.TryParse(match.Value, out var gid))
+                    {
+                        parsedGuids.Add(gid);
+                    }
                 }
             }
         }
 
-        if (foundGuids.Count == 0) return;
+        if (parsedGuids.Count == 0) return;
 
-        var parsedGuids = foundGuids
-            .Where(g => Guid.TryParse(g, out _))
-            .Select(Guid.Parse)
-            .ToList();
+        var guidList = parsedGuids.ToList();
 
-        var users = await _dbContext.Users
-            .Where(u => parsedGuids.Contains(u.Id))
-            .Select(u => new { Id = u.Id.ToString(), Name = !string.IsNullOrWhiteSpace(u.FullName) ? u.FullName : u.Email })
-            .ToListAsync();
-
-        foreach (var u in users)
+        var usersTask = Task.Run(async () =>
         {
-            if (!string.IsNullOrWhiteSpace(u.Name))
-            {
-                EntityLookup[u.Id] = u.Name;
-            }
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            return await db.Users.AsNoTracking()
+                .Where(u => guidList.Contains(u.Id))
+                .Select(u => new { Id = u.Id.ToString(), Name = !string.IsNullOrWhiteSpace(u.FullName) ? u.FullName : u.Email })
+                .ToListAsync();
+        });
+
+        var productsTask = Task.Run(async () =>
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            return await db.Products.AsNoTracking()
+                .Where(p => guidList.Contains(p.Id))
+                .Select(p => new { Id = p.Id.ToString(), p.Name })
+                .ToListAsync();
+        });
+
+        var categoriesTask = Task.Run(async () =>
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            return await db.Categories.AsNoTracking()
+                .Where(c => guidList.Contains(c.Id))
+                .Select(c => new { Id = c.Id.ToString(), c.Name })
+                .ToListAsync();
+        });
+
+        var brandsTask = Task.Run(async () =>
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            return await db.Brands.AsNoTracking()
+                .Where(b => guidList.Contains(b.Id))
+                .Select(b => new { Id = b.Id.ToString(), b.Name })
+                .ToListAsync();
+        });
+
+        var wishlistsTask = Task.Run(async () =>
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            return await db.Wishlists.AsNoTracking()
+                .Where(w => guidList.Contains(w.Id))
+                .Select(w => new { Id = w.Id.ToString(), w.UserId })
+                .ToListAsync();
+        });
+
+        var addressesTask = Task.Run(async () =>
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            return await db.Addresses.AsNoTracking()
+                .Where(a => guidList.Contains(a.Id))
+                .Select(a => new { Id = a.Id.ToString(), a.FullName, a.City })
+                .ToListAsync();
+        });
+
+        var ordersTask = Task.Run(async () =>
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            return await db.Orders.AsNoTracking()
+                .Where(o => guidList.Contains(o.Id))
+                .Select(o => new { Id = o.Id.ToString(), OrderNumber = o.OrderNumber.Value })
+                .ToListAsync();
+        });
+
+        var discountsTask = Task.Run(async () =>
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            return await db.Discounts.AsNoTracking()
+                .Where(d => guidList.Contains(d.Id))
+                .Select(d => new { Id = d.Id.ToString(), d.Name, d.Code })
+                .ToListAsync();
+        });
+
+        var variantsTask = Task.Run(async () =>
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            return await db.ProductVariants.AsNoTracking()
+                .Where(v => guidList.Contains(v.Id))
+                .Select(v => new { Id = v.Id.ToString(), ProductName = v.Product.Name, v.Size, v.Color })
+                .ToListAsync();
+        });
+
+        await Task.WhenAll(usersTask, productsTask, categoriesTask, brandsTask, wishlistsTask, addressesTask, ordersTask, discountsTask, variantsTask);
+
+        foreach (var u in await usersTask)
+        {
+            if (!string.IsNullOrWhiteSpace(u.Name)) EntityLookup[u.Id] = u.Name;
         }
 
-        var products = await _dbContext.Products
-            .Where(p => parsedGuids.Contains(p.Id))
-            .Select(p => new { Id = p.Id.ToString(), p.Name })
-            .ToListAsync();
-
-        foreach (var p in products)
+        foreach (var p in await productsTask)
         {
-            if (!string.IsNullOrWhiteSpace(p.Name))
-            {
-                EntityLookup[p.Id] = p.Name;
-            }
+            if (!string.IsNullOrWhiteSpace(p.Name)) EntityLookup[p.Id] = p.Name;
         }
 
-        var categories = await _dbContext.Categories
-            .Where(c => parsedGuids.Contains(c.Id))
-            .Select(c => new { Id = c.Id.ToString(), c.Name })
-            .ToListAsync();
-
-        foreach (var c in categories)
+        foreach (var c in await categoriesTask)
         {
-            if (!string.IsNullOrWhiteSpace(c.Name))
-            {
-                EntityLookup[c.Id] = c.Name;
-            }
+            if (!string.IsNullOrWhiteSpace(c.Name)) EntityLookup[c.Id] = c.Name;
         }
 
-        var brands = await _dbContext.Brands
-            .Where(b => parsedGuids.Contains(b.Id))
-            .Select(b => new { Id = b.Id.ToString(), b.Name })
-            .ToListAsync();
-
-        foreach (var b in brands)
+        foreach (var b in await brandsTask)
         {
-            if (!string.IsNullOrWhiteSpace(b.Name))
-            {
-                EntityLookup[b.Id] = b.Name;
-            }
+            if (!string.IsNullOrWhiteSpace(b.Name)) EntityLookup[b.Id] = b.Name;
         }
 
-        var wishlists = await _dbContext.Wishlists
-            .Where(w => parsedGuids.Contains(w.Id))
-            .Select(w => new { Id = w.Id.ToString(), w.UserId })
-            .ToListAsync();
-
+        var wishlists = await wishlistsTask;
         var missingWishlistUserGuids = wishlists
             .Where(w => !string.IsNullOrEmpty(w.UserId) && !EntityLookup.ContainsKey(w.UserId) && Guid.TryParse(w.UserId, out _))
             .Select(w => Guid.Parse(w.UserId))
@@ -170,17 +226,16 @@ public class IndexModel : RazorPageBase
 
         if (missingWishlistUserGuids.Count > 0)
         {
-            var moreUsers = await _dbContext.Users
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var moreUsers = await db.Users.AsNoTracking()
                 .Where(u => missingWishlistUserGuids.Contains(u.Id))
                 .Select(u => new { Id = u.Id.ToString(), Name = !string.IsNullOrWhiteSpace(u.FullName) ? u.FullName : u.Email })
                 .ToListAsync();
 
             foreach (var u in moreUsers)
             {
-                if (!string.IsNullOrWhiteSpace(u.Name))
-                {
-                    EntityLookup[u.Id] = u.Name;
-                }
+                if (!string.IsNullOrWhiteSpace(u.Name)) EntityLookup[u.Id] = u.Name;
             }
         }
 
@@ -196,46 +251,22 @@ public class IndexModel : RazorPageBase
             }
         }
 
-        var addresses = await _dbContext.Addresses
-            .Where(a => parsedGuids.Contains(a.Id))
-            .Select(a => new { Id = a.Id.ToString(), a.FullName, a.City })
-            .ToListAsync();
-
-        foreach (var a in addresses)
+        foreach (var a in await addressesTask)
         {
             EntityLookup[a.Id] = !string.IsNullOrWhiteSpace(a.City) ? $"{a.FullName} ({a.City})" : a.FullName;
         }
 
-        var orders = await _dbContext.Orders
-            .Where(o => parsedGuids.Contains(o.Id))
-            .Select(o => new { Id = o.Id.ToString(), OrderNumber = o.OrderNumber.Value })
-            .ToListAsync();
-
-        foreach (var o in orders)
+        foreach (var o in await ordersTask)
         {
-            if (!string.IsNullOrWhiteSpace(o.OrderNumber))
-            {
-                EntityLookup[o.Id] = o.OrderNumber;
-            }
+            if (!string.IsNullOrWhiteSpace(o.OrderNumber)) EntityLookup[o.Id] = o.OrderNumber;
         }
 
-        var discounts = await _dbContext.Discounts
-            .Where(d => parsedGuids.Contains(d.Id))
-            .Select(d => new { Id = d.Id.ToString(), d.Name, d.Code })
-            .ToListAsync();
-
-        foreach (var d in discounts)
+        foreach (var d in await discountsTask)
         {
             EntityLookup[d.Id] = !string.IsNullOrWhiteSpace(d.Code) ? $"{d.Name} ({d.Code})" : d.Name;
         }
 
-        var variants = await _dbContext.ProductVariants
-            .Include(v => v.Product)
-            .Where(v => parsedGuids.Contains(v.Id))
-            .Select(v => new { Id = v.Id.ToString(), ProductName = v.Product.Name, v.Size, v.Color })
-            .ToListAsync();
-
-        foreach (var v in variants)
+        foreach (var v in await variantsTask)
         {
             var label = $"{v.Size} {v.Color}".Trim();
             EntityLookup[v.Id] = !string.IsNullOrWhiteSpace(v.ProductName)

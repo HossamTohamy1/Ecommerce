@@ -5,12 +5,14 @@ public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, Res
     private readonly IApplicationDbContext _context;
     private readonly IFileStorageService _fileStorage;
     private readonly IStringLocalizer<SharedResource> _localizer;
+    private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
-    public DeleteBrandCommandHandler(IApplicationDbContext context, IFileStorageService fileStorage, IStringLocalizer<SharedResource> localizer)
+    public DeleteBrandCommandHandler(IApplicationDbContext context, IFileStorageService fileStorage, IStringLocalizer<SharedResource> localizer, Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
     {
         _context = context;
         _fileStorage = fileStorage;
         _localizer = localizer;
+        _cache = cache;
     }
 
     public async Task<Result> Handle(DeleteBrandCommand command, CancellationToken ct)
@@ -35,6 +37,7 @@ public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, Res
         brand.IsDeleted = true;
         await _context.SaveChangesAsync(ct);
 
+        _cache.Remove("catalog:brands");
         return Result.Success();
     }
 }

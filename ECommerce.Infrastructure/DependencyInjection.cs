@@ -64,8 +64,26 @@ public static class DependencyInjection
 
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
-        services.AddScoped<IEmailService, SmtpEmailService>();
-        services.AddScoped<IDiscountResolver, ECommerce.Application.Features.Discounts.Common.DiscountResolver>();
+        var emailChannel = System.Threading.Channels.Channel.CreateBounded<EmailWorkItem>(new System.Threading.Channels.BoundedChannelOptions(10_000)
+        {
+            FullMode = System.Threading.Channels.BoundedChannelFullMode.Wait,
+            SingleReader = true,
+            SingleWriter = false
+        });
+        services.AddSingleton(emailChannel);
+
+        services.AddSingleton<SmtpEmailService>();
+        services.AddSingleton<IEmailService, QueuedEmailService>();
+        services.AddHostedService<EmailBackgroundWorker>();
+
+        services.AddMemoryCache();
+
+        services.AddScoped<ECommerce.Application.Features.Discounts.Common.DiscountResolver>();
+        services.AddScoped<IDiscountResolver>(sp =>
+            new ECommerce.Application.Features.Discounts.Common.CachedDiscountResolver(
+                sp.GetRequiredService<ECommerce.Application.Features.Discounts.Common.DiscountResolver>(),
+                sp.GetRequiredService<Microsoft.Extensions.Caching.Memory.IMemoryCache>(),
+                sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<ECommerce.Application.Features.Discounts.Common.CachedDiscountResolver>>()));
 
         services.AddSignalR();
         services.AddSingleton<IRealtimeNotifier, RealtimeNotifier>();
@@ -77,6 +95,19 @@ public static class DependencyInjection
             cfg.RegisterServicesFromAssembly(typeof(ECommerce.Application.Common.Behaviors.ValidationBehavior<,>).Assembly);
             cfg.AddOpenBehavior(typeof(ECommerce.Application.Common.Behaviors.ValidationBehavior<,>));
         });
+
+        services.AddTransient<ECommerce.Application.Features.Categories.Queries.GetAllCategories.GetAllCategoriesQueryHandler>();
+        services.AddTransient<IRequestHandler<ECommerce.Application.Features.Categories.Queries.GetAllCategories.GetAllCategoriesQuery, List<ECommerce.Application.DTOs.Catalog.CategoryDto>>>(sp =>
+            new ECommerce.Application.Features.Categories.Queries.GetAllCategories.CachedGetAllCategoriesQueryHandler(
+                sp.GetRequiredService<ECommerce.Application.Features.Categories.Queries.GetAllCategories.GetAllCategoriesQueryHandler>(),
+                sp.GetRequiredService<Microsoft.Extensions.Caching.Memory.IMemoryCache>(),
+                sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<ECommerce.Application.Features.Categories.Queries.GetAllCategories.CachedGetAllCategoriesQueryHandler>>()));
+
+        services.AddTransient<ECommerce.Application.Features.Brands.Queries.GetAllBrands.GetAllBrandsQueryHandler>();
+        services.AddTransient<IRequestHandler<ECommerce.Application.Features.Brands.Queries.GetAllBrands.GetAllBrandsQuery, List<ECommerce.Application.DTOs.Catalog.BrandDto>>>(sp =>
+            new ECommerce.Application.Features.Brands.Queries.GetAllBrands.CachedGetAllBrandsQueryHandler(
+                sp.GetRequiredService<ECommerce.Application.Features.Brands.Queries.GetAllBrands.GetAllBrandsQueryHandler>(),
+                sp.GetRequiredService<Microsoft.Extensions.Caching.Memory.IMemoryCache>()));
 
 
         services.AddAuthentication(options =>

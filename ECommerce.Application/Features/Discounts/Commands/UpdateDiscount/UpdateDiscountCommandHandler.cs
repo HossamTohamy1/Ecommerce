@@ -6,16 +6,21 @@ public class UpdateDiscountCommandHandler : IRequestHandler<UpdateDiscountComman
 {
     private readonly IApplicationDbContext _context;
     private readonly IStringLocalizer<SharedResource> _localizer;
+    private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
-    public UpdateDiscountCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer)
+    public UpdateDiscountCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer, Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
     {
         _context = context;
         _localizer = localizer;
+        _cache = cache;
     }
 
     public async Task<Result<DiscountDto>> Handle(UpdateDiscountCommand command, CancellationToken ct)
     {
-        var discount = await _context.Set<Discount>().FirstOrDefaultAsync(d => d.Id == command.Id, ct);
+        var discount = await _context.Set<Discount>()
+            .Include(d => d.ProductDiscounts)
+            .FirstOrDefaultAsync(d => d.Id == command.Id, ct);
+
         if (discount is null)
         {
             return Result<DiscountDto>.Failure(_localizer["Discount.NotFound"].Value);
@@ -56,27 +61,25 @@ public class UpdateDiscountCommandHandler : IRequestHandler<UpdateDiscountComman
             return Result<DiscountDto>.Failure(_localizer["Discount.DuplicateCode"].Value);
         }
 
-        var dto = await _context.Set<Discount>()
-            .AsNoTracking()
-            .Where(d => d.Id == command.Id)
-            .Select(d => new DiscountDto
-            {
-                Id = d.Id,
-                Name = d.Name,
-                Code = d.Code,
-                DiscountType = d.DiscountType,
-                Value = d.Value,
-                StartDate = d.StartDate,
-                EndDate = d.EndDate,
-                MinimumOrderAmount = d.MinimumOrderAmount,
-                UsageLimit = d.UsageLimit,
-                UsageCount = d.UsageCount,
-                IsActive = d.IsActive,
-                ProductIds = d.ProductDiscounts.Select(pd => pd.ProductId).ToList()
-            })
-            .FirstOrDefaultAsync(ct);
+        _cache.Remove("discounts:active:all");
 
-        return dto is null ? Result<DiscountDto>.Failure(_localizer["Discount.NotFound"].Value) : Result<DiscountDto>.Success(dto);
+        var dto = new DiscountDto
+        {
+            Id = discount.Id,
+            Name = discount.Name,
+            Code = discount.Code,
+            DiscountType = discount.DiscountType,
+            Value = discount.Value,
+            StartDate = discount.StartDate,
+            EndDate = discount.EndDate,
+            MinimumOrderAmount = discount.MinimumOrderAmount,
+            UsageLimit = discount.UsageLimit,
+            UsageCount = discount.UsageCount,
+            IsActive = discount.IsActive,
+            ProductIds = discount.ProductDiscounts.Select(pd => pd.ProductId).ToList()
+        };
+
+        return Result<DiscountDto>.Success(dto);
     }
 
     private string LocalizeDomainError(DomainException ex) => ex.Code switch

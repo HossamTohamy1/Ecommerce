@@ -4,11 +4,13 @@ public class RemoveProductFromDiscountCommandHandler : IRequestHandler<RemovePro
 {
     private readonly IApplicationDbContext _context;
     private readonly IStringLocalizer<SharedResource> _localizer;
+    private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
-    public RemoveProductFromDiscountCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer)
+    public RemoveProductFromDiscountCommandHandler(IApplicationDbContext context, IStringLocalizer<SharedResource> localizer, Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
     {
         _context = context;
         _localizer = localizer;
+        _cache = cache;
     }
 
     public async Task<Result> Handle(RemoveProductFromDiscountCommand command, CancellationToken ct)
@@ -33,6 +35,7 @@ public class RemoveProductFromDiscountCommandHandler : IRequestHandler<RemovePro
 
         await _context.SaveChangesAsync(ct);
 
+        _cache.Remove("discounts:active:all");
         return Result.Success();
     }
 
