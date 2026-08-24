@@ -4,64 +4,129 @@
     ViewData["Title"] = Localizer["Review.ModerationTitle"].Value;
 }
 
-<div class="page-header">
-    <h1>@Localizer["Review.ModerationTitle"]</h1>
+<div class="page-header d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+    <h1 class="h3 fw-bold mb-0">@Localizer["Review.ModerationTitle"]</h1>
 </div>
 
-<div class="card">
-    <div class="table-responsive">
-        <table class="table mb-0">
-            <thead>
-                <tr>
-                    <th>@Localizer["Common.Name"]</th>
-                    <th>@Localizer["Review.Rating"]</th>
-                    <th>@Localizer["Review.Comment"]</th>
-                    <th>@Localizer["Common.Status"]</th>
-                    <th class="text-end">@Localizer["Common.Actions"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Result.Items.Count == 0)
-                {
-                    <tr><td colspan="5" class="text-center text-muted py-4">@Localizer["Review.EmptyList"]</td></tr>
-                }
-                @foreach (var review in Model.Result.Items)
-                {
-                    <tr>
-                        <td>@review.UserFullName</td>
-                        <td class="text-warning">@string.Concat(Enumerable.Repeat("★", review.Rating))</td>
-                        <td>@review.Comment</td>
-                        <td>
-                            @if (review.IsApproved)
-                            {
-                                <span class="badge badge-light-success">@Localizer["Review.Approved"]</span>
-                            }
-                            else
-                            {
-                                <span class="badge badge-light-warning">@Localizer["Review.PendingApproval"]</span>
-                            }
-                        </td>
-                        <td class="text-end">
-                            @if (!review.IsApproved)
-                            {
-                                <form method="post" asp-page-handler="Approve" asp-route-id="@review.Id" class="d-inline">
-                                    <button type="submit" class="btn btn-sm btn-icon text-success"><i class="bi bi-check-lg"></i></button>
-                                </form>
-                            }
-                            <form method="post" asp-page-handler="Delete" asp-route-id="@review.Id" class="d-inline"
-                                  data-confirm-delete
-                                  data-confirm-title="@Localizer["Common.AreYouSure"]"
-                                  data-confirm-button="@Localizer["Common.Delete"]"
-                                  data-cancel-button="@Localizer["Common.Cancel"]">
-                                <button type="submit" class="btn btn-sm btn-icon text-danger"><i class="bi bi-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+@if (Model.Result.Items.Count == 0)
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5 text-muted">@Localizer["Review.EmptyList"]</div>
     </div>
-</div>
+}
+else
+{
+    <!-- 1. DESKTOP / TABLET VIEW (>= 768px) -->
+    <div class="card border-0 shadow-sm d-none d-md-block">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr class="text-muted fw-semibold text-uppercase fs-8 border-bottom">
+                        <th class="ps-4">@Localizer["Common.Name"]</th>
+                        <th>@Localizer["Review.Rating"]</th>
+                        <th>@Localizer["Review.Comment"]</th>
+                        <th>@Localizer["Common.Status"]</th>
+                        <th class="text-end pe-4">@Localizer["Common.Actions"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var review in Model.Result.Items)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-semibold text-dark">@review.UserFullName</td>
+                            <td class="text-warning fs-6">@string.Concat(Enumerable.Repeat("★", review.Rating))</td>
+                            <td style="max-width: 320px;" class="text-break">@review.Comment</td>
+                            <td>
+                                @if (review.IsApproved)
+                                {
+                                    <span class="badge badge-light-success">@Localizer["Review.Approved"]</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-light-warning">@Localizer["Review.PendingApproval"]</span>
+                                }
+                            </td>
+                            <td class="text-end pe-4">
+                                @if (!review.IsApproved)
+                                {
+                                    <form method="post" asp-page-handler="Approve" asp-route-id="@review.Id" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-icon btn-light-success me-1" title="@Localizer["Common.Submit"]">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                    </form>
+                                }
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@review.Id" class="d-inline"
+                                      data-confirm-delete
+                                      data-confirm-title="@Localizer["Common.AreYouSure"]"
+                                      data-confirm-button="@Localizer["Common.Delete"]"
+                                      data-cancel-button="@Localizer["Common.Cancel"]">
+                                    <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2. MOBILE VIEW (< 768px: Stacked Responsive Cards) -->
+    <div class="d-md-none d-flex flex-column gap-3">
+        @foreach (var review in Model.Result.Items)
+        {
+            <div class="card border-0 shadow-sm p-3">
+                <!-- Top Row: User Full Name + Star Rating -->
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                    <div class="fw-bold fs-6 text-dark text-truncate" title="@review.UserFullName">@review.UserFullName</div>
+                    <div class="text-warning fs-6 flex-shrink-0">
+                        @string.Concat(Enumerable.Repeat("★", review.Rating))
+                    </div>
+                </div>
+
+                <!-- Middle Row: Review Comment -->
+                <div class="text-muted fs-7 mb-3 text-break" style="line-height: 1.4;">
+                    @review.Comment
+                </div>
+
+                <!-- Bottom Row: Status Badge + Action Buttons -->
+                <div class="d-flex align-items-center justify-content-between pt-2 border-top gap-2">
+                    <div>
+                        @if (review.IsApproved)
+                        {
+                            <span class="badge badge-light-success fs-8">@Localizer["Review.Approved"]</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-light-warning fs-8">@Localizer["Review.PendingApproval"]</span>
+                        }
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        @if (!review.IsApproved)
+                        {
+                            <form method="post" asp-page-handler="Approve" asp-route-id="@review.Id" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-success py-1 px-3 d-inline-flex align-items-center gap-1">
+                                    <i class="bi bi-check-lg"></i>
+                                    <span>@Localizer["Review.Approved"]</span>
+                                </button>
+                            </form>
+                        }
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@review.Id" class="d-inline"
+                              data-confirm-delete
+                              data-confirm-title="@Localizer["Common.AreYouSure"]"
+                              data-confirm-button="@Localizer["Common.Delete"]"
+                              data-cancel-button="@Localizer["Common.Cancel"]">
+                            <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]">
+                                <i class="bi bi-trash fs-6"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
 
 <partial name="_Pagination" model="@(new ECommerce.API.Pages.Shared.PaginationViewModel
 {

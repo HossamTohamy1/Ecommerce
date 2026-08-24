@@ -671,6 +671,81 @@
   <data name="Dashboard.QuickLinks" xml:space="preserve">
     <value>روابط سريعة</value>
   </data>
+  <data name="Dashboard.Analytics" xml:space="preserve">
+    <value>المؤشرات والتحليلات</value>
+  </data>
+  <data name="Dashboard.TotalRevenue" xml:space="preserve">
+    <value>إجمالي الإيرادات</value>
+  </data>
+  <data name="Dashboard.TotalOrders" xml:space="preserve">
+    <value>إجمالي الطلبات</value>
+  </data>
+  <data name="Dashboard.NewCustomers" xml:space="preserve">
+    <value>العملاء الجدد</value>
+  </data>
+  <data name="Dashboard.AverageOrderValue" xml:space="preserve">
+    <value>متوسط قيمة الطلب</value>
+  </data>
+  <data name="Dashboard.ThisMonth" xml:space="preserve">
+    <value>هذا الشهر</value>
+  </data>
+  <data name="Dashboard.VsLastMonth" xml:space="preserve">
+    <value>مقارنة بالشهر السابق</value>
+  </data>
+  <data name="Dashboard.SalesTrends" xml:space="preserve">
+    <value>مؤشرات المبيعات والإيرادات</value>
+  </data>
+  <data name="Dashboard.Last30Days" xml:space="preserve">
+    <value>آخر 30 يوم</value>
+  </data>
+  <data name="Dashboard.Last12Months" xml:space="preserve">
+    <value>آخر 12 شهر</value>
+  </data>
+  <data name="Dashboard.OrdersOverview" xml:space="preserve">
+    <value>نظرة عامة على الطلبات</value>
+  </data>
+  <data name="Dashboard.TopSellingProducts" xml:space="preserve">
+    <value>المنتجات الأكثر مبيعاً</value>
+  </data>
+  <data name="Dashboard.RecentOrders" xml:space="preserve">
+    <value>أحدث الطلبات</value>
+  </data>
+  <data name="Dashboard.LowStockAlert" xml:space="preserve">
+    <value>تنبيه نقص المخزون</value>
+  </data>
+  <data name="Dashboard.UnitsSold" xml:space="preserve">
+    <value>الوحدات المباعة</value>
+  </data>
+  <data name="Dashboard.InStock" xml:space="preserve">
+    <value>المتبقي بالمخزون</value>
+  </data>
+  <data name="Dashboard.Shortcuts" xml:space="preserve">
+    <value>روابط سريعة</value>
+  </data>
+  <data name="Dashboard.NoLowStock" xml:space="preserve">
+    <value>جميع المنتجات متوفرة بمخزون كافٍ.</value>
+  </data>
+  <data name="Dashboard.NoRecentOrders" xml:space="preserve">
+    <value>لا توجد طلبات حديثة.</value>
+  </data>
+  <data name="Dashboard.NoTopProducts" xml:space="preserve">
+    <value>لم يتم تسجيل مبيعات بعد.</value>
+  </data>
+  <data name="Dashboard.ViewAll" xml:space="preserve">
+    <value>عرض الكل</value>
+  </data>
+  <data name="Dashboard.Revenue" xml:space="preserve">
+    <value>الإيرادات</value>
+  </data>
+  <data name="Dashboard.Orders" xml:space="preserve">
+    <value>الطلبات</value>
+  </data>
+  <data name="Dashboard.Items" xml:space="preserve">
+    <value>منتجات</value>
+  </data>
+  <data name="Dashboard.LiveMetrics" xml:space="preserve">
+    <value>مؤشرات الأداء والبيانات المباشرة للمتجر</value>
+  </data>
   <data name="Order.Status.Pending" xml:space="preserve">
     <value>قيد الانتظار</value>
   </data>
@@ -1310,5 +1385,8 @@
   </data>
   <data name="RememberMe" xml:space="preserve">
     <value>تذكرني</value>
+  </data>
+  <data name="Product.AddNew" xml:space="preserve">
+    <value>إضافة منتج جديد</value>
   </data>
 </root>

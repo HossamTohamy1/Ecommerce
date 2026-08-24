@@ -2,90 +2,782 @@
 @model ECommerce.API.Pages.IndexModel
 @{
     ViewData["Title"] = Localizer["Nav.Dashboard"].Value;
+    var d = Model.DashboardData;
 }
 
-<div class="page-header">
-    <h1>
-        @if (User.Identity is { IsAuthenticated: true })
-        {
-            @Localizer["Common.WelcomeBack"]
+@section Styles {
+    <style>
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
         }
-        else
-        {
-            @Localizer["Nav.Dashboard"]
+        .dashboard-table {
+            table-layout: fixed;
+            width: 100%;
+            margin-bottom: 0;
         }
-    </h1>
-</div>
+        .dashboard-table > :not(caption) > * > * {
+            padding: 0.65rem 0.75rem !important;
+            vertical-align: middle;
+        }
+        .dashboard-table th {
+            font-size: 0.725rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .dashboard-table td {
+            overflow: hidden;
+        }
+        .dashboard-card-table-wrap {
+            width: 100%;
+            overflow-x: hidden;
+        }
+        .text-truncate-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+}
 
-<div class="card mb-4">
-    <div class="card-body">
-        <h5 class="fw-bold mb-2">@Localizer["Dashboard.Welcome"]</h5>
-        <p class="text-muted mb-0">Lumaire</p>
-    </div>
-</div>
+<div class="dashboard-container">
+    <div class="page-header d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+        <div>
+            <h1 class="h3 fw-bold mb-1">
+                @if (User.Identity is { IsAuthenticated: true })
+                {
+                    @Localizer["Common.WelcomeBack"]
+                }
+                else
+                {
+                    @Localizer["Nav.Dashboard"]
+                }
+            </h1>
+            @if (Model.IsAdmin)
+            {
+                <p class="text-muted fs-6 mb-0">@Localizer["Dashboard.LiveMetrics"]</p>
+            }
+            else
+            {
+                <p class="text-muted fs-6 mb-0">@Localizer["Dashboard.Welcome"] - Lumaire</p>
+            }
+        </div>
 
-<h6 class="fw-bold mb-3">@Localizer["Dashboard.QuickLinks"]</h6>
-<div class="row g-4">
-    <div class="col-sm-6 col-lg-3">
-        <a asp-page="/Products/Index" class="text-decoration-none text-reset">
-            <div class="card h-100 text-center py-4">
-                <i class="bi bi-box-seam fs-1 text-brand mb-2"></i>
-                <div class="fw-semibold">@Localizer["Nav.Products"]</div>
+        @if (Model.IsAdmin)
+        {
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge badge-light-success py-2 px-3 fs-7 fw-semibold d-inline-flex align-items-center gap-1">
+                    <span class="bullet bullet-dot bg-success h-6px w-6px me-1"></span>
+                    <span>@Localizer["Common.Active"]</span>
+                </span>
+                <a asp-page="/Products/Admin/Create" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>@Localizer["Product.AddNew"]</span>
+                </a>
             </div>
-        </a>
+        }
     </div>
-    @if (User.Identity is { IsAuthenticated: true })
+
+    @if (Model.IsAdmin && d != null)
     {
-        <div class="col-sm-6 col-lg-3">
-            <a asp-page="/Cart/Index" class="text-decoration-none text-reset">
-                <div class="card h-100 text-center py-4">
-                    <i class="bi bi-cart3 fs-1 text-brand mb-2"></i>
-                    <div class="fw-semibold">@Localizer["Nav.Cart"]</div>
+        <!-- 1. KPI SUMMARY CARDS (Top Row: 4 Columns on md+) -->
+        <div class="row g-3 g-md-3 g-lg-4 mb-4">
+            <!-- KPI 1: Total Revenue -->
+            <div class="col-6 col-md-3">
+                <div class="card h-100 border-0 shadow-sm transition-hover">
+                    <div class="card-body p-3 p-xl-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2 mb-md-3">
+                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-light-success text-success p-2 p-md-3" style="width: 44px; height: 44px;">
+                                <i class="bi bi-currency-dollar fs-3 text-success"></i>
+                            </div>
+                            @if (d.Kpis.RevenueChangePercentage > 0)
+                            {
+                                <span class="badge badge-light-success d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-arrow-up-right"></i> +@d.Kpis.RevenueChangePercentage.ToString("0.0")%
+                                </span>
+                            }
+                            else if (d.Kpis.RevenueChangePercentage < 0)
+                            {
+                                <span class="badge badge-light-danger d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-arrow-down-right"></i> @d.Kpis.RevenueChangePercentage.ToString("0.0")%
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-light-secondary d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-dash"></i> 0.0%
+                                </span>
+                            }
+                        </div>
+                        <div class="text-muted fs-8 fs-md-7 fw-semibold mb-1 text-uppercase tracking-wider text-truncate">@Localizer["Dashboard.TotalRevenue"]</div>
+                        <h3 class="fw-bold fs-3 fs-md-2 text-dark mb-1 text-truncate">$@d.Kpis.TotalRevenueThisMonth.ToString("N2")</h3>
+                        <div class="text-muted fs-8 text-truncate">@Localizer["Dashboard.VsLastMonth"]</div>
+                    </div>
                 </div>
-            </a>
+            </div>
+
+            <!-- KPI 2: Total Orders -->
+            <div class="col-6 col-md-3">
+                <div class="card h-100 border-0 shadow-sm transition-hover">
+                    <div class="card-body p-3 p-xl-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2 mb-md-3">
+                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-light-primary text-primary p-2 p-md-3" style="width: 44px; height: 44px;">
+                                <i class="bi bi-cart-check fs-3 text-brand"></i>
+                            </div>
+                            @if (d.Kpis.OrdersChangePercentage > 0)
+                            {
+                                <span class="badge badge-light-success d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-arrow-up-right"></i> +@d.Kpis.OrdersChangePercentage.ToString("0.0")%
+                                </span>
+                            }
+                            else if (d.Kpis.OrdersChangePercentage < 0)
+                            {
+                                <span class="badge badge-light-danger d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-arrow-down-right"></i> @d.Kpis.OrdersChangePercentage.ToString("0.0")%
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-light-secondary d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-dash"></i> 0.0%
+                                </span>
+                            }
+                        </div>
+                        <div class="text-muted fs-8 fs-md-7 fw-semibold mb-1 text-uppercase tracking-wider text-truncate">@Localizer["Dashboard.TotalOrders"]</div>
+                        <h3 class="fw-bold fs-3 fs-md-2 text-dark mb-1 text-truncate">@d.Kpis.TotalOrdersThisMonth.ToString("N0")</h3>
+                        <div class="text-muted fs-8 text-truncate">@Localizer["Dashboard.VsLastMonth"]</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI 3: New Customers -->
+            <div class="col-6 col-md-3">
+                <div class="card h-100 border-0 shadow-sm transition-hover">
+                    <div class="card-body p-3 p-xl-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2 mb-md-3">
+                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-light-info text-info p-2 p-md-3" style="width: 44px; height: 44px;">
+                                <i class="bi bi-people fs-3 text-info"></i>
+                            </div>
+                            @if (d.Kpis.CustomersChangePercentage > 0)
+                            {
+                                <span class="badge badge-light-success d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-arrow-up-right"></i> +@d.Kpis.CustomersChangePercentage.ToString("0.0")%
+                                </span>
+                            }
+                            else if (d.Kpis.CustomersChangePercentage < 0)
+                            {
+                                <span class="badge badge-light-danger d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-arrow-down-right"></i> @d.Kpis.CustomersChangePercentage.ToString("0.0")%
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-light-secondary d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-dash"></i> 0.0%
+                                </span>
+                            }
+                        </div>
+                        <div class="text-muted fs-8 fs-md-7 fw-semibold mb-1 text-uppercase tracking-wider text-truncate">@Localizer["Dashboard.NewCustomers"]</div>
+                        <h3 class="fw-bold fs-3 fs-md-2 text-dark mb-1 text-truncate">@d.Kpis.NewCustomersThisMonth.ToString("N0")</h3>
+                        <div class="text-muted fs-8 text-truncate">@Localizer["Dashboard.VsLastMonth"]</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI 4: Average Order Value (AOV) -->
+            <div class="col-6 col-md-3">
+                <div class="card h-100 border-0 shadow-sm transition-hover">
+                    <div class="card-body p-3 p-xl-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2 mb-md-3">
+                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-light-warning text-warning p-2 p-md-3" style="width: 44px; height: 44px;">
+                                <i class="bi bi-graph-up-arrow fs-3 text-warning"></i>
+                            </div>
+                            @if (d.Kpis.AovChangePercentage > 0)
+                            {
+                                <span class="badge badge-light-success d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-arrow-up-right"></i> +@d.Kpis.AovChangePercentage.ToString("0.0")%
+                                </span>
+                            }
+                            else if (d.Kpis.AovChangePercentage < 0)
+                            {
+                                <span class="badge badge-light-danger d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-arrow-down-right"></i> @d.Kpis.AovChangePercentage.ToString("0.0")%
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-light-secondary d-inline-flex align-items-center gap-1 fs-8">
+                                    <i class="bi bi-dash"></i> 0.0%
+                                </span>
+                            }
+                        </div>
+                        <div class="text-muted fs-8 fs-md-7 fw-semibold mb-1 text-uppercase tracking-wider text-truncate">@Localizer["Dashboard.AverageOrderValue"]</div>
+                        <h3 class="fw-bold fs-3 fs-md-2 text-dark mb-1 text-truncate">$@d.Kpis.AverageOrderValue.ToString("N2")</h3>
+                        <div class="text-muted fs-8 text-truncate">@Localizer["Dashboard.VsLastMonth"]</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
-            <a asp-page="/Orders/Index" class="text-decoration-none text-reset">
-                <div class="card h-100 text-center py-4">
-                    <i class="bi bi-receipt fs-1 text-brand mb-2"></i>
-                    <div class="fw-semibold">@Localizer["Nav.MyOrders"]</div>
+
+        <!-- 2. CHARTS SECTION (2 Columns: Sales Trends md-8 & Orders Status md-4) -->
+        <div class="row g-3 g-md-3 g-lg-4 mb-4">
+            <!-- Sales Chart (Left, Wider: 8 cols on md+) -->
+            <div class="col-12 col-md-8">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-transparent border-0 pt-4 pb-2 px-3 px-md-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-activity text-brand fs-4"></i>
+                            <h4 class="card-title fw-bold fs-5 mb-0 text-dark">@Localizer["Dashboard.SalesTrends"]</h4>
+                        </div>
+                        <div class="btn-group btn-group-sm p-1 bg-light rounded-pill" role="group" id="salesPeriodToggle">
+                            <button type="button" class="btn btn-sm rounded-pill btn-primary px-3 fw-semibold active" id="btn30Days" onclick="switchSalesPeriod('30d')">
+                                @Localizer["Dashboard.Last30Days"]
+                            </button>
+                            <button type="button" class="btn btn-sm rounded-pill btn-light text-muted px-3 fw-semibold" id="btn12Months" onclick="switchSalesPeriod('12m')">
+                                @Localizer["Dashboard.Last12Months"]
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body px-3 px-md-4 pb-4 pt-2">
+                        <div class="position-relative" style="height: 320px; width: 100%;">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
                 </div>
-            </a>
+            </div>
+
+            <!-- Orders Overview Doughnut Chart (Right: 4 cols on md+) -->
+            <div class="col-12 col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-transparent border-0 pt-4 pb-2 px-3 px-md-4 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-pie-chart text-brand fs-4"></i>
+                            <h4 class="card-title fw-bold fs-5 mb-0 text-dark">@Localizer["Dashboard.OrdersOverview"]</h4>
+                        </div>
+                        <span class="badge badge-light-primary">@d.TotalOrdersCount @Localizer["Dashboard.Orders"]</span>
+                    </div>
+                    <div class="card-body px-3 px-md-4 pb-4 pt-2 d-flex flex-column justify-content-between">
+                        <div class="position-relative d-flex align-items-center justify-content-center" style="height: 220px;">
+                            <canvas id="ordersStatusChart"></canvas>
+                        </div>
+                        <div class="mt-3 pt-2 border-top">
+                            <div class="row g-2 text-center fs-8">
+                                @foreach (var status in d.OrderStatusDistribution.Where(s => s.Count > 0))
+                                {
+                                    <div class="col-4">
+                                        <div class="p-2 rounded bg-light">
+                                            <div class="fw-bold text-dark">@status.Count</div>
+                                            <div class="text-muted text-truncate">@Localizer["Order.Status." + status.Status]</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
-            <a asp-page="/Wishlist/Index" class="text-decoration-none text-reset">
-                <div class="card h-100 text-center py-4">
-                    <i class="bi bi-heart fs-1 text-brand mb-2"></i>
-                    <div class="fw-semibold">@Localizer["Nav.Wishlist"]</div>
+
+        <!-- 3. TOP SELLING PRODUCTS & RECENT ORDERS (2 Columns: md-6 each, 100% fixed layout, no overflow) -->
+        <div class="row g-3 g-md-3 g-lg-4 mb-4">
+            <!-- Top Selling Products (Left: 3 columns: Product 58%, Units 18%, Revenue 24%) -->
+            <div class="col-12 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-transparent border-0 pt-4 pb-3 px-3 px-md-4 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-trophy text-warning fs-4"></i>
+                            <h4 class="card-title fw-bold fs-5 mb-0 text-dark">@Localizer["Dashboard.TopSellingProducts"]</h4>
+                        </div>
+                        <a asp-page="/Products/Index" class="btn btn-sm btn-light-primary py-1 px-3">
+                            @Localizer["Dashboard.ViewAll"]
+                        </a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="dashboard-card-table-wrap">
+                            <table class="table align-middle table-row-dashed fs-7 gy-3 dashboard-table">
+                                <thead>
+                                    <tr class="text-muted fw-semibold text-uppercase border-bottom">
+                                        <th style="width: 58%;" class="ps-3 ps-md-4">@Localizer["Nav.Products"]</th>
+                                        <th style="width: 18%;" class="text-center">@Localizer["Dashboard.UnitsSold"]</th>
+                                        <th style="width: 24%;" class="text-end pe-3 pe-md-4">@Localizer["Dashboard.Revenue"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (d.TopSellingProducts.Count == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted py-4">@Localizer["Dashboard.NoTopProducts"]</td>
+                                        </tr>
+                                    }
+                                    @foreach (var product in d.TopSellingProducts)
+                                    {
+                                        <tr>
+                                            <td class="ps-3 ps-md-4">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                                    {
+                                                        <img src="@product.ImageUrl" alt="@product.Name" class="rounded-2 flex-shrink-0" style="width: 38px; height: 38px; object-fit: cover;" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="rounded-2 bg-light d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px;">
+                                                            <i class="bi bi-box-seam text-muted fs-5"></i>
+                                                        </div>
+                                                    }
+                                                    <div class="d-flex flex-column overflow-hidden min-w-0">
+                                                        <a asp-page="/Products/Details" asp-route-id="@product.ProductId" class="text-dark fw-bold text-hover-primary text-truncate d-block mb-1" title="@product.Name">
+                                                            @product.Name
+                                                        </a>
+                                                        <div class="d-flex align-items-center gap-1 text-truncate">
+                                                            <span class="badge badge-light-secondary fs-9 py-0 px-1 text-truncate" style="max-width: 90px;">@product.CategoryName</span>
+                                                            <span class="text-muted fs-9 text-truncate">@product.SKU</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge badge-light-primary fw-bold">@product.UnitsSold.ToString("N0")</span>
+                                            </td>
+                                            <td class="text-end pe-3 pe-md-4 fw-bold text-success text-nowrap">
+                                                $@product.TotalRevenue.ToString("N2")
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </a>
+            </div>
+
+            <!-- Recent Orders (Right: 4 columns: Order 30%, Customer 28%, Status 22%, Total 20%) -->
+            <div class="col-12 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-transparent border-0 pt-4 pb-3 px-3 px-md-4 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-clock-history text-brand fs-4"></i>
+                            <h4 class="card-title fw-bold fs-5 mb-0 text-dark">@Localizer["Dashboard.RecentOrders"]</h4>
+                        </div>
+                        <a asp-page="/Orders/Admin/AllOrders" class="btn btn-sm btn-light-primary py-1 px-3">
+                            @Localizer["Dashboard.ViewAll"]
+                        </a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="dashboard-card-table-wrap">
+                            <table class="table align-middle table-row-dashed fs-7 gy-3 dashboard-table">
+                                <thead>
+                                    <tr class="text-muted fw-semibold text-uppercase border-bottom">
+                                        <th style="width: 30%;" class="ps-3 ps-md-4">@Localizer["Order.OrderNumber"]</th>
+                                        <th style="width: 28%;">@Localizer["Auth.FullName"]</th>
+                                        <th style="width: 22%;" class="text-center">@Localizer["Order.Status"]</th>
+                                        <th style="width: 20%;" class="text-end pe-3 pe-md-4">@Localizer["Order.TotalAmount"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (d.RecentOrders.Count == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted py-4">@Localizer["Dashboard.NoRecentOrders"]</td>
+                                        </tr>
+                                    }
+                                    @foreach (var order in d.RecentOrders)
+                                    {
+                                        <tr>
+                                            <td class="ps-3 ps-md-4">
+                                                <div class="d-flex flex-column overflow-hidden min-w-0">
+                                                    <a asp-page="/Orders/Details" asp-route-id="@order.Id" class="fw-bold text-brand text-decoration-none text-truncate d-block" title="@order.OrderNumber">
+                                                        @order.OrderNumber
+                                                    </a>
+                                                    <span class="text-muted fs-9 text-nowrap">@order.CreatedAt.ToString("MMM dd, yyyy")</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="text-dark fw-semibold text-truncate d-block" title="@order.CustomerName">@order.CustomerName</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <partial name="_OrderStatusBadge" model="order.Status" />
+                                            </td>
+                                            <td class="text-end pe-3 pe-md-4 fw-bold text-dark text-nowrap">
+                                                $@order.TotalAmount.ToString("N2")
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. LOW STOCK ALERT WIDGET (Full Width Card) -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-transparent border-0 pt-4 pb-3 px-3 px-md-4 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-exclamation-triangle text-danger fs-4"></i>
+                    <h4 class="card-title fw-bold fs-5 mb-0 text-dark">@Localizer["Dashboard.LowStockAlert"]</h4>
+                </div>
+                <span class="badge badge-light-danger fs-8 fw-semibold">
+                    @d.LowStockProducts.Count @Localizer["Dashboard.Items"]
+                </span>
+            </div>
+            <div class="card-body p-0">
+                @if (d.LowStockProducts.Count == 0)
+                {
+                    <div class="text-center py-4 text-success d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-check-circle-fill fs-4 text-success"></i>
+                        <span class="fw-semibold">@Localizer["Dashboard.NoLowStock"]</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="dashboard-card-table-wrap">
+                        <table class="table align-middle table-row-dashed fs-7 gy-3 dashboard-table">
+                            <thead>
+                                <tr class="text-muted fw-semibold text-uppercase border-bottom">
+                                    <th style="width: 42%;" class="ps-3 ps-md-4">@Localizer["Nav.Products"]</th>
+                                    <th style="width: 20%;">@Localizer["Nav.Categories"]</th>
+                                    <th style="width: 14%;">@Localizer["Product.Price"]</th>
+                                    <th style="width: 12%;" class="text-center">@Localizer["Dashboard.InStock"]</th>
+                                    <th style="width: 12%;" class="text-end pe-3 pe-md-4">@Localizer["Common.Actions"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in d.LowStockProducts)
+                                {
+                                    <tr>
+                                        <td class="ps-3 ps-md-4">
+                                            <div class="d-flex align-items-center gap-2">
+                                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                                {
+                                                    <img src="@item.ImageUrl" alt="@item.Name" class="rounded-2 flex-shrink-0" style="width: 36px; height: 36px; object-fit: cover;" />
+                                                }
+                                                else
+                                                {
+                                                    <div class="rounded-2 bg-light d-flex align-items-center justify-content-center flex-shrink-0" style="width: 36px; height: 36px;">
+                                                        <i class="bi bi-box-seam text-muted fs-5"></i>
+                                                    </div>
+                                                }
+                                                <div class="d-flex flex-column overflow-hidden min-w-0">
+                                                    <span class="text-dark fw-bold text-truncate d-block" title="@item.Name">@item.Name</span>
+                                                    <span class="text-muted fs-9">SKU: @item.SKU</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-light-secondary text-truncate d-inline-block" style="max-width: 120px;">@item.CategoryName</span>
+                                        </td>
+                                        <td class="fw-semibold text-dark text-nowrap">
+                                            $@item.Price.ToString("N2")
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.StockQuantity <= 3)
+                                            {
+                                                <span class="badge badge-light-danger fw-bold fs-8">
+                                                    <i class="bi bi-exclamation-circle me-1"></i> @item.StockQuantity
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-light-warning fw-bold fs-8">
+                                                    <i class="bi bi-dash-circle me-1"></i> @item.StockQuantity
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="text-end pe-3 pe-md-4">
+                                            <a asp-page="/Products/Admin/Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-primary py-1 px-2 fs-8 text-nowrap">
+                                                <i class="bi bi-pencil-square me-1"></i> @Localizer["Common.Edit"]
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
         </div>
     }
-    @if (Model.IsAdmin)
-    {
-        <div class="col-sm-6 col-lg-3">
-            <a asp-page="/Categories/Index" class="text-decoration-none text-reset">
-                <div class="card h-100 text-center py-4">
-                    <i class="bi bi-diagram-3 fs-1 text-brand mb-2"></i>
-                    <div class="fw-semibold">@Localizer["Nav.Categories"]</div>
-                </div>
-            </a>
+
+    <!-- 5. SHORTCUTS STRIP (Quick Links) -->
+    <div class="mt-4 pt-2">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h6 class="fw-bold fs-6 mb-0 text-dark d-flex align-items-center gap-2">
+                <i class="bi bi-grid-fill text-muted"></i>
+                <span>@Localizer["Dashboard.Shortcuts"]</span>
+            </h6>
         </div>
-        <div class="col-sm-6 col-lg-3">
-            <a asp-page="/Discounts/Index" class="text-decoration-none text-reset">
-                <div class="card h-100 text-center py-4">
-                    <i class="bi bi-tags fs-1 text-brand mb-2"></i>
-                    <div class="fw-semibold">@Localizer["Nav.Discounts"]</div>
+
+        <div class="row g-3">
+            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <a asp-page="/Products/Index" class="text-decoration-none text-reset">
+                    <div class="card h-100 text-center py-3 px-2 border-0 shadow-sm transition-hover">
+                        <i class="bi bi-box-seam fs-2 text-brand mb-2"></i>
+                        <div class="fw-semibold fs-7">@Localizer["Nav.Products"]</div>
+                    </div>
+                </a>
+            </div>
+            @if (User.Identity is { IsAuthenticated: true })
+            {
+                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                    <a asp-page="/Cart/Index" class="text-decoration-none text-reset">
+                        <div class="card h-100 text-center py-3 px-2 border-0 shadow-sm transition-hover">
+                            <i class="bi bi-cart3 fs-2 text-brand mb-2"></i>
+                            <div class="fw-semibold fs-7">@Localizer["Nav.Cart"]</div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-            <a asp-page="/Orders/Admin/AllOrders" class="text-decoration-none text-reset">
-                <div class="card h-100 text-center py-4">
-                    <i class="bi bi-clipboard-data fs-1 text-brand mb-2"></i>
-                    <div class="fw-semibold">@Localizer["Nav.AllOrders"]</div>
+                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                    <a asp-page="/Orders/Index" class="text-decoration-none text-reset">
+                        <div class="card h-100 text-center py-3 px-2 border-0 shadow-sm transition-hover">
+                            <i class="bi bi-receipt fs-2 text-brand mb-2"></i>
+                            <div class="fw-semibold fs-7">@Localizer["Nav.MyOrders"]</div>
+                        </div>
+                    </a>
                 </div>
-            </a>
+                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                    <a asp-page="/Wishlist/Index" class="text-decoration-none text-reset">
+                        <div class="card h-100 text-center py-3 px-2 border-0 shadow-sm transition-hover">
+                            <i class="bi bi-heart fs-2 text-brand mb-2"></i>
+                            <div class="fw-semibold fs-7">@Localizer["Nav.Wishlist"]</div>
+                        </div>
+                    </a>
+                </div>
+            }
+            @if (Model.IsAdmin)
+            {
+                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                    <a asp-page="/Categories/Index" class="text-decoration-none text-reset">
+                        <div class="card h-100 text-center py-3 px-2 border-0 shadow-sm transition-hover">
+                            <i class="bi bi-diagram-3 fs-2 text-brand mb-2"></i>
+                            <div class="fw-semibold fs-7">@Localizer["Nav.Categories"]</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                    <a asp-page="/Discounts/Index" class="text-decoration-none text-reset">
+                        <div class="card h-100 text-center py-3 px-2 border-0 shadow-sm transition-hover">
+                            <i class="bi bi-tags fs-2 text-brand mb-2"></i>
+                            <div class="fw-semibold fs-7">@Localizer["Nav.Discounts"]</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                    <a asp-page="/Orders/Admin/AllOrders" class="text-decoration-none text-reset">
+                        <div class="card h-100 text-center py-3 px-2 border-0 shadow-sm transition-hover">
+                            <i class="bi bi-clipboard-data fs-2 text-brand mb-2"></i>
+                            <div class="fw-semibold fs-7">@Localizer["Nav.AllOrders"]</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                    <a asp-page="/Reviews/Index" class="text-decoration-none text-reset">
+                        <div class="card h-100 text-center py-3 px-2 border-0 shadow-sm transition-hover">
+                            <i class="bi bi-star fs-2 text-brand mb-2"></i>
+                            <div class="fw-semibold fs-7">@Localizer["Nav.Reviews"]</div>
+                        </div>
+                    </a>
+                </div>
+            }
         </div>
-    }
+    </div>
 </div>
+
+@if (Model.IsAdmin && d != null)
+{
+    @section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                const textColor = isDark ? '#92929f' : '#7e8299';
+                const gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)';
+                const brandGreen = '#0BB783';
+                const brandGreenLight = 'rgba(11, 183, 131, 0.15)';
+
+                // 1. Sales Trend Data
+                const data30d = {
+                    labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(d.SalesTrend30Days.Select(x => x.DateLabel))),
+                    revenue: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(d.SalesTrend30Days.Select(x => x.Revenue))),
+                    orders: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(d.SalesTrend30Days.Select(x => x.OrderCount)))
+                };
+
+                const data12m = {
+                    labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(d.SalesTrend12Months.Select(x => x.DateLabel))),
+                    revenue: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(d.SalesTrend12Months.Select(x => x.Revenue))),
+                    orders: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(d.SalesTrend12Months.Select(x => x.OrderCount)))
+                };
+
+                const salesCtx = document.getElementById('salesChart').getContext('2d');
+                const gradient = salesCtx.createLinearGradient(0, 0, 0, 300);
+                gradient.addColorStop(0, 'rgba(11, 183, 131, 0.35)');
+                gradient.addColorStop(1, 'rgba(11, 183, 131, 0.0)');
+
+                const salesChart = new Chart(salesCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data30d.labels,
+                        datasets: [{
+                            label: '@Html.Raw(Localizer["Dashboard.Revenue"].Value)',
+                            data: data30d.revenue,
+                            borderColor: brandGreen,
+                            backgroundColor: gradient,
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.35,
+                            pointRadius: 3,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: brandGreen,
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: isDark ? '#1e1e2d' : '#ffffff',
+                                titleColor: isDark ? '#ffffff' : '#181c32',
+                                bodyColor: isDark ? '#cdcdde' : '#3f4254',
+                                borderColor: isDark ? '#2b2b40' : '#eff2f5',
+                                borderWidth: 1,
+                                padding: 12,
+                                boxPadding: 6,
+                                usePointStyle: true,
+                                callbacks: {
+                                    label: function (context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) label += ': ';
+                                        if (context.parsed.y !== null) {
+                                            label += '$' + context.parsed.y.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: textColor,
+                                    font: { size: 11 },
+                                    maxRotation: 0,
+                                    autoSkip: true,
+                                    maxTicksLimit: 10
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: gridColor,
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    color: textColor,
+                                    font: { size: 11 },
+                                    callback: function (val) {
+                                        return '$' + val.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Toggle Sales Period
+                window.switchSalesPeriod = function (period) {
+                    const btn30 = document.getElementById('btn30Days');
+                    const btn12 = document.getElementById('btn12Months');
+
+                    if (period === '30d') {
+                        btn30.className = 'btn btn-sm rounded-pill btn-primary px-3 fw-semibold active';
+                        btn12.className = 'btn btn-sm rounded-pill btn-light text-muted px-3 fw-semibold';
+                        salesChart.data.labels = data30d.labels;
+                        salesChart.data.datasets[0].data = data30d.revenue;
+                    } else {
+                        btn12.className = 'btn btn-sm rounded-pill btn-primary px-3 fw-semibold active';
+                        btn30.className = 'btn btn-sm rounded-pill btn-light text-muted px-3 fw-semibold';
+                        salesChart.data.labels = data12m.labels;
+                        salesChart.data.datasets[0].data = data12m.revenue;
+                    }
+                    salesChart.update();
+                };
+
+                // 2. Orders Status Doughnut Chart
+                const statusData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(d.OrderStatusDistribution));
+                const statusLabels = statusData.map(s => {
+                    return s.StatusName;
+                });
+                const statusCounts = statusData.map(s => s.Count);
+
+                const statusColorMap = {
+                    'Pending': '#FFA800',       // warning
+                    'Confirmed': '#009EF7',     // info
+                    'Processing': '#7239EA',    // purple/primary-alt
+                    'Shipped': '#3E97FF',       // blue
+                    'Delivered': '#0BB783',     // success / brand green
+                    'Cancelled': '#F1416C'      // danger
+                };
+
+                const backgroundColors = statusLabels.map(name => statusColorMap[name] || '#A1A5B7');
+
+                const ordersCtx = document.getElementById('ordersStatusChart').getContext('2d');
+                new Chart(ordersCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: statusLabels,
+                        datasets: [{
+                            data: statusCounts,
+                            backgroundColor: backgroundColors,
+                            borderWidth: 2,
+                            borderColor: isDark ? '#1e1e2d' : '#ffffff',
+                            hoverOffset: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '72%',
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: isDark ? '#1e1e2d' : '#ffffff',
+                                titleColor: isDark ? '#ffffff' : '#181c32',
+                                bodyColor: isDark ? '#cdcdde' : '#3f4254',
+                                borderColor: isDark ? '#2b2b40' : '#eff2f5',
+                                borderWidth: 1,
+                                padding: 10,
+                                boxPadding: 6,
+                                callbacks: {
+                                    label: function (context) {
+                                        const count = context.parsed || 0;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const pct = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                                        return `${context.label}: ${count} (${pct}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+    }
+}

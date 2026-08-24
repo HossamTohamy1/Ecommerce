@@ -4,110 +4,246 @@
     ViewData["Title"] = Localizer["Cart.Title"].Value;
 }
 
-<div class="page-header">
-    <h1>@Localizer["Cart.Title"]</h1>
-    <a class="btn btn-outline-secondary" asp-page="/Products/Index"><i class="bi bi-arrow-left me-1"></i>@Localizer["Cart.ContinueShopping"]</a>
+@section Styles {
+    <style>
+        .text-truncate-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .cart-item-card {
+            border: 1px solid var(--bs-border-color, #eff2f5);
+            background-color: var(--bs-body-bg, #ffffff);
+            border-radius: 0.75rem;
+            transition: box-shadow 0.2s ease;
+        }
+        html[data-theme="dark"] .cart-item-card {
+            background-color: #1e1e2d;
+            border-color: var(--bs-border-color, #2b2b40);
+        }
+        .cart-qty-input {
+            width: 55px !important;
+            min-width: 50px;
+        }
+        .cart-mobile-thumb {
+            width: 68px;
+            height: 68px;
+            min-width: 68px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+    </style>
+}
+
+<div class="page-header d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+    <h1 class="h3 fw-bold mb-0">@Localizer["Cart.Title"]</h1>
+    <a class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1" asp-page="/Products/Index">
+        <i class="bi bi-arrow-left"></i>
+        <span>@Localizer["Cart.ContinueShopping"]</span>
+    </a>
 </div>
 
 @if (Model.Cart.Items.Count == 0)
 {
-    <div class="card">
+    <div class="card border-0 shadow-sm">
         <div class="card-body text-center py-5 text-muted">
-            <i class="bi bi-cart-x fs-1 d-block mb-3"></i>
-            @Localizer["Cart.Empty"]
+            <i class="bi bi-cart-x fs-1 d-block mb-3 text-muted"></i>
+            <h5 class="fw-semibold mb-2">@Localizer["Cart.Empty"]</h5>
+            <a asp-page="/Products/Index" class="btn btn-sm btn-primary mt-2">
+                @Localizer["Cart.ContinueShopping"]
+            </a>
         </div>
     </div>
 }
 else
 {
     <div class="row g-4">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="table-responsive">
-                    <table class="table mb-0">
-                        <thead>
-                            <tr>
-                                <th>@Localizer["Product.Title"]</th>
-                                <th>@Localizer["Common.Price"]</th>
-                                <th>@Localizer["Common.Quantity"]</th>
-                                <th>@Localizer["Common.Total"]</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Cart.Items)
-                            {
-                                <tr>
-                                    <td class="d-flex align-items-center gap-2">
-                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
-                                        {
-                                            <img src="@item.ImageUrl" class="product-thumb" alt="@item.ProductName" />
-                                        }
-                                        else
-                                        {
-                                            <div class="product-thumb d-flex align-items-center justify-content-center">
-                                                <i class="bi bi-image fs-4 text-muted"></i>
-                                            </div>
-                                        }
-                                        <div>
-                                            <div class="fw-semibold">@item.ProductName</div>
-                                            @if (item.VariantLabel is not null)
-                                            {
-                                                <small class="text-muted">@item.VariantLabel</small>
-                                            }
-                                        </div>
-                                    </td>
-                                    <td>@item.UnitPrice.ToString("0.00")</td>
-                                    <td style="width:140px">
-                                        <form method="post" asp-page-handler="Update" asp-route-itemId="@item.Id">
-                                            <div class="input-group input-group-sm" style="width: 115px;">
-                                                <input type="number" name="quantity" value="@item.Quantity" min="1" max="1000" class="form-control text-center" />
-                                                <button type="submit" class="btn btn-light-primary" title="@Localizer["Common.Save"]"><i class="bi bi-arrow-repeat"></i></button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td class="fw-semibold">@item.LineTotal.ToString("0.00")</td>
-                                    <td>
-                                        <form method="post" asp-page-handler="Remove" asp-route-itemId="@item.Id">
-                                            <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]"><i class="bi bi-trash"></i></button>
-                                        </form>
-                                    </td>
+        <!-- Cart Items Column (Desktop Table + Mobile Cards) -->
+        <div class="col-12 col-lg-8">
+            <!-- 1. DESKTOP / TABLET VIEW (>= 768px) -->
+            <div class="d-none d-md-block">
+                <div class="card border-0 shadow-sm">
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                                <tr class="text-muted fw-semibold text-uppercase fs-8 border-bottom">
+                                    <th class="ps-4">@Localizer["Product.Title"]</th>
+                                    <th>@Localizer["Common.Price"]</th>
+                                    <th>@Localizer["Common.Quantity"]</th>
+                                    <th>@Localizer["Common.Total"]</th>
+                                    <th class="text-end pe-4"></th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Cart.Items)
+                                {
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div class="d-flex align-items-center gap-3">
+                                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                                {
+                                                    <img src="@item.ImageUrl" class="product-thumb" alt="@item.ProductName" />
+                                                }
+                                                else
+                                                {
+                                                    <div class="product-thumb d-flex align-items-center justify-content-center">
+                                                        <i class="bi bi-image fs-4 text-muted"></i>
+                                                    </div>
+                                                }
+                                                <div class="d-flex flex-column min-w-0">
+                                                    <a asp-page="/Products/Details" asp-route-id="@item.ProductId" class="fw-bold text-dark text-hover-primary text-decoration-none text-truncate" style="max-width: 260px;">
+                                                        @item.ProductName
+                                                    </a>
+                                                    @if (item.VariantLabel is not null)
+                                                    {
+                                                        <span class="badge badge-light-secondary fs-8 mt-1 align-self-start">@item.VariantLabel</span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="fw-semibold text-dark">
+                                            $@item.UnitPrice.ToString("0.00")
+                                        </td>
+                                        <td style="width: 150px;">
+                                            <form method="post" asp-page-handler="Update" asp-route-itemId="@item.Id" class="d-flex align-items-center">
+                                                <div class="input-group input-group-sm" style="width: 120px;">
+                                                    <input type="number" name="quantity" value="@item.Quantity" min="1" max="1000" class="form-control text-center" />
+                                                    <button type="submit" class="btn btn-light-primary" title="@Localizer["Common.Save"]">
+                                                        <i class="bi bi-arrow-repeat"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td class="fw-bold text-brand">
+                                            $@item.LineTotal.ToString("0.00")
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <form method="post" asp-page-handler="Remove" asp-route-itemId="@item.Id">
+                                                <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]" aria-label="@Localizer["Common.Delete"]">
+                                                    <i class="bi bi-trash fs-5"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
+            <!-- 2. MOBILE VIEW (< 768px: Responsive Stacked Cards) -->
+            <div class="d-md-none d-flex flex-column gap-3">
+                @foreach (var item in Model.Cart.Items)
+                {
+                    <div class="cart-item-card p-3 shadow-sm position-relative">
+                        <!-- Top Row: Thumbnail + Product Name/Variant + Delete Button -->
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <!-- Thumbnail (68px) -->
+                            <div class="flex-shrink-0">
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl" class="cart-mobile-thumb" alt="@item.ProductName" />
+                                }
+                                else
+                                {
+                                    <div class="cart-mobile-thumb bg-light d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-image fs-3 text-muted"></i>
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Name & Variant (Takes full available width, wrapped to 2 lines) -->
+                            <div class="flex-grow-1 min-w-0 pe-4">
+                                <a asp-page="/Products/Details" asp-route-id="@item.ProductId" class="fw-bold text-dark text-hover-primary text-decoration-none text-truncate-2 fs-6 mb-1 d-block" style="line-height: 1.35;">
+                                    @item.ProductName
+                                </a>
+                                @if (item.VariantLabel is not null)
+                                {
+                                    <span class="badge badge-light-secondary fs-8">@item.VariantLabel</span>
+                                }
+                            </div>
+
+                            <!-- Delete Button (Top-End Positioned) -->
+                            <form method="post" asp-page-handler="Remove" asp-route-itemId="@item.Id" class="position-absolute top-0 end-0 p-2">
+                                <button type="submit" class="btn btn-icon btn-sm text-danger" title="@Localizer["Common.Delete"]" aria-label="@Localizer["Common.Delete"]">
+                                    <i class="bi bi-trash fs-5"></i>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Bottom Row: Price, Quantity Stepper, Line Total -->
+                        <div class="d-flex align-items-center justify-content-between pt-2 border-top flex-wrap gap-2">
+                            <!-- Unit Price -->
+                            <div class="d-flex flex-column">
+                                <span class="text-muted fs-8 text-uppercase">@Localizer["Common.Price"]</span>
+                                <span class="fw-semibold text-dark fs-7">$@item.UnitPrice.ToString("0.00")</span>
+                            </div>
+
+                            <!-- Quantity Stepper Form -->
+                            <form method="post" asp-page-handler="Update" asp-route-itemId="@item.Id" class="d-flex align-items-center">
+                                <div class="input-group input-group-sm" style="width: 105px;">
+                                    <input type="number" name="quantity" value="@item.Quantity" min="1" max="1000" class="form-control text-center px-1 cart-qty-input" />
+                                    <button type="submit" class="btn btn-light-primary px-2" title="@Localizer["Common.Save"]">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- Line Total -->
+                            <div class="d-flex flex-column text-end">
+                                <span class="text-muted fs-8 text-uppercase">@Localizer["Common.Total"]</span>
+                                <span class="fw-bold text-brand fs-6">$@item.LineTotal.ToString("0.00")</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Clear Cart Button -->
             <form method="post" asp-page-handler="Clear" class="mt-3">
-                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>@Localizer["Common.Delete"] @Localizer["Cart.Title"]</button>
+                <button type="submit" class="btn btn-outline-danger btn-sm w-100 w-md-auto d-inline-flex align-items-center justify-content-center gap-1">
+                    <i class="bi bi-trash"></i>
+                    <span>@Localizer["Common.Delete"] @Localizer["Cart.Title"]</span>
+                </button>
             </form>
         </div>
-        <div class="col-lg-4">
-            <div class="card shadow-sm">
-                <div class="card-header fs-5 fw-bold">
-                    <i class="bi bi-receipt me-2 text-primary"></i>@Localizer["Cart.OrderSummary"]
+
+        <!-- Order Summary Column (Stacks below Cart Items on mobile) -->
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4 fs-5 fw-bold d-flex align-items-center gap-2">
+                    <i class="bi bi-receipt text-primary fs-4"></i>
+                    <span>@Localizer["Cart.OrderSummary"]</span>
                 </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2">
+                <div class="card-body px-4 pb-4 pt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="text-muted">@Localizer["Order.SubTotal"]</span>
-                        <span class="fw-semibold">@Model.Cart.Total.ToString("0.00")</span>
+                        <span class="fw-semibold text-dark">$@Model.Cart.Total.ToString("0.00")</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="text-muted">@Localizer["Order.ShippingFee"]</span>
                         <span class="text-success fw-semibold">@Localizer["Order.ShippingFree"]</span>
                     </div>
                     <div class="separator my-3"></div>
-                    <div class="d-flex justify-content-between mb-4 align-items-center">
-                        <span class="fw-bold fs-5">@Localizer["Common.Total"]</span>
-                        <span class="fw-bold fs-3 text-brand">@Model.Cart.Total.ToString("0.00")</span>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="fw-bold fs-5 text-dark">@Localizer["Common.Total"]</span>
+                        <span class="fw-bold fs-2 text-brand">$@Model.Cart.Total.ToString("0.00")</span>
                     </div>
                     @if (Model.HasAddresses)
                     {
-                        <a asp-page="/Orders/Checkout" class="btn btn-primary w-100 py-3 fw-bold"><i class="bi bi-credit-card me-2"></i>@Localizer["Cart.Checkout"]</a>
+                        <a asp-page="/Orders/Checkout" class="btn btn-primary w-100 py-3 fw-bold d-inline-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-credit-card fs-5"></i>
+                            <span>@Localizer["Cart.Checkout"]</span>
+                        </a>
                     }
                     else
                     {
-                        <a asp-page="/Addresses/Create" asp-route-returnUrl="/Cart/Index" class="btn btn-primary w-100 py-3 fw-bold"><i class="bi bi-geo-alt me-2"></i>@Localizer["Address.Create"]</a>
+                        <a asp-page="/Addresses/Create" asp-route-returnUrl="/Cart/Index" class="btn btn-primary w-100 py-3 fw-bold d-inline-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-geo-alt fs-5"></i>
+                            <span>@Localizer["Address.Create"]</span>
+                        </a>
                     }
                 </div>
             </div>

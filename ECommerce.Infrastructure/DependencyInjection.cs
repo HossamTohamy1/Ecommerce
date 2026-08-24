@@ -109,6 +109,13 @@ public static class DependencyInjection
                 sp.GetRequiredService<ECommerce.Application.Features.Brands.Queries.GetAllBrands.GetAllBrandsQueryHandler>(),
                 sp.GetRequiredService<Microsoft.Extensions.Caching.Memory.IMemoryCache>()));
 
+        services.AddTransient<ECommerce.Application.Features.Dashboard.Queries.GetAdminDashboard.GetAdminDashboardQueryHandler>();
+        services.AddTransient<IRequestHandler<ECommerce.Application.Features.Dashboard.Queries.GetAdminDashboard.GetAdminDashboardQuery, ECommerce.Application.DTOs.Dashboard.AdminDashboardDto>>(sp =>
+            new ECommerce.Application.Features.Dashboard.Queries.GetAdminDashboard.CachedGetAdminDashboardQueryHandler(
+                sp.GetRequiredService<ECommerce.Application.Features.Dashboard.Queries.GetAdminDashboard.GetAdminDashboardQueryHandler>(),
+                sp.GetRequiredService<Microsoft.Extensions.Caching.Memory.IMemoryCache>(),
+                sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<ECommerce.Application.Features.Dashboard.Queries.GetAdminDashboard.CachedGetAdminDashboardQueryHandler>>()));
+
 
         services.AddAuthentication(options =>
             {

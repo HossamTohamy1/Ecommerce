@@ -671,6 +671,81 @@
   <data name="Dashboard.QuickLinks" xml:space="preserve">
     <value>Quick Links</value>
   </data>
+  <data name="Dashboard.Analytics" xml:space="preserve">
+    <value>Analytics &amp; Overview</value>
+  </data>
+  <data name="Dashboard.TotalRevenue" xml:space="preserve">
+    <value>Total Revenue</value>
+  </data>
+  <data name="Dashboard.TotalOrders" xml:space="preserve">
+    <value>Total Orders</value>
+  </data>
+  <data name="Dashboard.NewCustomers" xml:space="preserve">
+    <value>New Customers</value>
+  </data>
+  <data name="Dashboard.AverageOrderValue" xml:space="preserve">
+    <value>Average Order Value</value>
+  </data>
+  <data name="Dashboard.ThisMonth" xml:space="preserve">
+    <value>This Month</value>
+  </data>
+  <data name="Dashboard.VsLastMonth" xml:space="preserve">
+    <value>vs last month</value>
+  </data>
+  <data name="Dashboard.SalesTrends" xml:space="preserve">
+    <value>Sales &amp; Revenue Trends</value>
+  </data>
+  <data name="Dashboard.Last30Days" xml:space="preserve">
+    <value>Last 30 Days</value>
+  </data>
+  <data name="Dashboard.Last12Months" xml:space="preserve">
+    <value>Last 12 Months</value>
+  </data>
+  <data name="Dashboard.OrdersOverview" xml:space="preserve">
+    <value>Orders Overview</value>
+  </data>
+  <data name="Dashboard.TopSellingProducts" xml:space="preserve">
+    <value>Top Selling Products</value>
+  </data>
+  <data name="Dashboard.RecentOrders" xml:space="preserve">
+    <value>Recent Orders</value>
+  </data>
+  <data name="Dashboard.LowStockAlert" xml:space="preserve">
+    <value>Low Stock Alert</value>
+  </data>
+  <data name="Dashboard.UnitsSold" xml:space="preserve">
+    <value>Units Sold</value>
+  </data>
+  <data name="Dashboard.InStock" xml:space="preserve">
+    <value>In Stock</value>
+  </data>
+  <data name="Dashboard.Shortcuts" xml:space="preserve">
+    <value>Quick Shortcuts</value>
+  </data>
+  <data name="Dashboard.NoLowStock" xml:space="preserve">
+    <value>All products are sufficiently stocked.</value>
+  </data>
+  <data name="Dashboard.NoRecentOrders" xml:space="preserve">
+    <value>No recent orders found.</value>
+  </data>
+  <data name="Dashboard.NoTopProducts" xml:space="preserve">
+    <value>No sales recorded yet.</value>
+  </data>
+  <data name="Dashboard.ViewAll" xml:space="preserve">
+    <value>View All</value>
+  </data>
+  <data name="Dashboard.Revenue" xml:space="preserve">
+    <value>Revenue</value>
+  </data>
+  <data name="Dashboard.Orders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Dashboard.Items" xml:space="preserve">
+    <value>items</value>
+  </data>
+  <data name="Dashboard.LiveMetrics" xml:space="preserve">
+    <value>Real-time store performance &amp; key metrics</value>
+  </data>
   <data name="Order.Status.Pending" xml:space="preserve">
     <value>Pending</value>
   </data>
@@ -1310,5 +1385,8 @@ If you didn't request this, just ignore this email.</value>
   </data>
   <data name="RememberMe" xml:space="preserve">
     <value>Remember Me</value>
+  </data>
+    <data name="Product.AddNew" xml:space="preserve">
+    <value>Add New Product</value>
   </data>
 </root>

@@ -5,15 +5,15 @@
 }
 
 <div class="page-header mb-4">
-    <h1>@Localizer["AuditLog.Title"]</h1>
+    <h1 class="h3 fw-bold mb-0">@Localizer["AuditLog.Title"]</h1>
 </div>
 
-<div class="card mb-4 shadow-sm">
-    <div class="card-body">
+<div class="card mb-4 shadow-sm border-0">
+    <div class="card-body p-3 p-md-4">
         <form method="get" class="row g-3 align-items-end" autocomplete="off">
-            <div class="col-md-2">
-                <label class="form-label">@Localizer["AuditLog.Filter.Entity"]</label>
-                <select name="EntityName" class="form-select">
+            <div class="col-12 col-sm-6 col-md-2">
+                <label class="form-label fs-7 fw-semibold">@Localizer["AuditLog.Filter.Entity"]</label>
+                <select name="EntityName" class="form-select form-select-sm">
                     <option value="">--</option>
                     @foreach (var entity in Model.EntityNames)
                     {
@@ -21,9 +21,9 @@
                     }
                 </select>
             </div>
-            <div class="col-md-2">
-                <label class="form-label">@Localizer["AuditLog.Filter.Action"]</label>
-                <select name="Action" class="form-select">
+            <div class="col-12 col-sm-6 col-md-2">
+                <label class="form-label fs-7 fw-semibold">@Localizer["AuditLog.Filter.Action"]</label>
+                <select name="Action" class="form-select form-select-sm">
                     <option value="">--</option>
                     @foreach (var action in Enum.GetValues<ECommerce.Domain.Entities.AuditAction>())
                     {
@@ -31,32 +31,32 @@
                     }
                 </select>
             </div>
-            <div class="col-md-2">
-                <label class="form-label">@Localizer["AuditLog.Filter.User"]</label>
-                <input type="text" name="UserId" class="form-control" value="@Model.UserId" autocomplete="off" />
+            <div class="col-12 col-sm-6 col-md-2">
+                <label class="form-label fs-7 fw-semibold">@Localizer["AuditLog.Filter.User"]</label>
+                <input type="text" name="UserId" class="form-control form-control-sm" value="@Model.UserId" autocomplete="off" />
             </div>
-            <div class="col-md-2">
-                <label class="form-label">@Localizer["AuditLog.Filter.From"]</label>
-                <input type="datetime-local" name="FromUtc" class="form-control" value="@(Model.FromUtc?.ToString("yyyy-MM-ddTHH:mm"))" />
+            <div class="col-12 col-sm-6 col-md-2">
+                <label class="form-label fs-7 fw-semibold">@Localizer["AuditLog.Filter.From"]</label>
+                <input type="datetime-local" name="FromUtc" class="form-control form-control-sm" value="@(Model.FromUtc?.ToString("yyyy-MM-ddTHH:mm"))" />
             </div>
-            <div class="col-md-2">
-                <label class="form-label">@Localizer["AuditLog.Filter.To"]</label>
-                <input type="datetime-local" name="ToUtc" class="form-control" value="@(Model.ToUtc?.ToString("yyyy-MM-ddTHH:mm"))" />
+            <div class="col-12 col-sm-6 col-md-2">
+                <label class="form-label fs-7 fw-semibold">@Localizer["AuditLog.Filter.To"]</label>
+                <input type="datetime-local" name="ToUtc" class="form-control form-control-sm" value="@(Model.ToUtc?.ToString("yyyy-MM-ddTHH:mm"))" />
             </div>
-            <div class="col-md-1">
-                <label class="form-label">@Localizer["Common.PageSize"]</label>
-                <select name="PageSize" class="form-select">
+            <div class="col-6 col-md-1">
+                <label class="form-label fs-7 fw-semibold">@Localizer["Common.PageSize"]</label>
+                <select name="PageSize" class="form-select form-select-sm">
                     <option value="10" selected="@(Model.PageSize == 10)">10</option>
                     <option value="25" selected="@(Model.PageSize == 25)">25</option>
                     <option value="50" selected="@(Model.PageSize == 50)">50</option>
                     <option value="100" selected="@(Model.PageSize == 100)">100</option>
                 </select>
             </div>
-            <div class="col-md-1 d-flex gap-2">
-                <button type="submit" class="btn btn-primary w-100" title="@Localizer["AuditLog.Filter.Apply"]">
+            <div class="col-6 col-md-1 d-flex gap-2">
+                <button type="submit" class="btn btn-sm btn-primary w-100" title="@Localizer["AuditLog.Filter.Apply"]">
                     <i class="bi bi-search"></i>
                 </button>
-                <a asp-page="/AuditLogs/Admin/Index" class="btn btn-outline-secondary" title="@Localizer["Common.Cancel"]">
+                <a asp-page="/AuditLogs/Admin/Index" class="btn btn-sm btn-outline-secondary" title="@Localizer["Common.Cancel"]">
                     <i class="bi bi-x-lg"></i>
                 </a>
             </div>
@@ -64,112 +64,211 @@
     </div>
 </div>
 
-<div class="card shadow-sm">
-    <div class="table-responsive">
-        <table class="table align-middle table-row-dashed fs-6 gy-3 mb-0">
-            <thead>
-                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                    <th>@Localizer["AuditLog.Column.Timestamp"]</th>
-                    <th>@Localizer["AuditLog.Column.User"]</th>
-                    <th>@Localizer["AuditLog.Column.Action"]</th>
-                    <th>@Localizer["AuditLog.Column.Entity"]</th>
-                    <th>@Localizer["AuditLog.Column.Changes"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Result.Items.Count == 0)
-                {
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-5">
-                            <i class="bi bi-inbox fs-2 d-block mb-2 text-gray-400"></i>
-                            @Localizer["Common.NoDataFound"]
-                        </td>
+@if (Model.Result.Items.Count == 0)
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center text-muted py-5">
+            <i class="bi bi-inbox fs-2 d-block mb-2 text-gray-400"></i>
+            @Localizer["Common.NoDataFound"]
+        </div>
+    </div>
+}
+else
+{
+    <!-- 1. DESKTOP / TABLET VIEW (>= 768px) -->
+    <div class="card border-0 shadow-sm d-none d-md-block">
+        <div class="table-responsive">
+            <table class="table align-middle table-row-dashed fs-6 gy-3 mb-0">
+                <thead>
+                    <tr class="text-muted fw-bold fs-7 text-uppercase border-bottom">
+                        <th class="ps-4">@Localizer["AuditLog.Column.Timestamp"]</th>
+                        <th>@Localizer["AuditLog.Column.User"]</th>
+                        <th>@Localizer["AuditLog.Column.Action"]</th>
+                        <th>@Localizer["AuditLog.Column.Entity"]</th>
+                        <th class="pe-4">@Localizer["AuditLog.Column.Changes"]</th>
                     </tr>
-                }
-                @foreach (var log in Model.Result.Items)
-                {
-                    var badgeClass = log.Action switch
+                </thead>
+                <tbody>
+                    @foreach (var log in Model.Result.Items)
                     {
-                        ECommerce.Domain.Entities.AuditAction.Create => "badge-light-success text-success",
-                        ECommerce.Domain.Entities.AuditAction.Update => "badge-light-warning text-warning",
-                        ECommerce.Domain.Entities.AuditAction.Delete => "badge-light-danger text-danger",
-                        _ => "badge-light-secondary text-secondary"
-                    };
-                    var resolvedUserName = log.UserName;
-                    if (string.IsNullOrEmpty(resolvedUserName) && !string.IsNullOrEmpty(log.UserId) && Model.EntityLookup.TryGetValue(log.UserId, out var lookupUserName))
-                    {
-                        resolvedUserName = lookupUserName;
-                    }
-                    var entityIdSnippet = string.IsNullOrEmpty(log.EntityId) 
-                        ? "" 
-                        : (log.EntityId.Length > 8 ? log.EntityId[..8] : log.EntityId);
-                    var resolvedEntityName = Model.EntityLookup.TryGetValue(log.EntityId ?? "", out var lookupEntityName) ? lookupEntityName : null;
-                    <tr>
-                        <td class="text-muted">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                        <td class="fw-semibold">@(resolvedUserName ?? log.UserId ?? Localizer["AuditLog.System"].Value)</td>
-                        <td>
-                            <span class="badge @badgeClass fw-bold px-3 py-2" style="user-select: none; pointer-events: none;">
-                                @Localizer["AuditLog.Action." + log.Action]
-                            </span>
-                        </td>
-                        <td>
-                            <div class="fw-semibold">@log.EntityName</div>
-                            @if (!string.IsNullOrEmpty(resolvedEntityName))
-                            {
-                                <div class="text-muted fs-8">@resolvedEntityName <span class="fs-9 text-gray-500 font-monospace">#@entityIdSnippet</span></div>
-                            }
-                            else if (!string.IsNullOrEmpty(entityIdSnippet))
-                            {
-                                <span class="text-muted fs-8">#@entityIdSnippet</span>
-                            }
-                        </td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(log.Changes))
-                            {
-                                var parsedChanges = ECommerce.API.Pages.AuditLogs.Admin.IndexModel.ParseChanges(log.Changes, Model.EntityLookup);
-                                <details>
-                                    <summary class="text-primary fw-semibold fs-8" style="cursor: pointer; user-select: none;">
-                                        @Localizer["AuditLog.ViewChanges"] (@parsedChanges.Count)
-                                    </summary>
-                                    <div class="audit-changes-panel p-3 mt-2 rounded border" style="max-width: 440px;">
-                                        @foreach (var c in parsedChanges)
-                                        {
-                                            <div class="audit-change-row d-flex flex-wrap align-items-center gap-1 mb-1 fs-8">
-                                                <span class="audit-change-label fw-semibold text-muted">@c.Label:</span>
-                                                @if (c.IsDiff)
-                                                {
-                                                    <span class="badge badge-light-danger text-decoration-line-through py-1 px-2">@c.OldValue</span>
-                                                    <i class="bi bi-arrow-right fs-9 text-muted mx-1"></i>
-                                                    <span class="badge badge-light-success py-1 px-2 fw-semibold">@c.NewValue</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="fw-semibold audit-change-val text-gray-800">@c.Value</span>
-                                                    @if (!string.IsNullOrEmpty(c.SecondaryValue))
+                        var badgeClass = log.Action switch
+                        {
+                            ECommerce.Domain.Entities.AuditAction.Create => "badge-light-success text-success",
+                            ECommerce.Domain.Entities.AuditAction.Update => "badge-light-warning text-warning",
+                            ECommerce.Domain.Entities.AuditAction.Delete => "badge-light-danger text-danger",
+                            _ => "badge-light-secondary text-secondary"
+                        };
+                        var resolvedUserName = log.UserName;
+                        if (string.IsNullOrEmpty(resolvedUserName) && !string.IsNullOrEmpty(log.UserId) && Model.EntityLookup.TryGetValue(log.UserId, out var lookupUserName))
+                        {
+                            resolvedUserName = lookupUserName;
+                        }
+                        var entityIdSnippet = string.IsNullOrEmpty(log.EntityId) 
+                            ? "" 
+                            : (log.EntityId.Length > 8 ? log.EntityId[..8] : log.EntityId);
+                        var resolvedEntityName = Model.EntityLookup.TryGetValue(log.EntityId ?? "", out var lookupEntityName) ? lookupEntityName : null;
+                        <tr>
+                            <td class="ps-4 text-muted fs-8">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td class="fw-semibold text-dark">@(resolvedUserName ?? log.UserId ?? Localizer["AuditLog.System"].Value)</td>
+                            <td>
+                                <span class="badge @badgeClass fw-bold px-3 py-2" style="user-select: none; pointer-events: none;">
+                                    @Localizer["AuditLog.Action." + log.Action]
+                                </span>
+                            </td>
+                            <td>
+                                <div class="fw-semibold text-dark">@log.EntityName</div>
+                                @if (!string.IsNullOrEmpty(resolvedEntityName))
+                                {
+                                    <div class="text-muted fs-8">@resolvedEntityName <span class="fs-9 text-gray-500 font-monospace">#@entityIdSnippet</span></div>
+                                }
+                                else if (!string.IsNullOrEmpty(entityIdSnippet))
+                                {
+                                    <span class="text-muted fs-8">#@entityIdSnippet</span>
+                                }
+                            </td>
+                            <td class="pe-4">
+                                @if (!string.IsNullOrEmpty(log.Changes))
+                                {
+                                    var parsedChanges = ECommerce.API.Pages.AuditLogs.Admin.IndexModel.ParseChanges(log.Changes, Model.EntityLookup);
+                                    <details>
+                                        <summary class="text-primary fw-semibold fs-8" style="cursor: pointer; user-select: none;">
+                                            @Localizer["AuditLog.ViewChanges"] (@parsedChanges.Count)
+                                        </summary>
+                                        <div class="audit-changes-panel p-3 mt-2 rounded border" style="max-width: 440px;">
+                                            @foreach (var c in parsedChanges)
+                                            {
+                                                <div class="audit-change-row d-flex flex-wrap align-items-center gap-1 mb-1 fs-8">
+                                                    <span class="audit-change-label fw-semibold text-muted">@c.Label:</span>
+                                                    @if (c.IsDiff)
                                                     {
-                                                        <span class="text-muted fs-9 font-monospace" title="@c.SecondaryValue">(@c.SecondaryValue)</span>
+                                                        <span class="badge badge-light-danger text-decoration-line-through py-1 px-2">@c.OldValue</span>
+                                                        <i class="bi bi-arrow-right fs-9 text-muted mx-1"></i>
+                                                        <span class="badge badge-light-success py-1 px-2 fw-semibold">@c.NewValue</span>
                                                     }
-                                                }
-                                            </div>
+                                                    else
+                                                    {
+                                                        <span class="fw-semibold audit-change-val text-gray-800">@c.Value</span>
+                                                        @if (!string.IsNullOrEmpty(c.SecondaryValue))
+                                                        {
+                                                            <span class="text-muted fs-9 font-monospace" title="@c.SecondaryValue">(@c.SecondaryValue)</span>
+                                                        }
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </details>
+                                }
+                                else if (!string.IsNullOrEmpty(log.Description))
+                                {
+                                    <span class="text-muted fs-8">@log.Description</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted fs-8">—</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2. MOBILE VIEW (< 768px: Stacked Responsive Cards) -->
+    <div class="d-md-none d-flex flex-column gap-3">
+        @foreach (var log in Model.Result.Items)
+        {
+            var badgeClass = log.Action switch
+            {
+                ECommerce.Domain.Entities.AuditAction.Create => "badge-light-success text-success",
+                ECommerce.Domain.Entities.AuditAction.Update => "badge-light-warning text-warning",
+                ECommerce.Domain.Entities.AuditAction.Delete => "badge-light-danger text-danger",
+                _ => "badge-light-secondary text-secondary"
+            };
+            var resolvedUserName = log.UserName;
+            if (string.IsNullOrEmpty(resolvedUserName) && !string.IsNullOrEmpty(log.UserId) && Model.EntityLookup.TryGetValue(log.UserId, out var lookupUserName))
+            {
+                resolvedUserName = lookupUserName;
+            }
+            var entityIdSnippet = string.IsNullOrEmpty(log.EntityId) 
+                ? "" 
+                : (log.EntityId.Length > 8 ? log.EntityId[..8] : log.EntityId);
+            var resolvedEntityName = Model.EntityLookup.TryGetValue(log.EntityId ?? "", out var lookupEntityName) ? lookupEntityName : null;
+
+            <div class="card border-0 shadow-sm p-3">
+                <!-- Top Row: Action Badge + Timestamp -->
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                    <span class="badge @badgeClass fw-bold px-2 py-1 fs-8">
+                        @Localizer["AuditLog.Action." + log.Action]
+                    </span>
+                    <span class="text-muted fs-9">
+                        <i class="bi bi-clock me-1"></i>@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")
+                    </span>
+                </div>
+
+                <!-- Middle Row: User & Entity -->
+                <div class="mb-2">
+                    <div class="d-flex align-items-center gap-1 fs-7 mb-1">
+                        <i class="bi bi-person text-muted"></i>
+                        <span class="fw-bold text-dark text-truncate" style="max-width: 260px;">@(resolvedUserName ?? log.UserId ?? Localizer["AuditLog.System"].Value)</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-wrap fs-8 text-muted">
+                        <span class="fw-semibold text-dark">@log.EntityName</span>
+                        @if (!string.IsNullOrEmpty(resolvedEntityName))
+                        {
+                            <span>@resolvedEntityName</span>
+                        }
+                        @if (!string.IsNullOrEmpty(entityIdSnippet))
+                        {
+                            <code class="fs-9 text-muted">#@entityIdSnippet</code>
+                        }
+                    </div>
+                </div>
+
+                <!-- Bottom Row: Changes details (100% width, no horizontal overflow) -->
+                @if (!string.IsNullOrEmpty(log.Changes))
+                {
+                    var parsedChanges = ECommerce.API.Pages.AuditLogs.Admin.IndexModel.ParseChanges(log.Changes, Model.EntityLookup);
+                    <div class="pt-2 border-top">
+                        <details>
+                            <summary class="text-primary fw-semibold fs-8" style="cursor: pointer; user-select: none;">
+                                @Localizer["AuditLog.ViewChanges"] (@parsedChanges.Count)
+                            </summary>
+                            <div class="audit-changes-panel p-2 mt-2 rounded border bg-light w-100" style="max-width: 100%;">
+                                @foreach (var c in parsedChanges)
+                                {
+                                    <div class="audit-change-row d-flex flex-wrap align-items-center gap-1 mb-1 fs-8">
+                                        <span class="audit-change-label fw-semibold text-muted">@c.Label:</span>
+                                        @if (c.IsDiff)
+                                        {
+                                            <span class="badge badge-light-danger text-decoration-line-through py-0 px-1 fs-9 text-break">@c.OldValue</span>
+                                            <i class="bi bi-arrow-right fs-9 text-muted mx-1"></i>
+                                            <span class="badge badge-light-success py-0 px-1 fs-9 fw-semibold text-break">@c.NewValue</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fw-semibold audit-change-val text-dark text-break">@c.Value</span>
+                                            @if (!string.IsNullOrEmpty(c.SecondaryValue))
+                                            {
+                                                <span class="text-muted fs-9 font-monospace text-break" title="@c.SecondaryValue">(@c.SecondaryValue)</span>
+                                            }
                                         }
                                     </div>
-                                </details>
-                            }
-                            else if (!string.IsNullOrEmpty(log.Description))
-                            {
-                                <span class="text-muted fs-8">@log.Description</span>
-                            }
-                            else
-                            {
-                                <span class="text-muted fs-8">—</span>
-                            }
-                        </td>
-                    </tr>
+                                }
+                            </div>
+                        </details>
+                    </div>
                 }
-            </tbody>
-        </table>
+                else if (!string.IsNullOrEmpty(log.Description))
+                {
+                    <div class="pt-2 border-top text-muted fs-8">
+                        @log.Description
+                    </div>
+                }
+            </div>
+        }
     </div>
-</div>
+}
 
 <partial name="_Pagination" model="@(new ECommerce.API.Pages.Shared.PaginationViewModel
 {

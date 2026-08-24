@@ -4,71 +4,140 @@
     ViewData["Title"] = Localizer["Discount.Title"].Value;
 }
 
-<div class="page-header">
-    <h1>@Localizer["Discount.Title"]</h1>
-    <a class="btn btn-primary" asp-page="/Discounts/Create"><i class="bi bi-plus-lg me-1"></i>@Localizer["Discount.Create"]</a>
+<div class="page-header d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+    <h1 class="h3 fw-bold mb-0">@Localizer["Discount.Title"]</h1>
+    <a class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1" asp-page="/Discounts/Create">
+        <i class="bi bi-plus-lg"></i>
+        <span>@Localizer["Discount.Create"]</span>
+    </a>
 </div>
 
-<div class="card">
-    <div class="table-responsive">
-        <table class="table mb-0">
-            <thead>
-                <tr>
-                    <th>@Localizer["Common.Name"]</th>
-                    <th>@Localizer["Discount.Code"]</th>
-                    <th>@Localizer["Discount.Type"]</th>
-                    <th>@Localizer["Discount.Value"]</th>
-                    <th>@Localizer["Discount.EndDate"]</th>
-                    <th>@Localizer["Discount.UsageCount"]</th>
-                    <th>@Localizer["Common.Status"]</th>
-                    <th class="text-end">@Localizer["Common.Actions"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Result.Items.Count == 0)
-                {
-                    <tr><td colspan="8" class="text-center text-muted py-4">@Localizer["Common.NoDataFound"]</td></tr>
-                }
-                @foreach (var d in Model.Result.Items)
-                {
-                    <tr>
-                        <td class="fw-semibold">@d.Name</td>
-                        <td>@(d.Code ?? "—")</td>
-                        <td>@(d.DiscountType == ECommerce.Domain.Entities.DiscountType.Percentage ? Localizer["Discount.TypePercentage"] : Localizer["Discount.TypeFixed"])</td>
-                        <td>@d.Value</td>
-                        <td>@d.EndDate.ToString("yyyy-MM-dd")</td>
-                        <td>@d.UsageCount@(d.UsageLimit.HasValue ? $" / {d.UsageLimit}" : "")</td>
-                        <td>
+@if (Model.Result.Items.Count == 0)
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5 text-muted">@Localizer["Common.NoDataFound"]</div>
+    </div>
+}
+else
+{
+    <!-- 1. DESKTOP / TABLET VIEW (>= 768px) -->
+    <div class="card border-0 shadow-sm d-none d-md-block">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr class="text-muted fw-semibold text-uppercase fs-8 border-bottom">
+                        <th class="ps-4">@Localizer["Common.Name"]</th>
+                        <th>@Localizer["Discount.Code"]</th>
+                        <th>@Localizer["Discount.Type"]</th>
+                        <th>@Localizer["Discount.Value"]</th>
+                        <th>@Localizer["Discount.EndDate"]</th>
+                        <th>@Localizer["Discount.UsageCount"]</th>
+                        <th>@Localizer["Common.Status"]</th>
+                        <th class="text-end pe-4">@Localizer["Common.Actions"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.Result.Items)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-semibold text-dark">@d.Name</td>
+                            <td><code class="fw-bold fs-7">@(d.Code ?? "—")</code></td>
+                            <td>@(d.DiscountType == ECommerce.Domain.Entities.DiscountType.Percentage ? Localizer["Discount.TypePercentage"] : Localizer["Discount.TypeFixed"])</td>
+                            <td class="fw-semibold">
+                                @(d.DiscountType == ECommerce.Domain.Entities.DiscountType.Percentage ? $"{d.Value}%" : $"${d.Value}")
+                            </td>
+                            <td class="text-muted fs-8">@d.EndDate.ToString("yyyy-MM-dd")</td>
+                            <td>@d.UsageCount@(d.UsageLimit.HasValue ? $" / {d.UsageLimit}" : "")</td>
+                            <td>
+                                @if (d.IsActive)
+                                {
+                                    <span class="badge badge-light-success">@Localizer["Common.Active"]</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-light-secondary">@Localizer["Common.Inactive"]</span>
+                                }
+                            </td>
+                            <td class="text-end pe-4">
+                                <a class="btn btn-sm btn-icon btn-active-light-primary" asp-page="/Discounts/Edit" asp-route-id="@d.Id" title="@Localizer["Common.Edit"]">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@d.Id" class="d-inline"
+                                      data-confirm-delete
+                                      data-confirm-title="@Localizer["Common.AreYouSure"]"
+                                      data-confirm-text="@Localizer["Common.ThisActionCannotBeUndone"]"
+                                      data-confirm-button="@Localizer["Common.Delete"]"
+                                      data-cancel-button="@Localizer["Common.Cancel"]">
+                                    <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2. MOBILE VIEW (< 768px: Stacked Responsive Cards) -->
+    <div class="d-md-none d-flex flex-column gap-3">
+        @foreach (var d in Model.Result.Items)
+        {
+            <div class="card border-0 shadow-sm p-3">
+                <!-- Top Row: Name, Status Badge, Actions -->
+                <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                    <div class="min-w-0 flex-grow-1 pe-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                            <span class="fw-bold fs-6 text-dark text-truncate" title="@d.Name">@d.Name</span>
                             @if (d.IsActive)
                             {
-                                <span class="badge badge-light-success">@Localizer["Common.Active"]</span>
+                                <span class="badge badge-light-success fs-8">@Localizer["Common.Active"]</span>
                             }
                             else
                             {
-                                <span class="badge badge-light-secondary">@Localizer["Common.Inactive"]</span>
+                                <span class="badge badge-light-secondary fs-8">@Localizer["Common.Inactive"]</span>
                             }
-                        </td>
-                        <td class="text-end">
-                            <a class="btn btn-sm btn-icon" asp-page="/Discounts/Edit" asp-route-id="@d.Id" title="@Localizer["Common.Edit"]">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <form method="post" asp-page-handler="Delete" asp-route-id="@d.Id" class="d-inline"
-                                  data-confirm-delete
-                                  data-confirm-title="@Localizer["Common.AreYouSure"]"
-                                  data-confirm-text="@Localizer["Common.ThisActionCannotBeUndone"]"
-                                  data-confirm-button="@Localizer["Common.Delete"]"
-                                  data-cancel-button="@Localizer["Common.Cancel"]">
-                                <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <code class="fw-bold fs-7 px-2 py-0 bg-light rounded text-brand">@(d.Code ?? "—")</code>
+                            <span class="badge badge-light-primary fw-semibold">
+                                @(d.DiscountType == ECommerce.Domain.Entities.DiscountType.Percentage ? $"{d.Value}%" : $"${d.Value}")
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-1 flex-shrink-0">
+                        <a class="btn btn-sm btn-icon btn-light-primary" asp-page="/Discounts/Edit" asp-route-id="@d.Id" title="@Localizer["Common.Edit"]">
+                            <i class="bi bi-pencil fs-6"></i>
+                        </a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@d.Id" class="d-inline"
+                              data-confirm-delete
+                              data-confirm-title="@Localizer["Common.AreYouSure"]"
+                              data-confirm-text="@Localizer["Common.ThisActionCannotBeUndone"]"
+                              data-confirm-button="@Localizer["Common.Delete"]"
+                              data-cancel-button="@Localizer["Common.Cancel"]">
+                            <button type="submit" class="btn btn-sm btn-icon text-danger" title="@Localizer["Common.Delete"]">
+                                <i class="bi bi-trash fs-6"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Bottom Row: Expiration & Usage -->
+                <div class="d-flex align-items-center justify-content-between pt-2 border-top fs-8 text-muted">
+                    <div>
+                        <i class="bi bi-calendar3 me-1"></i>
+                        <span>@Localizer["Discount.EndDate"]: @d.EndDate.ToString("yyyy-MM-dd")</span>
+                    </div>
+                    <div>
+                        <i class="bi bi-ticket-perforated me-1"></i>
+                        <span>@d.UsageCount@(d.UsageLimit.HasValue ? $" / {d.UsageLimit}" : "")</span>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-</div>
+}
 
 <partial name="_Pagination" model="@(new ECommerce.API.Pages.Shared.PaginationViewModel
 {

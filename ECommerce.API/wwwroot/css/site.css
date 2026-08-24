@@ -1695,3 +1695,47 @@ html[data-theme="dark"] .pagination .page-item.disabled .page-link {
     color: #7e8299 !important;
 }
 
+/* ==========================================================================
+   Notifications Dropdown Styles
+   ========================================================================== */
+.notifications-dropdown-menu {
+    border-radius: 0.75rem !important;
+    overflow: hidden;
+}
+
+.notification-dropdown-scrollable {
+    scrollbar-width: thin;
+}
+
+.notification-dropdown-item {
+    transition: background-color 0.15s ease;
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+.notification-dropdown-item:hover {
+    background-color: var(--bs-gray-100, #f5f8fa) !important;
+    text-decoration: none !important;
+}
+
+.notification-dropdown-item.is-unread {
+    background-color: rgba(11, 183, 131, 0.08) !important;
+}
+
+html[data-theme="dark"] .notifications-dropdown-menu {
+    background-color: #1e1e2d !important;
+    border: 1px solid #2b2b40 !important;
+}
+
+html[data-theme="dark"] .notification-dropdown-item {
+    border-color: #2b2b40 !important;
+}
+
+html[data-theme="dark"] .notification-dropdown-item:hover {
+    background-color: #2b2b40 !important;
+}
+
+html[data-theme="dark"] .notification-dropdown-item.is-unread {
+    background-color: rgba(11, 183, 131, 0.16) !important;
+}
+

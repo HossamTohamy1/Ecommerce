@@ -3,14 +3,13 @@
         <i class="bi bi-bell fs-3"></i>
         <span id="notificationsUnreadBadge" class="badge badge-circle badge-danger position-absolute top-0 start-100 translate-middle d-none" style="font-size: 0.65rem;">0</span>
     </div>
-    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg fw-semibold py-4 fs-6 w-300px" data-kt-menu="true">
-        <div class="menu-item px-3 d-flex justify-content-between align-items-center">
-            <h6 class="menu-title px-3 mb-0">@Localizer["Notification.Title"]</h6>
-            <a asp-page="/Notifications/Index" class="fs-8 px-3">@Localizer["Common.ViewDetails"]</a>
+    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded shadow-lg border-0 py-0 notifications-dropdown-menu" data-kt-menu="true" style="width: min(360px, calc(100vw - 24px)); max-width: 360px;">
+        <div class="d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
+            <h6 class="fw-bold fs-6 mb-0 text-dark">@Localizer["Notification.Title"]</h6>
+            <a asp-page="/Notifications/Index" class="fs-8 text-primary text-hover-primary text-decoration-none fw-semibold">@Localizer["Common.ViewDetails"]</a>
         </div>
-        <div class="separator my-2"></div>
-        <div id="notificationsDropdownList" style="max-height: 320px; overflow-y: auto;">
-            <div class="menu-item px-3 text-muted text-center py-3">@Localizer["Notification.Empty"]</div>
+        <div id="notificationsDropdownList" class="notification-dropdown-scrollable" style="max-height: 380px; overflow-y: auto;">
+            <div class="px-3 text-muted text-center py-4 fs-7">@Localizer["Notification.Empty"]</div>
         </div>
     </div>
 </div>
