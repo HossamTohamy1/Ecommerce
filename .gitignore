@@ -103,3 +103,14 @@ ehthumbs.db
 [Dd]esktop.ini
 config.bat
 node_modules
+
+# --- cleanup ---
+.vs/
+bin/
+obj/
+*.user
+node_modules/
+dist/
+dev-dist/
+!.env.example
+config.bat
